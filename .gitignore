@@ -29,6 +29,7 @@ vectorstore/
 
 # Logs
 *.log
+*.csv
 
 # OS
 .DS_Store
