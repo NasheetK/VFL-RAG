@@ -1,4 +1,0 @@
-Party,Domain,Feature_Group,Mean_contrib_Attack,Suggested_Action
-Party 1,RAN / ISP edge,Flow duration & Fwd pkts,0.2709935770802254,adjust flow timeouts / RAN rate limits
-Party 2,Cloud / datacenter,Fwd length statistics,0.49135076868309796,reconfigure load balancer / autoscale VNFs
-Party 3,Enterprise / edge gateway,Bwd length statistics,0.23765565423667662,tighten firewall / ACL on return-path traffic
