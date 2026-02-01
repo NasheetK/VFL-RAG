@@ -1,0 +1,5 @@
+Attack dataset: https://ieee-dataport.org/documents/mitre-attack-dataset-knowledge-graph-enhanced-rag-cyber-threat-intelligence
+
+In this simulation, the training function acts as the Active Party that has labels. In real VFL, one party would have both their features and the labels, and coordinate training.
+
+

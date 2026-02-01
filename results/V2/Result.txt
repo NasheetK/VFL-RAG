@@ -1,0 +1,384 @@
+
+=============Start=============
+Total rows: 390398
+Total columns: 89
+Grouping 2 classes with < 200 rows into 'OTHERS':
+  INFILTRATION: 122 rows -> OTHERS
+  HEARTBLEED: 70 rows -> OTHERS
+Found 9 simplified label types:
+  BENIGN -> 0
+  BOT -> 1
+  DDOS -> 2
+  DOS -> 3
+  FTPPATATOR -> 4
+  OTHERS -> 5
+  PORTSCAN -> 6
+  SSHPATATOR -> 7
+  WEBATTACK -> 8
+
+Number of classes: 9
+Label distribution:
+label_numeric
+0    300332
+1      1228
+2     12582
+3     44020
+4      3974
+5       192
+6     20525
+7      2978
+8      4567
+Name: count, dtype: int64
+
+================================
+
+Total features: 88
+
+Feature categories by evidence type:
+  evidence_volume_rate: 23 features
+  evidence_packet_size: 1 features
+  evidence_timing_direction: 64 features
+
+Party 1: 23 features
+Party 2: 1 features
+Party 3: 64 features
+
+=== Party Configuration ===
+
+Volume_Rate_Sensor_Party1:
+  Domain: Volume & Rate Analysis (DoS/DDoS Detection)
+  Evidence Type: evidence_volume_rate
+  Features (23): ['udps.srcdst_syn_packet_count', 'udps.srcdst_fin_packet_count', 'bidirectional_duration_ms', 'udps.ack_packet_count', 'udps.srcdst_icmp_packet_count']
+  Primary Actions: DDOS: rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers; DOS: rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers
+  All Attack Actions:
+    DDOS: rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers
+    DOS: rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers
+    SSHPATATOR: monitor volume/rate patterns and alert
+    FTPPATATOR: monitor volume/rate patterns and alert
+    PORTSCAN: monitor volume/rate patterns and alert
+    WEBATTACK: monitor volume/rate patterns and alert
+
+Packet_Size_Sensor_Party2:
+  Domain: Packet Size Distribution Analysis (Scan/Web Attack Detection)
+  Evidence Type: evidence_packet_size
+  Features (1): ['udps.srcdst_packet_size_variation']
+  Primary Actions: PORTSCAN: scan detection: block scanner IP, tarpitting, tighten firewall rules; WEBATTACK: WAF rules, block patterns, patching, isolate vulnerable service
+  All Attack Actions:
+    DDOS: monitor packet size patterns and alert
+    DOS: monitor packet size patterns and alert
+    SSHPATATOR: monitor packet size patterns and alert
+    FTPPATATOR: monitor packet size patterns and alert
+    PORTSCAN: scan detection: block scanner IP, tarpitting, tighten firewall rules
+    WEBATTACK: WAF rules, block patterns, patching, isolate vulnerable service
+
+Timing_Direction_Sensor_Party3:
+  Domain: Timing & Directionality Analysis (Brute Force/Scan Detection)
+  Evidence Type: evidence_timing_direction
+  Features (64): ['bidirectional_syn_packets', 'bidirectional_packets', 'src2dst_min_piat_ms', 'bidirectional_cwr_packets', 'bidirectional_min_piat_ms']
+  Primary Actions: SSHPATATOR: brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation; FTPPATATOR: brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation; PORTSCAN: scan detection: block scanner IP, tarpitting, tighten firewall rules
+  All Attack Actions:
+    DDOS: monitor timing/direction patterns and alert
+    DOS: monitor timing/direction patterns and alert
+    SSHPATATOR: brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation
+    FTPPATATOR: brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation
+    PORTSCAN: scan detection: block scanner IP, tarpitting, tighten firewall rules
+    WEBATTACK: monitor timing/direction patterns and alert
+
+
+==================================================
+Class distribution before split:
+label_numeric
+0    300332
+1      1228
+2     12582
+3     44020
+4      3974
+5       192
+6     20525
+7      2978
+8      4567
+Name: count, dtype: int64
+
+Train set class distribution:
+label_numeric
+0    192212
+1       786
+2      8053
+3     28173
+4      2543
+5       123
+6     13136
+7      1905
+8      2923
+Name: count, dtype: int64
+
+Validation set class distribution:
+label_numeric
+0    48053
+1      196
+2     2013
+3     7043
+4      636
+5       31
+6     3284
+7      477
+8      731
+Name: count, dtype: int64
+
+Test set class distribution:
+label_numeric
+0    60067
+1      246
+2     2516
+3     8804
+4      795
+5       38
+6     4105
+7      596
+8      913
+Name: count, dtype: int64
+
+Split sizes: Train=249854, Val=62464, Test=78080
+==================================
+Model parameters: embed_dim=64, hidden_dim=128, num_classes=9
+Fusion: concat (embed_dim*3 = 192)
+Train: 249854, Val: 62464, Test: 78080
+Using class weights (clamped max=20): [ 0.14443196 20.          3.4473557   0.9853958  10.916852   20.
+  2.113395   14.572995    9.497624  ]
+
+Starting training with early stopping (patience=20, min_delta=0.001)
+Evaluating validation every 5 epochs
+
+[VFL] Epoch   0 | Train Loss: 2.2122 | Val Loss: 2.1238 | Val F1: 0.1090 | Val Rec: 0.3949 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch   5 | Train Loss: 1.7070 | Val Loss: 1.5559 | Val F1: 0.3898 | Val Rec: 0.5734 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  10 | Train Loss: 1.0972 | Val Loss: 0.9378 | Val F1: 0.5552 | Val Rec: 0.7076 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  15 | Train Loss: 0.5941 | Val Loss: 0.4660 | Val F1: 0.6599 | Val Rec: 0.7912 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  20 | Train Loss: 0.3102 | Val Loss: 0.2471 | Val F1: 0.6872 | Val Rec: 0.8494 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  25 | Train Loss: 0.1924 | Val Loss: 0.1655 | Val F1: 0.7196 | Val Rec: 0.8592 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  30 | Train Loss: 0.1370 | Val Loss: 0.1234 | Val F1: 0.7520 | Val Rec: 0.9435 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  35 | Train Loss: 0.1056 | Val Loss: 0.0995 | Val F1: 0.7568 | Val Rec: 0.9618 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  40 | Train Loss: 0.0864 | Val Loss: 0.0846 | Val F1: 0.7808 | Val Rec: 0.9658 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  45 | Train Loss: 0.0718 | Val Loss: 0.0717 | Val F1: 0.7860 | Val Rec: 0.9709 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  50 | Train Loss: 0.0600 | Val Loss: 0.0613 | Val F1: 0.8027 | Val Rec: 0.9743 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  55 | Train Loss: 0.0521 | Val Loss: 0.0534 | Val F1: 0.8216 | Val Rec: 0.9843 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  60 | Train Loss: 0.0471 | Val Loss: 0.0466 | Val F1: 0.8448 | Val Rec: 0.9845 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  65 | Train Loss: 0.0412 | Val Loss: 0.0416 | Val F1: 0.8642 | Val Rec: 0.9854 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  70 | Train Loss: 0.0366 | Val Loss: 0.0371 | Val F1: 0.8695 | Val Rec: 0.9864 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  75 | Train Loss: 0.0333 | Val Loss: 0.0340 | Val F1: 0.8846 | Val Rec: 0.9868 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  80 | Train Loss: 0.0313 | Val Loss: 0.0308 | Val F1: 0.8955 | Val Rec: 0.9874 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  85 | Train Loss: 0.0296 | Val Loss: 0.0282 | Val F1: 0.9005 | Val Rec: 0.9882 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  90 | Train Loss: 0.0263 | Val Loss: 0.0263 | Val F1: 0.9028 | Val Rec: 0.9884 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch  95 | Train Loss: 0.0245 | Val Loss: 0.0245 | Val F1: 0.9052 | Val Rec: 0.9886 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch 100 | Train Loss: 0.0228 | Val Loss: 0.0226 | Val F1: 0.9073 | Val Rec: 0.9889 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch 105 | Train Loss: 0.0220 | Val Loss: 0.0216 | Val F1: 0.9072 | Val Rec: 0.9890 | LR: 0.002000 | Patience: 1/20
+[VFL] Epoch 110 | Train Loss: 0.0202 | Val Loss: 0.0210 | Val F1: 0.9111 | Val Rec: 0.9892 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch 115 | Train Loss: 0.0193 | Val Loss: 0.0202 | Val F1: 0.9098 | Val Rec: 0.9894 | LR: 0.002000 | Patience: 1/20
+[VFL] Epoch 120 | Train Loss: 0.0183 | Val Loss: 0.0192 | Val F1: 0.9107 | Val Rec: 0.9895 | LR: 0.002000 | Patience: 2/20
+[VFL] Epoch 125 | Train Loss: 0.0170 | Val Loss: 0.0184 | Val F1: 0.9073 | Val Rec: 0.9897 | LR: 0.002000 | Patience: 3/20
+[VFL] Epoch 130 | Train Loss: 0.0167 | Val Loss: 0.0180 | Val F1: 0.9129 | Val Rec: 0.9898 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch 135 | Train Loss: 0.0160 | Val Loss: 0.0177 | Val F1: 0.9164 | Val Rec: 0.9898 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch 140 | Train Loss: 0.0146 | Val Loss: 0.0172 | Val F1: 0.9179 | Val Rec: 0.9899 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch 145 | Train Loss: 0.0145 | Val Loss: 0.0168 | Val F1: 0.9181 | Val Rec: 0.9899 | LR: 0.002000 | Patience: 1/20
+[VFL] Epoch 150 | Train Loss: 0.0138 | Val Loss: 0.0160 | Val F1: 0.9176 | Val Rec: 0.9900 | LR: 0.002000 | Patience: 2/20
+[VFL] Epoch 155 | Train Loss: 0.0127 | Val Loss: 0.0154 | Val F1: 0.9276 | Val Rec: 0.9902 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch 160 | Train Loss: 0.0131 | Val Loss: 0.0155 | Val F1: 0.9228 | Val Rec: 0.9906 | LR: 0.002000 | Patience: 1/20
+[VFL] Epoch 165 | Train Loss: 0.0118 | Val Loss: 0.0154 | Val F1: 0.9293 | Val Rec: 0.9903 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch 170 | Train Loss: 0.0113 | Val Loss: 0.0150 | Val F1: 0.9200 | Val Rec: 0.9907 | LR: 0.002000 | Patience: 1/20
+[VFL] Epoch 175 | Train Loss: 0.0107 | Val Loss: 0.0143 | Val F1: 0.9347 | Val Rec: 0.9905 | LR: 0.002000 | ✓ BEST
+[VFL] Epoch 180 | Train Loss: 0.0106 | Val Loss: 0.0139 | Val F1: 0.9277 | Val Rec: 0.9945 | LR: 0.002000 | Patience: 1/20
+[VFL] Epoch 185 | Train Loss: 0.0108 | Val Loss: 0.0139 | Val F1: 0.9301 | Val Rec: 0.9910 | LR: 0.002000 | Patience: 2/20
+[VFL] Epoch 190 | Train Loss: 0.0102 | Val Loss: 0.0137 | Val F1: 0.9341 | Val Rec: 0.9911 | LR: 0.002000 | Patience: 3/20
+[VFL] Epoch 195 | Train Loss: 0.0102 | Val Loss: 0.0135 | Val F1: 0.9337 | Val Rec: 0.9916 | LR: 0.002000 | Patience: 4/20
+[VFL] Epoch 199 | Train Loss: 0.0095 | Val Loss: 0.0131 | Val F1: 0.9437 | Val Rec: 0.9949 | LR: 0.002000 | ✓ BEST
+
+[CHECKPOINT] Loaded best model from epoch 199 (Val F1: 0.9437)
+
+============================================================
+FINAL TEST SET EVALUATION
+============================================================
+
+=== Evaluation Results ===
+Accuracy: 0.9953
+Macro Recall: 0.9958 | Weighted Recall: 0.9953
+Macro F1: 0.9454 | Weighted F1: 0.9958
+
+=== Per-Class Metrics ===
+              precision    recall  f1-score   support
+
+      BENIGN       1.00      0.99      1.00     60067
+         BOT       0.50      1.00      0.67       246
+        DDOS       1.00      1.00      1.00      2516
+         DOS       1.00      1.00      1.00      8804
+  FTPPATATOR       1.00      1.00      1.00       795
+      OTHERS       0.79      0.97      0.87        38
+    PORTSCAN       0.99      1.00      0.99      4105
+  SSHPATATOR       0.98      1.00      0.99       596
+   WEBATTACK       0.99      1.00      0.99       913
+
+    accuracy                           1.00     78080
+   macro avg       0.92      1.00      0.95     78080
+weighted avg       1.00      1.00      1.00     78080
+
+
+=== Confusion Matrix ===
+Rows = True labels, Columns = Predicted labels
+Classes: ['BENIGN', 'BOT', 'DDOS', 'DOS', 'FTPPATATOR', 'OTHERS', 'PORTSCAN', 'SSHPATATOR', 'WEBATTACK']
+[[59708   241     1    36     3    10    44    15     9]
+ [    1   245     0     0     0     0     0     0     0]
+ [    0     0  2516     0     0     0     0     0     0]
+ [    1     0     0  8802     0     0     0     0     1]
+ [    0     0     0     0   795     0     0     0     0]
+ [    1     0     0     0     0    37     0     0     0]
+ [    0     0     1     0     0     0  4104     0     0]
+ [    0     0     0     0     0     0     0   596     0]
+ [    0     0     0     1     0     0     0     0   912]]
+
+Performance saved to vfl_shap_performance.csv
+
+============================
+Meta-model input dim: 192, output classes: 9
+
+Training meta-model with soft distillation (T=3.0)...
+[META] Epoch 0 | Distillation Loss: 14.6273
+[META] Epoch 10 | Distillation Loss: 10.4743
+[META] Epoch 20 | Distillation Loss: 4.7886
+[META] Epoch 30 | Distillation Loss: 2.6402
+[META] Epoch 40 | Distillation Loss: 1.7724
+
+=== Meta-Model Fidelity Evaluation ===
+[META] Agreement (Meta vs VFL): 0.9588
+[META] KL Divergence: 0.1550
+[META] Logit MSE: 10.5641
+ Good agreement! Meta-model successfully mimics VFL model.
+
+Meaning: on 95.88% of test samples, the meta-model predicted the same class as the VFL teacher.
+
+==================
+
+=== Global SHAP Party Attributions ===
+Volume_Rate_Sensor_Party1: mean |SHAP| = 0.168583, mean contribution = 41.07%
+Packet_Size_Sensor_Party2: mean |SHAP| = 0.093739, mean contribution = 22.84%
+Timing_Direction_Sensor_Party3: mean |SHAP| = 0.148107, mean contribution = 36.09%
+
+=== SHAP Party Attributions by Class ===
+
+BENIGN (class 0):
+  Volume_Rate_Sensor_Party1: mean |SHAP| = 0.103531, mean contribution = 42.26%
+  Packet_Size_Sensor_Party2: mean |SHAP| = 0.051243, mean contribution = 20.92%
+  Timing_Direction_Sensor_Party3: mean |SHAP| = 0.090191, mean contribution = 36.82%
+
+BOT (class 1):
+  Volume_Rate_Sensor_Party1: mean |SHAP| = 0.256479, mean contribution = 30.62%
+  Packet_Size_Sensor_Party2: mean |SHAP| = 0.201877, mean contribution = 24.10%
+  Timing_Direction_Sensor_Party3: mean |SHAP| = 0.379258, mean contribution = 45.28%
+
+DDOS (class 2):
+  Volume_Rate_Sensor_Party1: mean |SHAP| = 0.354375, mean contribution = 36.84%
+  Packet_Size_Sensor_Party2: mean |SHAP| = 0.256347, mean contribution = 26.65%
+  Timing_Direction_Sensor_Party3: mean |SHAP| = 0.351113, mean contribution = 36.50%
+
+DOS (class 3):
+  Volume_Rate_Sensor_Party1: mean |SHAP| = 0.309772, mean contribution = 35.36%
+  Packet_Size_Sensor_Party2: mean |SHAP| = 0.215012, mean contribution = 24.55%
+  Timing_Direction_Sensor_Party3: mean |SHAP| = 0.351176, mean contribution = 40.09%
+
+FTPPATATOR (class 4):
+  Volume_Rate_Sensor_Party1: mean |SHAP| = 0.400942, mean contribution = 79.16%
+  Packet_Size_Sensor_Party2: mean |SHAP| = 0.020938, mean contribution =  4.13%
+  Timing_Direction_Sensor_Party3: mean |SHAP| = 0.084628, mean contribution = 16.71%
+
+PORTSCAN (class 6):
+  Volume_Rate_Sensor_Party1: mean |SHAP| = 0.469157, mean contribution = 53.21%
+  Packet_Size_Sensor_Party2: mean |SHAP| = 0.208827, mean contribution = 23.69%
+  Timing_Direction_Sensor_Party3: mean |SHAP| = 0.203693, mean contribution = 23.10%
+
+SSHPATATOR (class 7):
+  Volume_Rate_Sensor_Party1: mean |SHAP| = 0.607463, mean contribution = 64.84%
+  Packet_Size_Sensor_Party2: mean |SHAP| = 0.138636, mean contribution = 14.80%
+  Timing_Direction_Sensor_Party3: mean |SHAP| = 0.190740, mean contribution = 20.36%
+
+WEBATTACK (class 8):
+  Volume_Rate_Sensor_Party1: mean |SHAP| = 0.245684, mean contribution = 73.13%
+  Packet_Size_Sensor_Party2: mean |SHAP| = 0.000000, mean contribution =  0.00%
+  Timing_Direction_Sensor_Party3: mean |SHAP| = 0.090271, mean contribution = 26.87%
+
+=== Dominant Party per Class ===
+BENIGN: Volume_Rate_Sensor_Party1 (42.26%)
+BOT: Timing_Direction_Sensor_Party3 (45.28%)
+DDOS: Volume_Rate_Sensor_Party1 (36.84%)
+DOS: Timing_Direction_Sensor_Party3 (40.09%)
+FTPPATATOR: Volume_Rate_Sensor_Party1 (79.16%)
+PORTSCAN: Volume_Rate_Sensor_Party1 (53.21%)
+SSHPATATOR: Volume_Rate_Sensor_Party1 (64.84%)
+WEBATTACK: Volume_Rate_Sensor_Party1 (73.13%)
+===============================================
+
+=== Agentic Mitigation Recommendations (Attack-Type Specific) ===
+
+BENIGN (Attack Type: BENIGN):
+  Dominant Party: Volume_Rate_Sensor_Party1 (Volume & Rate Analysis (DoS/DDoS Detection))
+  Contribution: 42.26%
+  Recommended Action: monitor volume/rate patterns and alert
+  Other Party Actions:
+    Packet_Size_Sensor_Party2: monitor packet size patterns and alert
+    Timing_Direction_Sensor_Party3: monitor timing/direction patterns and alert
+
+BOT (Attack Type: BOT):
+  Dominant Party: Timing_Direction_Sensor_Party3 (Timing & Directionality Analysis (Brute Force/Scan Detection))
+  Contribution: 45.28%
+  Recommended Action: monitor timing/direction patterns and alert
+  Other Party Actions:
+    Volume_Rate_Sensor_Party1: monitor volume/rate patterns and alert
+    Packet_Size_Sensor_Party2: monitor packet size patterns and alert
+
+DDOS (Attack Type: DDOS):
+  Dominant Party: Volume_Rate_Sensor_Party1 (Volume & Rate Analysis (DoS/DDoS Detection))
+  Contribution: 36.84%
+  Recommended Action: rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers
+  Other Party Actions:
+    Packet_Size_Sensor_Party2: monitor packet size patterns and alert
+    Timing_Direction_Sensor_Party3: monitor timing/direction patterns and alert
+
+DOS (Attack Type: DOS):
+  Dominant Party: Timing_Direction_Sensor_Party3 (Timing & Directionality Analysis (Brute Force/Scan Detection))
+  Contribution: 40.09%
+  Recommended Action: monitor timing/direction patterns and alert
+  Other Party Actions:
+    Volume_Rate_Sensor_Party1: rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers
+    Packet_Size_Sensor_Party2: monitor packet size patterns and alert
+
+FTPPATATOR (Attack Type: FTPPATATOR):
+  Dominant Party: Volume_Rate_Sensor_Party1 (Volume & Rate Analysis (DoS/DDoS Detection))
+  Contribution: 79.16%
+  Recommended Action: monitor volume/rate patterns and alert
+  Other Party Actions:
+    Packet_Size_Sensor_Party2: monitor packet size patterns and alert
+    Timing_Direction_Sensor_Party3: brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation
+
+PORTSCAN (Attack Type: PORTSCAN):
+  Dominant Party: Volume_Rate_Sensor_Party1 (Volume & Rate Analysis (DoS/DDoS Detection))
+  Contribution: 53.21%
+  Recommended Action: monitor volume/rate patterns and alert
+  Other Party Actions:
+    Packet_Size_Sensor_Party2: scan detection: block scanner IP, tarpitting, tighten firewall rules
+    Timing_Direction_Sensor_Party3: scan detection: block scanner IP, tarpitting, tighten firewall rules
+
+SSHPATATOR (Attack Type: SSHPATATOR):
+  Dominant Party: Volume_Rate_Sensor_Party1 (Volume & Rate Analysis (DoS/DDoS Detection))
+  Contribution: 64.84%
+  Recommended Action: monitor volume/rate patterns and alert
+  Other Party Actions:
+    Packet_Size_Sensor_Party2: monitor packet size patterns and alert
+    Timing_Direction_Sensor_Party3: brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation
+
+WEBATTACK (Attack Type: WEBATTACK):
+  Dominant Party: Volume_Rate_Sensor_Party1 (Volume & Rate Analysis (DoS/DDoS Detection))
+  Contribution: 73.13%
+  Recommended Action: monitor volume/rate patterns and alert
+  Other Party Actions:
+    Packet_Size_Sensor_Party2: WAF rules, block patterns, patching, isolate vulnerable service
+    Timing_Direction_Sensor_Party3: monitor timing/direction patterns and alert
+
+
+
+
