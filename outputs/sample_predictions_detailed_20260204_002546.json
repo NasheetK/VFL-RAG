@@ -1,0 +1,2152 @@
+[
+  {
+    "sample_id": 333,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9675129055976868,
+    "all_probabilities": {
+      "BENIGN": 0.9675129055976868,
+      "BOT": 0.011892437003552914,
+      "DDOS": 0.0031134909950196743,
+      "DOS": 0.0045146457850933075,
+      "FTPPATATOR": 0.0008729516412131488,
+      "OTHERS": 0.0031413554679602385,
+      "PORTSCAN": 0.005125970579683781,
+      "SSHPATATOR": 0.0011524868896231055,
+      "WEBATTACK": 0.002673707902431488
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.15987827787638942,
+        "Timing_Direction_Sensor_Party2": 0.31788284324066074,
+        "Timing_Direction_Sensor_Party3": 0.26291944976124687
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.215853208741261,
+        "Timing_Direction_Sensor_Party2": 0.42917670010395453,
+        "Timing_Direction_Sensor_Party3": 0.3549700911547844
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.31788284324066074,
+      "dominant_contribution_pct": 0.42917670010395453,
+      "total_contribution": 0.7406805708782971,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:20.610090"
+  },
+  {
+    "sample_id": 2126,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.966918408870697,
+    "all_probabilities": {
+      "BENIGN": 0.966918408870697,
+      "BOT": 0.012013266794383526,
+      "DDOS": 0.003243792336434126,
+      "DOS": 0.004529614932835102,
+      "FTPPATATOR": 0.0009062266326509416,
+      "OTHERS": 0.003265331033617258,
+      "PORTSCAN": 0.005185150075703859,
+      "SSHPATATOR": 0.001213925308547914,
+      "WEBATTACK": 0.002724351128563285
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.7188541484812603,
+        "Timing_Direction_Sensor_Party2": 0.29965400656004193,
+        "Timing_Direction_Sensor_Party3": 0.18687205411438226
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.5963712885121831,
+        "Timing_Direction_Sensor_Party2": 0.24859708520512072,
+        "Timing_Direction_Sensor_Party3": 0.1550316262826962
+      },
+      "dominant_party": "Volume_Rate_Sensor_Party1",
+      "dominant_party_idx": 0,
+      "dominant_contribution": 0.7188541484812603,
+      "dominant_contribution_pct": 0.5963712885121831,
+      "total_contribution": 1.2053802091556844,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:21.141685"
+  },
+  {
+    "sample_id": 4640,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9671320915222168,
+    "all_probabilities": {
+      "BENIGN": 0.9671320915222168,
+      "BOT": 0.01205203216522932,
+      "DDOS": 0.003126624273136258,
+      "DOS": 0.004617153201252222,
+      "FTPPATATOR": 0.0008765448001213372,
+      "OTHERS": 0.0031397133134305477,
+      "PORTSCAN": 0.005214552395045757,
+      "SSHPATATOR": 0.0011446973076090217,
+      "WEBATTACK": 0.0026965064462274313
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.32503267788292245,
+        "Timing_Direction_Sensor_Party2": 0.1675653837406008,
+        "Timing_Direction_Sensor_Party3": 0.2390862369396085
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.44422530115955156,
+        "Timing_Direction_Sensor_Party2": 0.22901322888800896,
+        "Timing_Direction_Sensor_Party3": 0.32676146995243943
+      },
+      "dominant_party": "Volume_Rate_Sensor_Party1",
+      "dominant_party_idx": 0,
+      "dominant_contribution": 0.32503267788292245,
+      "dominant_contribution_pct": 0.44422530115955156,
+      "total_contribution": 0.7316842985631318,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:21.695415"
+  },
+  {
+    "sample_id": 4876,
+    "true_label": "DOS",
+    "true_label_idx": 3,
+    "predicted_label": "DOS",
+    "predicted_label_idx": 3,
+    "confidence": 0.6202570199966431,
+    "all_probabilities": {
+      "BENIGN": 0.03466886654496193,
+      "BOT": 0.17289289832115173,
+      "DDOS": 0.0062117744237184525,
+      "DOS": 0.6202570199966431,
+      "FTPPATATOR": 0.011546619236469269,
+      "OTHERS": 0.0017757717287167907,
+      "PORTSCAN": 0.0754455029964447,
+      "SSHPATATOR": 0.0008281662594527006,
+      "WEBATTACK": 0.07637351751327515
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.41533642374650537,
+        "Timing_Direction_Sensor_Party2": 0.6518197852866014,
+        "Timing_Direction_Sensor_Party3": 0.26472796896579787
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.3118412476154867,
+        "Timing_Direction_Sensor_Party2": 0.4893967478958501,
+        "Timing_Direction_Sensor_Party3": 0.19876200448866327
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.6518197852866014,
+      "dominant_contribution_pct": 0.4893967478958501,
+      "total_contribution": 1.3318841779989046,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:22.231685"
+  },
+  {
+    "sample_id": 6591,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.8197765946388245,
+    "all_probabilities": {
+      "BENIGN": 0.8197765946388245,
+      "BOT": 0.08286344259977341,
+      "DDOS": 0.01395345013588667,
+      "DOS": 0.023156287148594856,
+      "FTPPATATOR": 0.004067374859005213,
+      "OTHERS": 0.008902464993298054,
+      "PORTSCAN": 0.028914252296090126,
+      "SSHPATATOR": 0.004087891895323992,
+      "WEBATTACK": 0.014278101734817028
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.09355860336952396,
+        "Timing_Direction_Sensor_Party2": 0.2606964043834856,
+        "Timing_Direction_Sensor_Party3": 0.17355026303839702
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.17725969888333903,
+        "Timing_Direction_Sensor_Party2": 0.4939253524175495,
+        "Timing_Direction_Sensor_Party3": 0.3288149486991115
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.2606964043834856,
+      "dominant_contribution_pct": 0.4939253524175495,
+      "total_contribution": 0.5278052707914066,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:22.762626"
+  },
+  {
+    "sample_id": 9560,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9682644009590149,
+    "all_probabilities": {
+      "BENIGN": 0.9682644009590149,
+      "BOT": 0.011501751840114594,
+      "DDOS": 0.0031529664993286133,
+      "DOS": 0.0038902931846678257,
+      "FTPPATATOR": 0.0009053336107172072,
+      "OTHERS": 0.003245641477406025,
+      "PORTSCAN": 0.005230153910815716,
+      "SSHPATATOR": 0.0012459364952519536,
+      "WEBATTACK": 0.0025634546764194965
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.317128937612609,
+        "Timing_Direction_Sensor_Party2": 0.1628210476285586,
+        "Timing_Direction_Sensor_Party3": 0.32132030322538196
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.39578272422845256,
+        "Timing_Direction_Sensor_Party2": 0.20320365046875918,
+        "Timing_Direction_Sensor_Party3": 0.4010136253027882
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party3",
+      "dominant_party_idx": 2,
+      "dominant_contribution": 0.32132030322538196,
+      "dominant_contribution_pct": 0.4010136253027882,
+      "total_contribution": 0.8012702884665496,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:23.287505"
+  },
+  {
+    "sample_id": 10771,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9678099751472473,
+    "all_probabilities": {
+      "BENIGN": 0.9678099751472473,
+      "BOT": 0.011682162061333656,
+      "DDOS": 0.0031515019945800304,
+      "DOS": 0.0041891844011843204,
+      "FTPPATATOR": 0.0009016098920255899,
+      "OTHERS": 0.003235336160287261,
+      "PORTSCAN": 0.0051724836230278015,
+      "SSHPATATOR": 0.0012212784495204687,
+      "WEBATTACK": 0.0026363744400441647
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.4492906603721705,
+        "Timing_Direction_Sensor_Party2": 0.33090482508759717,
+        "Timing_Direction_Sensor_Party3": 0.08572984310084612
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.5188561248335406,
+        "Timing_Direction_Sensor_Party2": 0.38214013861639134,
+        "Timing_Direction_Sensor_Party3": 0.09900373655006806
+      },
+      "dominant_party": "Volume_Rate_Sensor_Party1",
+      "dominant_party_idx": 0,
+      "dominant_contribution": 0.4492906603721705,
+      "dominant_contribution_pct": 0.5188561248335406,
+      "total_contribution": 0.8659253285606138,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:23.824115"
+  },
+  {
+    "sample_id": 11232,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.604713499546051,
+    "all_probabilities": {
+      "BENIGN": 0.604713499546051,
+      "BOT": 0.12474806606769562,
+      "DDOS": 0.02015291154384613,
+      "DOS": 0.10862705111503601,
+      "FTPPATATOR": 0.011103872209787369,
+      "OTHERS": 0.016011618077754974,
+      "PORTSCAN": 0.06547141075134277,
+      "SSHPATATOR": 0.0071293204091489315,
+      "WEBATTACK": 0.04204220697283745
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.13321515380105775,
+        "Timing_Direction_Sensor_Party2": 0.09939324713746245,
+        "Timing_Direction_Sensor_Party3": 0.06002081784848287
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.4552353122947079,
+        "Timing_Direction_Sensor_Party2": 0.3396559220896123,
+        "Timing_Direction_Sensor_Party3": 0.2051087656156797
+      },
+      "dominant_party": "Volume_Rate_Sensor_Party1",
+      "dominant_party_idx": 0,
+      "dominant_contribution": 0.13321515380105775,
+      "dominant_contribution_pct": 0.4552353122947079,
+      "total_contribution": 0.2926292187870031,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:24.414385"
+  },
+  {
+    "sample_id": 13503,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9604219794273376,
+    "all_probabilities": {
+      "BENIGN": 0.9604219794273376,
+      "BOT": 0.014123791828751564,
+      "DDOS": 0.0037990002892911434,
+      "DOS": 0.005608139559626579,
+      "FTPPATATOR": 0.0011194741819053888,
+      "OTHERS": 0.003819977631792426,
+      "PORTSCAN": 0.0063409521244466305,
+      "SSHPATATOR": 0.0014478589873760939,
+      "WEBATTACK": 0.00331879872828722
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.10322445537516756,
+        "Timing_Direction_Sensor_Party2": 0.37807187729842867,
+        "Timing_Direction_Sensor_Party3": 0.2535301294364702
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.14047460277730991,
+        "Timing_Direction_Sensor_Party2": 0.514504984228234,
+        "Timing_Direction_Sensor_Party3": 0.3450204129944561
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.37807187729842867,
+      "dominant_contribution_pct": 0.514504984228234,
+      "total_contribution": 0.7348264621100664,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:24.980192"
+  },
+  {
+    "sample_id": 15152,
+    "true_label": "PORTSCAN",
+    "true_label_idx": 6,
+    "predicted_label": "PORTSCAN",
+    "predicted_label_idx": 6,
+    "confidence": 0.9828364253044128,
+    "all_probabilities": {
+      "BENIGN": 0.00778277637436986,
+      "BOT": 0.006589386612176895,
+      "DDOS": 0.00045969884376972914,
+      "DOS": 0.0013265052111819386,
+      "FTPPATATOR": 0.0006152441492304206,
+      "OTHERS": 0.00013042238424532115,
+      "PORTSCAN": 0.9828364253044128,
+      "SSHPATATOR": 2.92914810415823e-05,
+      "WEBATTACK": 0.00023023324320092797
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.6057361793914176,
+        "Timing_Direction_Sensor_Party2": 0.41003236524377984,
+        "Timing_Direction_Sensor_Party3": 1.068967518635953
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.29055773057475653,
+        "Timing_Direction_Sensor_Party2": 0.196683106541746,
+        "Timing_Direction_Sensor_Party3": 0.5127591628834974
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party3",
+      "dominant_party_idx": 2,
+      "dominant_contribution": 1.068967518635953,
+      "dominant_contribution_pct": 0.5127591628834974,
+      "total_contribution": 2.0847360632711505,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:25.535183"
+  },
+  {
+    "sample_id": 17594,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9675016403198242,
+    "all_probabilities": {
+      "BENIGN": 0.9675016403198242,
+      "BOT": 0.01181915681809187,
+      "DDOS": 0.003171887481585145,
+      "DOS": 0.004404498264193535,
+      "FTPPATATOR": 0.0008932234486564994,
+      "OTHERS": 0.0032162086572498083,
+      "PORTSCAN": 0.005119193345308304,
+      "SSHPATATOR": 0.0011971850180998445,
+      "WEBATTACK": 0.002676906529814005
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.09070881767120594,
+        "Timing_Direction_Sensor_Party2": 0.4442585371682245,
+        "Timing_Direction_Sensor_Party3": 0.19444412895334778
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.12435891082978316,
+        "Timing_Direction_Sensor_Party2": 0.6090643581016554,
+        "Timing_Direction_Sensor_Party3": 0.26657673106856145
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.4442585371682245,
+      "dominant_contribution_pct": 0.6090643581016554,
+      "total_contribution": 0.7294114837927782,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:26.050804"
+  },
+  {
+    "sample_id": 19906,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9644662141799927,
+    "all_probabilities": {
+      "BENIGN": 0.9644662141799927,
+      "BOT": 0.012723622843623161,
+      "DDOS": 0.0034938594326376915,
+      "DOS": 0.004870580974966288,
+      "FTPPATATOR": 0.0010087060509249568,
+      "OTHERS": 0.0035350779071450233,
+      "PORTSCAN": 0.005571257323026657,
+      "SSHPATATOR": 0.0013471575221046805,
+      "WEBATTACK": 0.0029835584573447704
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.2522859229962567,
+        "Timing_Direction_Sensor_Party2": 0.3768838577564916,
+        "Timing_Direction_Sensor_Party3": 0.1640287393971758
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.31806151497682017,
+        "Timing_Direction_Sensor_Party2": 0.4751444287682937,
+        "Timing_Direction_Sensor_Party3": 0.2067940562548861
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.3768838577564916,
+      "dominant_contribution_pct": 0.4751444287682937,
+      "total_contribution": 0.7931985201499241,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:26.590674"
+  },
+  {
+    "sample_id": 21334,
+    "true_label": "DOS",
+    "true_label_idx": 3,
+    "predicted_label": "DOS",
+    "predicted_label_idx": 3,
+    "confidence": 0.9393930435180664,
+    "all_probabilities": {
+      "BENIGN": 0.00878154020756483,
+      "BOT": 0.02592289447784424,
+      "DDOS": 0.0038035402540117502,
+      "DOS": 0.9393930435180664,
+      "FTPPATATOR": 0.0007283881423063576,
+      "OTHERS": 0.0001225247251568362,
+      "PORTSCAN": 0.0015780263347551227,
+      "SSHPATATOR": 7.256546814460307e-05,
+      "WEBATTACK": 0.019597554579377174
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.424272212446483,
+        "Timing_Direction_Sensor_Party2": 0.15651872772451134,
+        "Timing_Direction_Sensor_Party3": 1.0501571037153616
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.26013839866749683,
+        "Timing_Direction_Sensor_Party2": 0.09596794227211908,
+        "Timing_Direction_Sensor_Party3": 0.6438936590603841
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party3",
+      "dominant_party_idx": 2,
+      "dominant_contribution": 1.0501571037153616,
+      "dominant_contribution_pct": 0.6438936590603841,
+      "total_contribution": 1.630948043886356,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:27.085821"
+  },
+  {
+    "sample_id": 23280,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.8421988487243652,
+    "all_probabilities": {
+      "BENIGN": 0.8421988487243652,
+      "BOT": 0.07180862873792648,
+      "DDOS": 0.015041748993098736,
+      "DOS": 0.02304764837026596,
+      "FTPPATATOR": 0.002971936482936144,
+      "OTHERS": 0.0067107658833265305,
+      "PORTSCAN": 0.024159632623195648,
+      "SSHPATATOR": 0.002848172327503562,
+      "WEBATTACK": 0.011212516576051712
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.2776677899535287,
+        "Timing_Direction_Sensor_Party2": 0.2534625282938306,
+        "Timing_Direction_Sensor_Party3": 0.07155815245135208
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.46071528401998746,
+        "Timing_Direction_Sensor_Party2": 0.42055313916986886,
+        "Timing_Direction_Sensor_Party3": 0.1187315768101437
+      },
+      "dominant_party": "Volume_Rate_Sensor_Party1",
+      "dominant_party_idx": 0,
+      "dominant_contribution": 0.2776677899535287,
+      "dominant_contribution_pct": 0.46071528401998746,
+      "total_contribution": 0.6026884706987113,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:27.589352"
+  },
+  {
+    "sample_id": 23834,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "DOS",
+    "predicted_label_idx": 3,
+    "confidence": 0.35950982570648193,
+    "all_probabilities": {
+      "BENIGN": 0.2164376676082611,
+      "BOT": 0.16853192448616028,
+      "DDOS": 0.027951950207352638,
+      "DOS": 0.35950982570648193,
+      "FTPPATATOR": 0.024567367509007454,
+      "OTHERS": 0.016069842502474785,
+      "PORTSCAN": 0.04310842975974083,
+      "SSHPATATOR": 0.01085464097559452,
+      "WEBATTACK": 0.13296842575073242
+    },
+    "is_correct": false,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.33201780765761074,
+        "Timing_Direction_Sensor_Party2": 0.4639352041959268,
+        "Timing_Direction_Sensor_Party3": 0.13341806947590112
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.357249988005511,
+        "Timing_Direction_Sensor_Party2": 0.49919264061055224,
+        "Timing_Direction_Sensor_Party3": 0.14355737138393676
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.4639352041959268,
+      "dominant_contribution_pct": 0.49919264061055224,
+      "total_contribution": 0.9293710813294387,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:28.113888"
+  },
+  {
+    "sample_id": 24923,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9667370915412903,
+    "all_probabilities": {
+      "BENIGN": 0.9667370915412903,
+      "BOT": 0.012296398170292377,
+      "DDOS": 0.0030767815187573433,
+      "DOS": 0.0047926949337124825,
+      "FTPPATATOR": 0.0008665637578815222,
+      "OTHERS": 0.0030761552043259144,
+      "PORTSCAN": 0.005339129362255335,
+      "SSHPATATOR": 0.0011022646212950349,
+      "WEBATTACK": 0.002712893532589078
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.26150595882657685,
+        "Timing_Direction_Sensor_Party2": 0.3622433906757867,
+        "Timing_Direction_Sensor_Party3": 0.28760257723041605
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.2869428934704538,
+        "Timing_Direction_Sensor_Party2": 0.3974791516318385,
+        "Timing_Direction_Sensor_Party3": 0.31557795489770757
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.3622433906757867,
+      "dominant_contribution_pct": 0.3974791516318385,
+      "total_contribution": 0.9113519267327796,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:28.642115"
+  },
+  {
+    "sample_id": 30154,
+    "true_label": "DDOS",
+    "true_label_idx": 2,
+    "predicted_label": "DDOS",
+    "predicted_label_idx": 2,
+    "confidence": 0.9999550580978394,
+    "all_probabilities": {
+      "BENIGN": 2.0357168978080153e-05,
+      "BOT": 7.786742344251252e-07,
+      "DDOS": 0.9999550580978394,
+      "DOS": 2.3717602744000033e-05,
+      "FTPPATATOR": 1.651224046383959e-08,
+      "OTHERS": 1.9576949783495223e-10,
+      "PORTSCAN": 1.2250230163601827e-08,
+      "SSHPATATOR": 5.107464229325842e-09,
+      "WEBATTACK": 1.3188110870032688e-07
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.6536073869685751,
+        "Timing_Direction_Sensor_Party2": 0.8048371912501084,
+        "Timing_Direction_Sensor_Party3": 0.4774474659632451
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.3376259481683945,
+        "Timing_Direction_Sensor_Party2": 0.4157448725867446,
+        "Timing_Direction_Sensor_Party3": 0.2466291792448609
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.8048371912501084,
+      "dominant_contribution_pct": 0.4157448725867446,
+      "total_contribution": 1.9358920441819287,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:29.082639"
+  },
+  {
+    "sample_id": 30994,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9631408452987671,
+    "all_probabilities": {
+      "BENIGN": 0.9631408452987671,
+      "BOT": 0.013643127866089344,
+      "DDOS": 0.003492130897939205,
+      "DOS": 0.005833157338202,
+      "FTPPATATOR": 0.0009154012659564614,
+      "OTHERS": 0.003249299945309758,
+      "PORTSCAN": 0.005586013663560152,
+      "SSHPATATOR": 0.0011416823836043477,
+      "WEBATTACK": 0.0029982824344187975
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.3878284482551365,
+        "Timing_Direction_Sensor_Party2": 0.118045116848357,
+        "Timing_Direction_Sensor_Party3": 0.3609400907078266
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.4474184799178514,
+        "Timing_Direction_Sensor_Party2": 0.13618280706234276,
+        "Timing_Direction_Sensor_Party3": 0.4163987130198058
+      },
+      "dominant_party": "Volume_Rate_Sensor_Party1",
+      "dominant_party_idx": 0,
+      "dominant_contribution": 0.3878284482551365,
+      "dominant_contribution_pct": 0.4474184799178514,
+      "total_contribution": 0.8668136558113202,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:29.572735"
+  },
+  {
+    "sample_id": 33723,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9999996423721313,
+    "all_probabilities": {
+      "BENIGN": 0.9999996423721313,
+      "BOT": 3.347742563164502e-07,
+      "DDOS": 2.1060884591861395e-08,
+      "DOS": 2.7109781086664952e-09,
+      "FTPPATATOR": 1.1739413152515865e-13,
+      "OTHERS": 1.706418686908684e-11,
+      "PORTSCAN": 1.504928737183775e-09,
+      "SSHPATATOR": 1.6952024094359086e-13,
+      "WEBATTACK": 3.33188650281091e-11
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.22028119893891776,
+        "Timing_Direction_Sensor_Party2": 0.560010500216787,
+        "Timing_Direction_Sensor_Party3": 0.0188574345021951
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.2756446696383654,
+        "Timing_Direction_Sensor_Party2": 0.7007584399841401,
+        "Timing_Direction_Sensor_Party3": 0.023596890377494423
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.560010500216787,
+      "dominant_contribution_pct": 0.7007584399841401,
+      "total_contribution": 0.7991491336578999,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:30.012564"
+  },
+  {
+    "sample_id": 34643,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "DOS",
+    "predicted_label_idx": 3,
+    "confidence": 0.32605645060539246,
+    "all_probabilities": {
+      "BENIGN": 0.1553509682416916,
+      "BOT": 0.17413322627544403,
+      "DDOS": 0.021186670288443565,
+      "DOS": 0.32605645060539246,
+      "FTPPATATOR": 0.034580111503601074,
+      "OTHERS": 0.014582952484488487,
+      "PORTSCAN": 0.02571074105799198,
+      "SSHPATATOR": 0.016217410564422607,
+      "WEBATTACK": 0.232181578874588
+    },
+    "is_correct": false,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.330955800465492,
+        "Timing_Direction_Sensor_Party2": 0.5923524494850976,
+        "Timing_Direction_Sensor_Party3": 0.11380685912358042
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.3191119265063407,
+        "Timing_Direction_Sensor_Party2": 0.5711540062451593,
+        "Timing_Direction_Sensor_Party3": 0.10973406724850004
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.5923524494850976,
+      "dominant_contribution_pct": 0.5711540062451593,
+      "total_contribution": 1.03711510907417,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:30.504382"
+  },
+  {
+    "sample_id": 34785,
+    "true_label": "DOS",
+    "true_label_idx": 3,
+    "predicted_label": "DOS",
+    "predicted_label_idx": 3,
+    "confidence": 0.9612275958061218,
+    "all_probabilities": {
+      "BENIGN": 0.00032940556411631405,
+      "BOT": 0.0014898513909429312,
+      "DDOS": 0.03509192913770676,
+      "DOS": 0.9612275958061218,
+      "FTPPATATOR": 0.00013376183051150292,
+      "OTHERS": 2.3044160570862005e-06,
+      "PORTSCAN": 2.9678039936698042e-05,
+      "SSHPATATOR": 4.319247636885848e-06,
+      "WEBATTACK": 0.00169124745298177
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.4845216978382567,
+        "Timing_Direction_Sensor_Party2": 0.6420268152087374,
+        "Timing_Direction_Sensor_Party3": 0.5596987324793211
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.2873372805344609,
+        "Timing_Direction_Sensor_Party2": 0.38074298826109965,
+        "Timing_Direction_Sensor_Party3": 0.33191973120443957
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.6420268152087374,
+      "dominant_contribution_pct": 0.38074298826109965,
+      "total_contribution": 1.686247245526315,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:31.143955"
+  },
+  {
+    "sample_id": 35614,
+    "true_label": "DOS",
+    "true_label_idx": 3,
+    "predicted_label": "DOS",
+    "predicted_label_idx": 3,
+    "confidence": 0.9289560914039612,
+    "all_probabilities": {
+      "BENIGN": 0.012325442396104336,
+      "BOT": 0.029729001224040985,
+      "DDOS": 0.004312900826334953,
+      "DOS": 0.9289560914039612,
+      "FTPPATATOR": 0.0007562967948615551,
+      "OTHERS": 0.00015842815628275275,
+      "PORTSCAN": 0.0015658248448744416,
+      "SSHPATATOR": 9.08567599253729e-05,
+      "WEBATTACK": 0.022105174139142036
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.5533854556373973,
+        "Timing_Direction_Sensor_Party2": 0.36306004984207696,
+        "Timing_Direction_Sensor_Party3": 0.6213204066439966
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.3598632608998584,
+        "Timing_Direction_Sensor_Party2": 0.2360957847873832,
+        "Timing_Direction_Sensor_Party3": 0.40404095431275844
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party3",
+      "dominant_party_idx": 2,
+      "dominant_contribution": 0.6213204066439966,
+      "dominant_contribution_pct": 0.40404095431275844,
+      "total_contribution": 1.5377659121234708,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:31.676575"
+  },
+  {
+    "sample_id": 36642,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9673669934272766,
+    "all_probabilities": {
+      "BENIGN": 0.9673669934272766,
+      "BOT": 0.011861903592944145,
+      "DDOS": 0.003174562705680728,
+      "DOS": 0.004391387104988098,
+      "FTPPATATOR": 0.0009010034846141934,
+      "OTHERS": 0.003230327507480979,
+      "PORTSCAN": 0.005180582404136658,
+      "SSHPATATOR": 0.001205661566928029,
+      "WEBATTACK": 0.0026874749455600977
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.3757563436054219,
+        "Timing_Direction_Sensor_Party2": 0.2704146739721053,
+        "Timing_Direction_Sensor_Party3": 0.09565585689891515
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.5065283512013753,
+        "Timing_Direction_Sensor_Party2": 0.3645253134876723,
+        "Timing_Direction_Sensor_Party3": 0.12894633531095243
+      },
+      "dominant_party": "Volume_Rate_Sensor_Party1",
+      "dominant_party_idx": 0,
+      "dominant_contribution": 0.3757563436054219,
+      "dominant_contribution_pct": 0.5065283512013753,
+      "total_contribution": 0.7418268744764424,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:32.245295"
+  },
+  {
+    "sample_id": 39238,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.936961829662323,
+    "all_probabilities": {
+      "BENIGN": 0.936961829662323,
+      "BOT": 0.026106663048267365,
+      "DDOS": 0.014222570694983006,
+      "DOS": 0.006548456382006407,
+      "FTPPATATOR": 0.0006686256383545697,
+      "OTHERS": 0.0018115031998604536,
+      "PORTSCAN": 0.010807343758642673,
+      "SSHPATATOR": 0.000604006287176162,
+      "WEBATTACK": 0.0022689802572131157
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.2211413979719069,
+        "Timing_Direction_Sensor_Party2": 0.2622265704877714,
+        "Timing_Direction_Sensor_Party3": 0.2039096177592779
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.3217643095106765,
+        "Timing_Direction_Sensor_Party2": 0.3815438997951405,
+        "Timing_Direction_Sensor_Party3": 0.29669179069418306
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.2622265704877714,
+      "dominant_contribution_pct": 0.3815438997951405,
+      "total_contribution": 0.6872775862189562,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:32.769926"
+  },
+  {
+    "sample_id": 42310,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.5442216396331787,
+    "all_probabilities": {
+      "BENIGN": 0.5442216396331787,
+      "BOT": 0.13372789323329926,
+      "DDOS": 0.025320937857031822,
+      "DOS": 0.12775100767612457,
+      "FTPPATATOR": 0.014696183614432812,
+      "OTHERS": 0.019363844767212868,
+      "PORTSCAN": 0.0745445191860199,
+      "SSHPATATOR": 0.009238136000931263,
+      "WEBATTACK": 0.05113588646054268
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.055483595183359866,
+        "Timing_Direction_Sensor_Party2": 0.12096534793578215,
+        "Timing_Direction_Sensor_Party3": 0.10953697105383398
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.19400813967991837,
+        "Timing_Direction_Sensor_Party2": 0.4229765940941321,
+        "Timing_Direction_Sensor_Party3": 0.3830152662259496
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.12096534793578215,
+      "dominant_contribution_pct": 0.4229765940941321,
+      "total_contribution": 0.285985914172976,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:33.297108"
+  },
+  {
+    "sample_id": 43332,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "DOS",
+    "predicted_label_idx": 3,
+    "confidence": 0.5383714437484741,
+    "all_probabilities": {
+      "BENIGN": 0.08502095192670822,
+      "BOT": 0.1320621818304062,
+      "DDOS": 0.021446533501148224,
+      "DOS": 0.5383714437484741,
+      "FTPPATATOR": 0.02247799187898636,
+      "OTHERS": 0.008046147413551807,
+      "PORTSCAN": 0.020442159846425056,
+      "SSHPATATOR": 0.007302297279238701,
+      "WEBATTACK": 0.16483020782470703
+    },
+    "is_correct": false,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.5245414508424276,
+        "Timing_Direction_Sensor_Party2": 0.6891756476790012,
+        "Timing_Direction_Sensor_Party3": 0.13228546024274132
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.38970316024067175,
+        "Timing_Direction_Sensor_Party2": 0.5120165955046673,
+        "Timing_Direction_Sensor_Party3": 0.09828024425466099
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.6891756476790012,
+      "dominant_contribution_pct": 0.5120165955046673,
+      "total_contribution": 1.3460025587641702,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:33.877735"
+  },
+  {
+    "sample_id": 47329,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9245166182518005,
+    "all_probabilities": {
+      "BENIGN": 0.9245166182518005,
+      "BOT": 0.02396818995475769,
+      "DDOS": 0.0069122156128287315,
+      "DOS": 0.0070049152709543705,
+      "FTPPATATOR": 0.0036439914256334305,
+      "OTHERS": 0.006757602095603943,
+      "PORTSCAN": 0.014273974113166332,
+      "SSHPATATOR": 0.005291419103741646,
+      "WEBATTACK": 0.0076310341246426105
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.35269615226969286,
+        "Timing_Direction_Sensor_Party2": 0.020719733283040068,
+        "Timing_Direction_Sensor_Party3": 0.31930932753206437
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.5091429409636905,
+        "Timing_Direction_Sensor_Party2": 0.02991046506127927,
+        "Timing_Direction_Sensor_Party3": 0.46094659397503024
+      },
+      "dominant_party": "Volume_Rate_Sensor_Party1",
+      "dominant_party_idx": 0,
+      "dominant_contribution": 0.35269615226969286,
+      "dominant_contribution_pct": 0.5091429409636905,
+      "total_contribution": 0.6927252130847973,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:34.414118"
+  },
+  {
+    "sample_id": 49440,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9667657613754272,
+    "all_probabilities": {
+      "BENIGN": 0.9667657613754272,
+      "BOT": 0.011890803463757038,
+      "DDOS": 0.003296587383374572,
+      "DOS": 0.004305066540837288,
+      "FTPPATATOR": 0.0009693132014945149,
+      "OTHERS": 0.003422667272388935,
+      "PORTSCAN": 0.005111001431941986,
+      "SSHPATATOR": 0.0013488007243722677,
+      "WEBATTACK": 0.002890047850087285
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.1047011903243206,
+        "Timing_Direction_Sensor_Party2": 0.4357235286117453,
+        "Timing_Direction_Sensor_Party3": 0.31357113110321677
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.12260152121290108,
+        "Timing_Direction_Sensor_Party2": 0.5102173840677359,
+        "Timing_Direction_Sensor_Party3": 0.367181094719363
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.4357235286117453,
+      "dominant_contribution_pct": 0.5102173840677359,
+      "total_contribution": 0.8539958500392827,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:34.945343"
+  },
+  {
+    "sample_id": 50273,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.8503443002700806,
+    "all_probabilities": {
+      "BENIGN": 0.8503443002700806,
+      "BOT": 0.04580611735582352,
+      "DDOS": 0.011095615103840828,
+      "DOS": 0.018381016328930855,
+      "FTPPATATOR": 0.004277222789824009,
+      "OTHERS": 0.01003041211515665,
+      "PORTSCAN": 0.04696241766214371,
+      "SSHPATATOR": 0.004029036033898592,
+      "WEBATTACK": 0.009073873050510883
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.18431364239394318,
+        "Timing_Direction_Sensor_Party2": 0.2590755832756822,
+        "Timing_Direction_Sensor_Party3": 0.0936030037760574
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.3432333510378788,
+        "Timing_Direction_Sensor_Party2": 0.48245685704449826,
+        "Timing_Direction_Sensor_Party3": 0.17430979191762294
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.2590755832756822,
+      "dominant_contribution_pct": 0.48245685704449826,
+      "total_contribution": 0.5369922294456828,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:35.481413"
+  },
+  {
+    "sample_id": 51456,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.8633825778961182,
+    "all_probabilities": {
+      "BENIGN": 0.8633825778961182,
+      "BOT": 0.05793248489499092,
+      "DDOS": 0.03516783565282822,
+      "DOS": 0.017696024850010872,
+      "FTPPATATOR": 0.0017390894936397672,
+      "OTHERS": 0.004269948694854975,
+      "PORTSCAN": 0.009605295956134796,
+      "SSHPATATOR": 0.0021181993652135134,
+      "WEBATTACK": 0.008088497444987297
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.16586413344215134,
+        "Timing_Direction_Sensor_Party2": 0.14435001964494598,
+        "Timing_Direction_Sensor_Party3": 0.43314356411244653
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.22312828615947156,
+        "Timing_Direction_Sensor_Party2": 0.19418648156200854,
+        "Timing_Direction_Sensor_Party3": 0.58268523227852
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party3",
+      "dominant_party_idx": 2,
+      "dominant_contribution": 0.43314356411244653,
+      "dominant_contribution_pct": 0.58268523227852,
+      "total_contribution": 0.7433577171995438,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:36.015749"
+  },
+  {
+    "sample_id": 52106,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9315053224563599,
+    "all_probabilities": {
+      "BENIGN": 0.9315053224563599,
+      "BOT": 0.02256123162806034,
+      "DDOS": 0.006631397642195225,
+      "DOS": 0.010546864941716194,
+      "FTPPATATOR": 0.0022278600372374058,
+      "OTHERS": 0.006474983412772417,
+      "PORTSCAN": 0.011326724663376808,
+      "SSHPATATOR": 0.002640697406604886,
+      "WEBATTACK": 0.006084813270717859
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.030887548492790934,
+        "Timing_Direction_Sensor_Party2": 0.2982316083627,
+        "Timing_Direction_Sensor_Party3": 0.3401854230833502
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.04614871826458043,
+        "Timing_Direction_Sensor_Party2": 0.4455842934616575,
+        "Timing_Direction_Sensor_Party3": 0.508266988273762
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party3",
+      "dominant_party_idx": 2,
+      "dominant_contribution": 0.3401854230833502,
+      "dominant_contribution_pct": 0.508266988273762,
+      "total_contribution": 0.6693045799388412,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:36.566183"
+  },
+  {
+    "sample_id": 53431,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.7779949307441711,
+    "all_probabilities": {
+      "BENIGN": 0.7779949307441711,
+      "BOT": 0.09059707075357437,
+      "DDOS": 0.026982447132468224,
+      "DOS": 0.06217234954237938,
+      "FTPPATATOR": 0.002533331513404846,
+      "OTHERS": 0.006277184002101421,
+      "PORTSCAN": 0.017004160210490227,
+      "SSHPATATOR": 0.002402865793555975,
+      "WEBATTACK": 0.014035502448678017
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.16628801202945365,
+        "Timing_Direction_Sensor_Party2": 0.20242608061981698,
+        "Timing_Direction_Sensor_Party3": 0.09413582967750672
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.3592698280978697,
+        "Timing_Direction_Sensor_Party2": 0.4373471202116825,
+        "Timing_Direction_Sensor_Party3": 0.20338305169044782
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.20242608061981698,
+      "dominant_contribution_pct": 0.4373471202116825,
+      "total_contribution": 0.46284992232677735,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:37.115827"
+  },
+  {
+    "sample_id": 54054,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "DOS",
+    "predicted_label_idx": 3,
+    "confidence": 0.5430763959884644,
+    "all_probabilities": {
+      "BENIGN": 0.08332667499780655,
+      "BOT": 0.13483035564422607,
+      "DDOS": 0.020860208198428154,
+      "DOS": 0.5430763959884644,
+      "FTPPATATOR": 0.02197970636188984,
+      "OTHERS": 0.007625356316566467,
+      "PORTSCAN": 0.021242091432213783,
+      "SSHPATATOR": 0.006701743695884943,
+      "WEBATTACK": 0.16035744547843933
+    },
+    "is_correct": false,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.7146668662915814,
+        "Timing_Direction_Sensor_Party2": 0.6367776068862587,
+        "Timing_Direction_Sensor_Party3": 0.04540309886954083
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.5116283842223981,
+        "Timing_Direction_Sensor_Party2": 0.45586764055645956,
+        "Timing_Direction_Sensor_Party3": 0.03250397522114228
+      },
+      "dominant_party": "Volume_Rate_Sensor_Party1",
+      "dominant_party_idx": 0,
+      "dominant_contribution": 0.7146668662915814,
+      "dominant_contribution_pct": 0.5116283842223981,
+      "total_contribution": 1.396847572047381,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:37.667109"
+  },
+  {
+    "sample_id": 55023,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.6931565999984741,
+    "all_probabilities": {
+      "BENIGN": 0.6931565999984741,
+      "BOT": 0.09030905365943909,
+      "DDOS": 0.01037539355456829,
+      "DOS": 0.1734570562839508,
+      "FTPPATATOR": 0.0013625118881464005,
+      "OTHERS": 0.0020278377924114466,
+      "PORTSCAN": 0.015281939879059792,
+      "SSHPATATOR": 0.0004891591379418969,
+      "WEBATTACK": 0.0135404784232378
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.06914380826354369,
+        "Timing_Direction_Sensor_Party2": 0.1576163081247553,
+        "Timing_Direction_Sensor_Party3": 0.1216021572547793
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.19848248072461028,
+        "Timing_Direction_Sensor_Party2": 0.452449418464424,
+        "Timing_Direction_Sensor_Party3": 0.3490681008109658
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.1576163081247553,
+      "dominant_contribution_pct": 0.452449418464424,
+      "total_contribution": 0.34836227364307826,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:38.218081"
+  },
+  {
+    "sample_id": 55621,
+    "true_label": "PORTSCAN",
+    "true_label_idx": 6,
+    "predicted_label": "PORTSCAN",
+    "predicted_label_idx": 6,
+    "confidence": 0.9825710654258728,
+    "all_probabilities": {
+      "BENIGN": 0.00780870346352458,
+      "BOT": 0.0067274183966219425,
+      "DDOS": 0.0004738183051813394,
+      "DOS": 0.0013728095218539238,
+      "FTPPATATOR": 0.0006410767673514783,
+      "OTHERS": 0.0001347513316432014,
+      "PORTSCAN": 0.9825710654258728,
+      "SSHPATATOR": 3.0541388696292415e-05,
+      "WEBATTACK": 0.00023985073494259268
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 5.0685332978582665,
+        "Timing_Direction_Sensor_Party2": 6.428580867062956,
+        "Timing_Direction_Sensor_Party3": 2.506638534177929
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.3619410744224525,
+        "Timing_Direction_Sensor_Party2": 0.4590612962964206,
+        "Timing_Direction_Sensor_Party3": 0.1789976292811268
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 6.428580867062956,
+      "dominant_contribution_pct": 0.4590612962964206,
+      "total_contribution": 14.003752699099152,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:38.768301"
+  },
+  {
+    "sample_id": 56353,
+    "true_label": "WEBATTACK",
+    "true_label_idx": 8,
+    "predicted_label": "WEBATTACK",
+    "predicted_label_idx": 8,
+    "confidence": 0.4590526521205902,
+    "all_probabilities": {
+      "BENIGN": 0.05819278582930565,
+      "BOT": 0.097213514149189,
+      "DDOS": 0.01660105213522911,
+      "DOS": 0.22149091958999634,
+      "FTPPATATOR": 0.075856052339077,
+      "OTHERS": 0.011866724118590355,
+      "PORTSCAN": 0.010003427043557167,
+      "SSHPATATOR": 0.049722861498594284,
+      "WEBATTACK": 0.4590526521205902
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.37237122955042823,
+        "Timing_Direction_Sensor_Party2": 0.44597246345240504,
+        "Timing_Direction_Sensor_Party3": 0.6038567819663311
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.2618275243920882,
+        "Timing_Direction_Sensor_Party2": 0.31357918331596285,
+        "Timing_Direction_Sensor_Party3": 0.424593292291949
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party3",
+      "dominant_party_idx": 2,
+      "dominant_contribution": 0.6038567819663311,
+      "dominant_contribution_pct": 0.424593292291949,
+      "total_contribution": 1.4222004749691644,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:39.312433"
+  },
+  {
+    "sample_id": 59073,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9649462699890137,
+    "all_probabilities": {
+      "BENIGN": 0.9649462699890137,
+      "BOT": 0.012441341765224934,
+      "DDOS": 0.003507349407300353,
+      "DOS": 0.004403376020491123,
+      "FTPPATATOR": 0.0010532243177294731,
+      "OTHERS": 0.003629831364378333,
+      "PORTSCAN": 0.005611333530396223,
+      "SSHPATATOR": 0.0014513039495795965,
+      "WEBATTACK": 0.002955917501822114
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.10850372856294026,
+        "Timing_Direction_Sensor_Party2": 0.7842307146151779,
+        "Timing_Direction_Sensor_Party3": 0.1245719898028352
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.10665786143217255,
+        "Timing_Direction_Sensor_Party2": 0.7708893694077925,
+        "Timing_Direction_Sensor_Party3": 0.1224527691600349
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.7842307146151779,
+      "dominant_contribution_pct": 0.7708893694077925,
+      "total_contribution": 1.0173064329809534,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:39.847731"
+  },
+  {
+    "sample_id": 59135,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.8336963653564453,
+    "all_probabilities": {
+      "BENIGN": 0.8336963653564453,
+      "BOT": 0.06457173079252243,
+      "DDOS": 0.015044706873595715,
+      "DOS": 0.02256871946156025,
+      "FTPPATATOR": 0.004945567809045315,
+      "OTHERS": 0.010280471295118332,
+      "PORTSCAN": 0.030117936432361603,
+      "SSHPATATOR": 0.004540643654763699,
+      "WEBATTACK": 0.01423379685729742
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.24312894910491606,
+        "Timing_Direction_Sensor_Party2": 0.15509447663110898,
+        "Timing_Direction_Sensor_Party3": 0.11184087879131208
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.47666332842133924,
+        "Timing_Direction_Sensor_Party2": 0.30406847774778295,
+        "Timing_Direction_Sensor_Party3": 0.2192681938308779
+      },
+      "dominant_party": "Volume_Rate_Sensor_Party1",
+      "dominant_party_idx": 0,
+      "dominant_contribution": 0.24312894910491606,
+      "dominant_contribution_pct": 0.47666332842133924,
+      "total_contribution": 0.5100643045273371,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:40.374304"
+  },
+  {
+    "sample_id": 59834,
+    "true_label": "DOS",
+    "true_label_idx": 3,
+    "predicted_label": "DOS",
+    "predicted_label_idx": 3,
+    "confidence": 0.9841359853744507,
+    "all_probabilities": {
+      "BENIGN": 0.0002786562545225024,
+      "BOT": 0.0025099306367337704,
+      "DDOS": 0.01093923021107912,
+      "DOS": 0.9841359853744507,
+      "FTPPATATOR": 0.00014540174743160605,
+      "OTHERS": 1.9647561657620827e-06,
+      "PORTSCAN": 5.540121492231265e-05,
+      "SSHPATATOR": 2.747843382167048e-06,
+      "WEBATTACK": 0.0019307092297822237
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.842168965240927,
+        "Timing_Direction_Sensor_Party2": 0.30253218344767663,
+        "Timing_Direction_Sensor_Party3": 0.558831698711194
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.4943661441729046,
+        "Timing_Direction_Sensor_Party2": 0.17759104786822827,
+        "Timing_Direction_Sensor_Party3": 0.3280428079588672
+      },
+      "dominant_party": "Volume_Rate_Sensor_Party1",
+      "dominant_party_idx": 0,
+      "dominant_contribution": 0.842168965240927,
+      "dominant_contribution_pct": 0.4943661441729046,
+      "total_contribution": 1.7035328473997975,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:40.950789"
+  },
+  {
+    "sample_id": 62817,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9661710262298584,
+    "all_probabilities": {
+      "BENIGN": 0.9661710262298584,
+      "BOT": 0.01204905565828085,
+      "DDOS": 0.003479313338175416,
+      "DOS": 0.004697469994425774,
+      "FTPPATATOR": 0.0009481030865572393,
+      "OTHERS": 0.0034352317452430725,
+      "PORTSCAN": 0.0050894333980977535,
+      "SSHPATATOR": 0.0012962272157892585,
+      "WEBATTACK": 0.0028340069111436605
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.17563675241335477,
+        "Timing_Direction_Sensor_Party2": 0.18289324388352637,
+        "Timing_Direction_Sensor_Party3": 0.37219513628530376
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.24035953408732777,
+        "Timing_Direction_Sensor_Party2": 0.250290069040367,
+        "Timing_Direction_Sensor_Party3": 0.5093503968723053
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party3",
+      "dominant_party_idx": 2,
+      "dominant_contribution": 0.37219513628530376,
+      "dominant_contribution_pct": 0.5093503968723053,
+      "total_contribution": 0.7307251325821849,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:41.486680"
+  },
+  {
+    "sample_id": 63120,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.853416919708252,
+    "all_probabilities": {
+      "BENIGN": 0.853416919708252,
+      "BOT": 0.0445120669901371,
+      "DDOS": 0.010468504391610622,
+      "DOS": 0.017724916338920593,
+      "FTPPATATOR": 0.003931316547095776,
+      "OTHERS": 0.009178176522254944,
+      "PORTSCAN": 0.04885782301425934,
+      "SSHPATATOR": 0.0035673468373715878,
+      "WEBATTACK": 0.008342782035470009
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.13660265681711042,
+        "Timing_Direction_Sensor_Party2": 0.162700564832868,
+        "Timing_Direction_Sensor_Party3": 0.22366186684672665
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.26120798466640105,
+        "Timing_Direction_Sensor_Party2": 0.3111117135955684,
+        "Timing_Direction_Sensor_Party3": 0.4276803017380305
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party3",
+      "dominant_party_idx": 2,
+      "dominant_contribution": 0.22366186684672665,
+      "dominant_contribution_pct": 0.4276803017380305,
+      "total_contribution": 0.5229650884967051,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:42.003995"
+  },
+  {
+    "sample_id": 63744,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9662871956825256,
+    "all_probabilities": {
+      "BENIGN": 0.9662871956825256,
+      "BOT": 0.012304004281759262,
+      "DDOS": 0.0033170506358146667,
+      "DOS": 0.0050368220545351505,
+      "FTPPATATOR": 0.0008762209326960146,
+      "OTHERS": 0.0031858249567449093,
+      "PORTSCAN": 0.005066812504082918,
+      "SSHPATATOR": 0.0011448014993220568,
+      "WEBATTACK": 0.0027813506312668324
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.16337715884261922,
+        "Timing_Direction_Sensor_Party2": 0.3352290506469727,
+        "Timing_Direction_Sensor_Party3": 0.22790438308182026
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.22487925229604977,
+        "Timing_Direction_Sensor_Party2": 0.4614234865598625,
+        "Timing_Direction_Sensor_Party3": 0.3136972611440878
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.3352290506469727,
+      "dominant_contribution_pct": 0.4614234865598625,
+      "total_contribution": 0.7265105925714122,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:42.518910"
+  },
+  {
+    "sample_id": 63806,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9622678160667419,
+    "all_probabilities": {
+      "BENIGN": 0.9622678160667419,
+      "BOT": 0.013872423209249973,
+      "DDOS": 0.003610283834859729,
+      "DOS": 0.005889581050723791,
+      "FTPPATATOR": 0.0009524879278615117,
+      "OTHERS": 0.003362958552315831,
+      "PORTSCAN": 0.005785804241895676,
+      "SSHPATATOR": 0.00119471934158355,
+      "WEBATTACK": 0.0030639758333563805
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.14176441318225924,
+        "Timing_Direction_Sensor_Party2": 0.6383666544896014,
+        "Timing_Direction_Sensor_Party3": 0.05004059136607149
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.17076518047670639,
+        "Timing_Direction_Sensor_Party2": 0.7689574168665196,
+        "Timing_Direction_Sensor_Party3": 0.06027740265677395
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.6383666544896014,
+      "dominant_contribution_pct": 0.7689574168665196,
+      "total_contribution": 0.8301716590379321,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:43.036900"
+  },
+  {
+    "sample_id": 65147,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.6738175749778748,
+    "all_probabilities": {
+      "BENIGN": 0.6738175749778748,
+      "BOT": 0.09140035510063171,
+      "DDOS": 0.02047395333647728,
+      "DOS": 0.0472627691924572,
+      "FTPPATATOR": 0.010684686712920666,
+      "OTHERS": 0.017654739320278168,
+      "PORTSCAN": 0.10923346877098083,
+      "SSHPATATOR": 0.007662076037377119,
+      "WEBATTACK": 0.021810518577694893
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.1706812234450609,
+        "Timing_Direction_Sensor_Party2": 0.10934373694699476,
+        "Timing_Direction_Sensor_Party3": 0.11670918161289515
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.4302156163885965,
+        "Timing_Direction_Sensor_Party2": 0.2756095968812038,
+        "Timing_Direction_Sensor_Party3": 0.29417478673019964
+      },
+      "dominant_party": "Volume_Rate_Sensor_Party1",
+      "dominant_party_idx": 0,
+      "dominant_contribution": 0.1706812234450609,
+      "dominant_contribution_pct": 0.4302156163885965,
+      "total_contribution": 0.39673414200495083,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:43.557180"
+  },
+  {
+    "sample_id": 71188,
+    "true_label": "DDOS",
+    "true_label_idx": 2,
+    "predicted_label": "DDOS",
+    "predicted_label_idx": 2,
+    "confidence": 0.9999783039093018,
+    "all_probabilities": {
+      "BENIGN": 1.859738290477253e-06,
+      "BOT": 1.013784611814117e-07,
+      "DDOS": 0.9999783039093018,
+      "DOS": 1.964486000360921e-05,
+      "FTPPATATOR": 2.5759265831482026e-09,
+      "OTHERS": 8.53415428603288e-12,
+      "PORTSCAN": 5.023946814119995e-10,
+      "SSHPATATOR": 4.2589806681370135e-10,
+      "WEBATTACK": 2.796388720582854e-08
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.7482183117904954,
+        "Timing_Direction_Sensor_Party2": 0.738816788242499,
+        "Timing_Direction_Sensor_Party3": 1.7677864123220544
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.22987998234321513,
+        "Timing_Direction_Sensor_Party2": 0.22699149106579516,
+        "Timing_Direction_Sensor_Party3": 0.5431285265909896
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party3",
+      "dominant_party_idx": 2,
+      "dominant_contribution": 1.7677864123220544,
+      "dominant_contribution_pct": 0.5431285265909896,
+      "total_contribution": 3.254821512355049,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:44.024576"
+  },
+  {
+    "sample_id": 74191,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.9561797380447388,
+    "all_probabilities": {
+      "BENIGN": 0.9561797380447388,
+      "BOT": 0.015269379131495953,
+      "DDOS": 0.004346899222582579,
+      "DOS": 0.005883760750293732,
+      "FTPPATATOR": 0.0013191874604672194,
+      "OTHERS": 0.004408992826938629,
+      "PORTSCAN": 0.007195177022367716,
+      "SSHPATATOR": 0.0017400708748027682,
+      "WEBATTACK": 0.003656630404293537
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.379150058726878,
+        "Timing_Direction_Sensor_Party2": 0.2153424964978252,
+        "Timing_Direction_Sensor_Party3": 0.11622196651258677
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.5334772924015584,
+        "Timing_Direction_Sensor_Party2": 0.3029943668119178,
+        "Timing_Direction_Sensor_Party3": 0.1635283407865237
+      },
+      "dominant_party": "Volume_Rate_Sensor_Party1",
+      "dominant_party_idx": 0,
+      "dominant_contribution": 0.379150058726878,
+      "dominant_contribution_pct": 0.5334772924015584,
+      "total_contribution": 0.71071452173729,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:44.537291"
+  },
+  {
+    "sample_id": 74427,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.8490044474601746,
+    "all_probabilities": {
+      "BENIGN": 0.8490044474601746,
+      "BOT": 0.04575393721461296,
+      "DDOS": 0.011070781387388706,
+      "DOS": 0.018974343314766884,
+      "FTPPATATOR": 0.004182937555015087,
+      "OTHERS": 0.009690988808870316,
+      "PORTSCAN": 0.04855368286371231,
+      "SSHPATATOR": 0.0038166032172739506,
+      "WEBATTACK": 0.008952226489782333
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.15925839930184965,
+        "Timing_Direction_Sensor_Party2": 0.17035961517484904,
+        "Timing_Direction_Sensor_Party3": 0.18224479014265887
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.3111349327683241,
+        "Timing_Direction_Sensor_Party2": 0.33282280649701734,
+        "Timing_Direction_Sensor_Party3": 0.35604226073465844
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party3",
+      "dominant_party_idx": 2,
+      "dominant_contribution": 0.18224479014265887,
+      "dominant_contribution_pct": 0.35604226073465844,
+      "total_contribution": 0.5118628046193576,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:45.051740"
+  },
+  {
+    "sample_id": 74936,
+    "true_label": "BENIGN",
+    "true_label_idx": 0,
+    "predicted_label": "BENIGN",
+    "predicted_label_idx": 0,
+    "confidence": 0.8475075960159302,
+    "all_probabilities": {
+      "BENIGN": 0.8475075960159302,
+      "BOT": 0.04613229259848595,
+      "DDOS": 0.011533226817846298,
+      "DOS": 0.02022770792245865,
+      "FTPPATATOR": 0.00424652686342597,
+      "OTHERS": 0.009779747575521469,
+      "PORTSCAN": 0.04739931598305702,
+      "SSHPATATOR": 0.0038782558403909206,
+      "WEBATTACK": 0.009295342490077019
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.07217653400265231,
+        "Timing_Direction_Sensor_Party2": 0.307446369838904,
+        "Timing_Direction_Sensor_Party3": 0.13866519238099134
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.1392594862368987,
+        "Timing_Direction_Sensor_Party2": 0.5931958925541088,
+        "Timing_Direction_Sensor_Party3": 0.2675446212089924
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party2",
+      "dominant_party_idx": 1,
+      "dominant_contribution": 0.307446369838904,
+      "dominant_contribution_pct": 0.5931958925541088,
+      "total_contribution": 0.5182880962225477,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:45.540390"
+  },
+  {
+    "sample_id": 77627,
+    "true_label": "PORTSCAN",
+    "true_label_idx": 6,
+    "predicted_label": "PORTSCAN",
+    "predicted_label_idx": 6,
+    "confidence": 0.9829067587852478,
+    "all_probabilities": {
+      "BENIGN": 0.007762914523482323,
+      "BOT": 0.0065595731139183044,
+      "DDOS": 0.00045666334335692227,
+      "DOS": 0.0013168747536838055,
+      "FTPPATATOR": 0.0006104167550802231,
+      "OTHERS": 0.00012941360182594508,
+      "PORTSCAN": 0.9829067587852478,
+      "SSHPATATOR": 2.9027523851254955e-05,
+      "WEBATTACK": 0.0002282588538946584
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 0.30929515697959825,
+        "Timing_Direction_Sensor_Party2": 0.2933985388577894,
+        "Timing_Direction_Sensor_Party3": 1.2355872647342458
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.16825238557843714,
+        "Timing_Direction_Sensor_Party2": 0.15960484014726123,
+        "Timing_Direction_Sensor_Party3": 0.6721427742743017
+      },
+      "dominant_party": "Timing_Direction_Sensor_Party3",
+      "dominant_party_idx": 2,
+      "dominant_contribution": 1.2355872647342458,
+      "dominant_contribution_pct": 0.6721427742743017,
+      "total_contribution": 1.8382809605716335,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:46.108777"
+  },
+  {
+    "sample_id": 78023,
+    "true_label": "DOS",
+    "true_label_idx": 3,
+    "predicted_label": "DOS",
+    "predicted_label_idx": 3,
+    "confidence": 0.9870633482933044,
+    "all_probabilities": {
+      "BENIGN": 0.00011721553892130032,
+      "BOT": 0.0009623996447771788,
+      "DDOS": 0.011078710667788982,
+      "DOS": 0.9870633482933044,
+      "FTPPATATOR": 4.085490945726633e-05,
+      "OTHERS": 3.80525705168111e-07,
+      "PORTSCAN": 1.3827160728396848e-05,
+      "SSHPATATOR": 5.731537271458365e-07,
+      "WEBATTACK": 0.0007227261667139828
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "Volume_Rate_Sensor_Party1": 1.511369272362328,
+        "Timing_Direction_Sensor_Party2": 1.1973640404372017,
+        "Timing_Direction_Sensor_Party3": 1.1405943016142568
+      },
+      "party_contributions_pct": {
+        "Volume_Rate_Sensor_Party1": 0.3926320188240185,
+        "Timing_Direction_Sensor_Party2": 0.31105797177503897,
+        "Timing_Direction_Sensor_Party3": 0.29631000940094254
+      },
+      "dominant_party": "Volume_Rate_Sensor_Party1",
+      "dominant_party_idx": 0,
+      "dominant_contribution": 1.511369272362328,
+      "dominant_contribution_pct": 0.3926320188240185,
+      "total_contribution": 3.8493276144137862,
+      "feature_contributions": {
+        "Volume_Rate_Sensor_Party1": {},
+        "Timing_Direction_Sensor_Party2": {},
+        "Timing_Direction_Sensor_Party3": {}
+      }
+    },
+    "timestamp": "2026-02-04T00:25:46.619800"
+  }
+]

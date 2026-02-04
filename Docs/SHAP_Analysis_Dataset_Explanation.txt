@@ -1,0 +1,361 @@
+================================================================================
+SHAP ANALYSIS: WHICH DATASET IS USED (TEST vs TRAIN)
+================================================================================
+
+This document explains which dataset your code uses for SHAP computation
+and analysis.
+
+================================================================================
+ANSWER: SHAP IS COMPUTED ON TEST SAMPLES
+================================================================================
+
+Your code uses:
+- BACKGROUND (for SHAP explainer): TRAINING data (X_train_meta)
+- SAMPLES TO EXPLAIN: TEST data (X_test_meta)
+- LABELS FOR ANALYSIS: TEST labels (y_test)
+
+This is the CORRECT approach for model explanation.
+
+================================================================================
+DETAILED BREAKDOWN
+================================================================================
+
+## Step 1: Background Dataset (For SHAP Explainer)
+
+Location: Cell 10, lines 1231-1233
+
+Code:
+```python
+bg_size = min(100, X_train_meta.shape[0])
+bg_idx = torch.randperm(X_train_meta.shape[0])[:bg_size]
+background = X_train_meta[bg_idx].detach().cpu().numpy()
+```
+
+What it does:
+- Uses TRAINING data (X_train_meta) as background
+- Randomly samples 100 samples from training set
+- This becomes the "reference" or "baseline" for SHAP
+
+Why Training Data for Background:
+- SHAP needs a baseline to compare against
+- Training data represents the "normal" distribution the model learned
+- This is standard practice in SHAP computation
+
+## Step 2: Samples to Explain (For SHAP Computation)
+
+Location: Cell 10, lines 1246-1247
+
+Code:
+```python
+n_explain = min(200, X_test_meta.shape[0])
+X_explain = X_test_meta[:n_explain].detach().cpu().numpy()
+```
+
+What it does:
+- Uses TEST data (X_test_meta) as samples to explain
+- Takes first 200 samples from test set
+- These are the samples SHAP will explain
+
+Why Test Data for Explanation:
+- Test data is "unseen" - represents real-world scenarios
+- Explaining test data shows how model behaves on new data
+- This is the correct approach for production-like analysis
+
+## Step 3: Labels for Analysis (For Grouping Results)
+
+Location: Cell 11, lines 1481-1482
+
+Code:
+```python
+y_test_np = y_test.cpu().numpy()
+y_explain = y_test_np[:n_explain]
+```
+
+What it does:
+- Uses TEST labels (y_test) to group SHAP results by attack class
+- Matches labels to explained samples
+- Used to calculate per-class SHAP statistics
+
+Why Test Labels:
+- Must match the test samples being explained
+- Used to group results by attack type
+- Enables per-class analysis
+
+## Step 4: SHAP Computation
+
+Location: Cell 10, line 1250
+
+Code:
+```python
+shap_values = explainer.shap_values(X_explain, nsamples=200)
+```
+
+What it does:
+- Computes SHAP values for test samples (X_explain)
+- Uses training background (background) as reference
+- Returns SHAP values explaining test predictions
+
+================================================================================
+VISUAL FLOW DIAGRAM
+================================================================================
+
+Data Split:
+┌─────────────────────────────────────────────────┐
+│           Full Dataset (390,398 samples)        │
+└───────────────────┬─────────────────────────────┘
+                    │
+        ┌───────────┼───────────┐
+        │           │           │
+        ▼           ▼           ▼
+┌──────────┐  ┌──────────┐  ┌──────────┐
+│  TRAIN   │  │   TEST   │
+│ 249,854  │  │  78,080  │
+│ samples  │  │ samples  │
+└──────────┘  └──────────┘
+     │              │
+     │              │
+     │              │
+     ▼              ▼
+┌──────────┐  ┌──────────┐
+│ X_train_ │  │ X_test_  │
+│   meta   │  │   meta   │
+│ (192-dim)│  │ (192-dim)│
+│          │  │          │
+│ Created  │  │ Created  │
+│ in Cell 8│  │ in Cell 8│
+└──────────┘  └──────────┘
+     │              │
+     │              │
+     │              │
+     ▼              ▼
+┌──────────┐  ┌──────────┐
+│Background│  │  Samples │
+│ (100     │  │  to      │
+│ samples) │  │  Explain │
+│          │  │  (200    │
+│ From     │  │  samples)│
+│ TRAIN    │  │          │
+│          │  │ From     │
+│          │  │ TEST     │
+└──────────┘  └──────────┘
+     │              │
+     │              │
+     └──────────────┘
+                  │
+                  ▼
+         ┌──────────────┐
+         │ SHAP Explainer│
+         │ (KernelExplainer)│
+         │ Uses:          │
+         │ - Background:  │
+         │   TRAIN (100)  │
+         │ - Samples:     │
+         │   TEST (200)   │
+         └──────┬───────┘
+                │
+                ▼
+         ┌──────────────┐
+         │ SHAP Values  │
+         │ [200, 3]     │
+         │ (200 samples,│
+         │  3 parties)  │
+         └──────┬───────┘
+                │
+                ▼
+         ┌──────────────┐
+         │ Analysis     │
+         │ (Grouped by  │
+         │  TEST labels)│
+         └──────────────┘
+
+## Key Points:
+
+1. TRAIN data (249,854 samples):
+   - ✅ Used for model training
+   - ✅ Used for meta-feature creation (X_train_meta)
+   - ✅ Used for SHAP background (100 random samples)
+
+2. TEST data (78,080 samples):
+   - ✅ Used for final model evaluation
+   - ✅ Used for meta-feature creation (X_test_meta)
+   - ✅ Used for SHAP explanation (200 samples)
+   - ✅ Used for SHAP analysis (y_test labels)
+
+================================================================================
+WHY THIS APPROACH IS CORRECT
+================================================================================
+
+## 1. Background from Training Data ✅
+- Represents the distribution the model learned
+- Provides stable baseline for SHAP calculations
+- Standard practice in explainable AI
+
+## 2. Explanation on Test Data ✅
+- Test data is "unseen" - represents production scenarios
+- Shows how model explains new, real-world data
+- More meaningful than explaining training data (which model already saw)
+
+## 3. Analysis Grouped by Test Labels ✅
+- Test labels are ground truth for test samples
+- Enables per-class analysis (DDOS, DOS, PORTSCAN, etc.)
+- Shows which party detects which attack type
+
+================================================================================
+WHAT YOUR CODE ACTUALLY DOES
+================================================================================
+
+## Current Implementation:
+
+1. Background: 100 random samples from TRAINING data
+   - Used as reference/baseline for SHAP
+   - Represents "normal" distribution
+
+2. Samples Explained: 200 samples from TEST data
+   - These are the samples SHAP explains
+   - Represents "unseen" production-like data
+
+3. Labels Used: TEST labels (y_test)
+   - Ground truth for test samples
+   - Used to group SHAP results by attack class
+
+4. SHAP Analysis:
+   - Computes SHAP for 200 test samples
+   - Groups results by attack class (using test labels)
+   - Calculates per-class party contributions
+   - Generates mitigation recommendations
+
+## Summary:
+
+SHAP Analysis = TEST Data (200 samples)
+Background = TRAIN Data (100 samples)
+Labels = TEST Labels (ground truth)
+
+This is the CORRECT and STANDARD approach for model explanation.
+
+================================================================================
+ALTERNATIVE APPROACHES (If You Want to Change)
+================================================================================
+
+## Option 1: Use Training Data for SHAP
+
+If you want to explain training data:
+
+```python
+# Background from training (subset)
+background = X_train_meta[bg_idx].detach().cpu().numpy()
+
+# Explain training samples
+n_explain = min(200, X_train_meta.shape[0])
+X_explain = X_train_meta[bg_idx[:n_explain]].detach().cpu().numpy()
+
+# Use training labels
+y_explain = y_train.cpu().numpy()[bg_idx[:n_explain]]
+```
+
+When to Use:
+- Debugging model behavior on training data
+- Understanding what model learned
+- Generally NOT recommended (test is more meaningful)
+
+## Option 2: Use All Test Data
+
+If you want to explain all test samples:
+
+```python
+# Explain ALL test samples (not just 200)
+X_explain = X_test_meta.detach().cpu().numpy()  # All 78,080 samples
+y_explain = y_test.cpu().numpy()  # All test labels
+
+# Compute SHAP (will be slow!)
+shap_values = explainer.shap_values(X_explain, nsamples=200)
+```
+
+When to Use:
+- Comprehensive analysis
+- Production deployment
+- Warning: Very slow (78,080 samples × SHAP computation)
+
+## Option 3: Stratified Sample from Test
+
+If you want balanced representation:
+
+```python
+# Sample equal number from each class
+samples_per_class = 20
+X_explain_list = []
+y_explain_list = []
+
+for class_idx in range(num_classes):
+    class_mask = (y_test.cpu().numpy() == class_idx)
+    class_indices = np.where(class_mask)[0][:samples_per_class]
+    X_explain_list.append(X_test_meta[class_indices])
+    y_explain_list.append(y_test[class_indices])
+
+X_explain = torch.cat(X_explain_list, dim=0).detach().cpu().numpy()
+y_explain = torch.cat(y_explain_list, dim=0).cpu().numpy()
+```
+
+When to Use:
+- Balanced analysis across all attack types
+- When some classes are rare
+- Better representation of all attack types
+
+================================================================================
+RECOMMENDATION: YOUR CURRENT APPROACH IS CORRECT
+================================================================================
+
+Your current implementation is the STANDARD and CORRECT approach:
+
+✅ Background: Training data (represents learned distribution)
+✅ Samples: Test data (represents production scenarios)
+✅ Labels: Test labels (ground truth for grouping)
+
+This gives you:
+- Meaningful explanations (on unseen data)
+- Stable baseline (from training distribution)
+- Production-relevant insights (test data = future data)
+
+## No Changes Needed!
+
+Your code correctly:
+1. Uses training data as background (standard practice)
+2. Explains test data (most meaningful)
+3. Groups by test labels (correct ground truth)
+
+This is exactly how SHAP should be used for model explanation.
+
+================================================================================
+CODE REFERENCE
+================================================================================
+
+## Key Lines in Your Notebook:
+
+Cell 8 (Meta-features):
+- X_train_meta: Training embeddings (249,854 samples)
+- X_test_meta: Test embeddings (78,080 samples)
+
+Cell 10 (SHAP Computation):
+- Line 1233: background = X_train_meta[bg_idx]  # TRAIN (100 samples)
+- Line 1247: X_explain = X_test_meta[:n_explain]  # TEST (200 samples)
+
+Cell 11 (SHAP Analysis):
+- Line 1482: y_explain = y_test_np[:n_explain]  # TEST labels
+
+Cell 12 (Action Determination):
+- Uses y_explain (test labels) to group by attack class
+
+## Summary Table:
+
+| Component | Dataset | Samples | Purpose |
+|-----------|---------|---------|---------|
+| Background | TRAIN | 100 | SHAP baseline/reference |
+| Samples Explained | TEST | 200 | SHAP explanation targets |
+| Labels for Analysis | TEST | 200 | Group results by attack class |
+| Final Analysis | TEST | 200 | Generate recommendations |
+
+================================================================================
+END OF DOCUMENT
+================================================================================
+
+Your SHAP analysis uses TEST data, which is the CORRECT approach for
+explaining model behavior on unseen, production-like scenarios.
