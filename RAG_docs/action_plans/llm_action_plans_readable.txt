@@ -1,0 +1,312 @@
+================================================================================
+LLM-BASED ACTION PLANS FOR NETWORK INTRUSION DETECTION
+================================================================================
+
+Generated: 2026-02-06 11:48:59
+Total samples: 8
+
+================================================================================
+
+
+================================================================================
+SAMPLE 0
+================================================================================
+
+Detection:
+  Attack Type: DOS
+  Confidence: 98.25%
+  True Label: DOS
+  Correct: True
+
+SHAP Explanation:
+  Dominant Party: Volume_Rate_Sensor_Party1
+  Dominant Contribution: 50.00%
+
+LLM Action Plan:
+  Threat Level: Critical
+  Execution Priority: Immediate
+
+  Primary Actions:
+    1. Implement real-time monitoring dashboards to visualize incoming traffic and detect anomalies early.
+    2. Deploy automated response mechanisms such as traffic rerouting, rate limiting, and scrubbing processes to filter malicious requests.
+    3. Integrate external threat intelligence feeds to stay updated on emerging DOS attack vectors and refine detection models.
+    4. Continuously train and update machine learning models to adapt to evolving attack patterns.
+    5. Analyze traffic patterns and apply anomaly detection techniques to identify and mitigate abnormal traffic surges.
+
+  Supporting Actions:
+    1. Coordinate timing and direction sensors (Timing_Direction_Sensor_Party2) to corroborate volume anomalies and improve detection accuracy.
+    2. Apply multi-layer protection strategies including firewalls and intrusion prevention systems to complement detection.
+    3. Perform feature engineering to enhance detection capabilities using IP reputation, request frequency, and geographical data.
+
+  Reasoning:
+    The dominant party, Volume_Rate_Sensor_Party1, detected this DOS attack due to its focus on monitoring traffic volume rates, which typically spike during such attacks. The recommended actions leverage advanced AI/ML techniques and automated mitigation strategies highlighted in the high-priority ddos-synthetic-dataset.json knowledge base, ensuring rapid detection and response to minimize impact. Supporting actions from timing and direction sensors enhance situational awareness and detection fidelity. These combined measures align with cybersecurity best practices for mitigating DOS attacks by addressing both detection and response in real-time.
+
+  Framework Alignment:
+    NIST: DE.CM-1: Establish and maintain monitoring capabilities to detect cybersecurity events, DE.CM-7: Monitoring for unauthorized personnel, connections, devices, and software, RS.MI-1: Execute response plans during cybersecurity incidents, PR.PT-1: Protect systems through network segmentation and traffic filtering
+    OWASP: Implement rate limiting to prevent abuse of resources, Use automated detection and mitigation tools to handle volumetric attacks
+
+
+================================================================================
+SAMPLE 1
+================================================================================
+
+Detection:
+  Attack Type: DOS
+  Confidence: 98.16%
+  True Label: DOS
+  Correct: True
+
+SHAP Explanation:
+  Dominant Party: Volume_Rate_Sensor_Party1
+  Dominant Contribution: 61.95%
+
+LLM Action Plan:
+  Threat Level: Critical
+  Execution Priority: Immediate
+
+  Primary Actions:
+    1. Implement real-time traffic monitoring dashboards to visualize incoming traffic and identify anomalies early.
+    2. Deploy automated response mechanisms such as traffic rerouting, rate limiting, and scrubbing processes to filter malicious requests.
+    3. Integrate external threat intelligence feeds to update detection models and improve response to emerging DOS attack vectors.
+    4. Continuously train and update machine learning models to adapt to evolving attack patterns and improve detection accuracy.
+    5. Apply multi-layer protection including firewalls and intrusion prevention systems configured to detect and mitigate DOS traffic spikes.
+
+  Supporting Actions:
+    1. Coordinate timing and direction sensors to correlate traffic anomalies and improve detection confidence.
+    2. Analyze timing and directional data to identify attack sources and patterns for targeted mitigation.
+    3. Enhance alerting mechanisms to ensure rapid notification of suspicious traffic detected by secondary sensors.
+
+  Reasoning:
+    The dominant party, Volume_Rate_Sensor_Party1, detected the attack due to its focus on traffic volume and rate, which are primary indicators of DOS attacks characterized by sudden traffic surges. The recommended actions leverage advanced AI/ML techniques and automated mitigation strategies from the ddos-synthetic-dataset.json knowledge base, which are specifically designed to handle DOS/DDoS attacks effectively. These actions align with best practices for real-time monitoring, predictive analytics, and adaptive learning to maintain service availability and reduce attack impact. Supporting actions from timing and direction sensors enhance detection accuracy and provide a comprehensive defense strategy. This approach follows established cybersecurity best practices to ensure robust protection against DOS threats.
+
+  Framework Alignment:
+    NIST: DE.CM - Detect anomalies and events, PR.IP - Implement protective technology, RS.MI - Mitigate incidents, ID.RA - Risk assessment
+    OWASP: Implement rate limiting to prevent resource exhaustion, Use automated detection and response to mitigate attacks, Employ real-time monitoring and alerting
+
+
+================================================================================
+SAMPLE 2
+================================================================================
+
+Detection:
+  Attack Type: DOS
+  Confidence: 97.12%
+  True Label: DOS
+  Correct: True
+
+SHAP Explanation:
+  Dominant Party: Volume_Rate_Sensor_Party1
+  Dominant Contribution: 42.80%
+
+LLM Action Plan:
+  Threat Level: Critical
+  Execution Priority: Immediate
+
+  Primary Actions:
+    1. Implement real-time monitoring dashboards to visualize incoming traffic patterns from Volume_Rate_Sensor_Party1.
+    2. Deploy automated response mechanisms such as traffic rerouting, rate limiting, and scrubbing processes to filter malicious DOS traffic.
+    3. Integrate external threat intelligence feeds to enhance detection and mitigation capabilities against evolving DOS attack vectors.
+    4. Continuously train and update machine learning models to adapt to new DOS attack behaviors and maintain detection accuracy.
+
+  Supporting Actions:
+    1. From Timing_Direction_Sensor_Party2 and Party3, analyze timing and direction patterns to identify anomalous traffic flows and support primary detection.
+    2. Coordinate multi-layer protection strategies including firewalls and intrusion prevention systems to block or limit attack traffic.
+    3. Apply anomaly detection techniques such as clustering and statistical analysis to identify deviations from normal traffic behavior.
+
+  Reasoning:
+    The dominant party, Volume_Rate_Sensor_Party1, detected this DOS attack due to abnormal volume and rate of traffic, which is a primary indicator of DOS attacks. The recommended actions leverage high-priority knowledge from the ddos-synthetic-dataset.json, emphasizing real-time monitoring, automated mitigation, threat intelligence integration, and continuous learning to effectively detect and respond to DOS attacks. Supporting actions from timing and direction sensors enhance detection fidelity and provide additional context for mitigation. These combined actions address the attack's impact on availability and align with cybersecurity best practices for DOS attack management.
+
+  Framework Alignment:
+    NIST: PR.DS-1: Data-at-rest is protected, DE.CM-1: The network is monitored to detect potential cybersecurity events, RS.MI-1: Incidents are contained, RS.AN-1: Notifications from detection systems are investigated
+    OWASP: Implement rate limiting to prevent denial of service, Use network-level filtering and traffic analysis to detect and mitigate attacks
+
+
+================================================================================
+SAMPLE 3
+================================================================================
+
+Detection:
+  Attack Type: DOS
+  Confidence: 99.22%
+  True Label: DOS
+  Correct: True
+
+SHAP Explanation:
+  Dominant Party: Volume_Rate_Sensor_Party1
+  Dominant Contribution: 81.22%
+
+LLM Action Plan:
+  Threat Level: Critical
+  Execution Priority: Immediate
+
+  Primary Actions:
+    1. Implement real-time monitoring dashboards to visualize incoming traffic and detect anomalies promptly.
+    2. Deploy automated response mechanisms such as traffic rerouting, rate limiting, and scrubbing to mitigate malicious traffic.
+    3. Integrate external threat intelligence feeds to update detection models with emerging DDoS attack vectors.
+    4. Continuously train and update machine learning models to adapt to evolving attack patterns.
+    5. Analyze traffic patterns and baseline normal behavior to quickly identify deviations indicative of DOS attacks.
+
+  Supporting Actions:
+    1. Leverage timing and direction sensor data to refine detection accuracy and identify attack vectors.
+    2. Coordinate multi-party sensor data to enhance anomaly detection and reduce false positives.
+    3. Apply multi-layer protection strategies including firewalls and intrusion prevention systems informed by sensor insights.
+
+  Reasoning:
+    The Volume_Rate_Sensor_Party1 detected this DOS attack primarily due to abnormal volume and rate characteristics in network traffic, which is typical for DOS attacks that flood resources. The recommended actions leverage advanced AI/ML techniques and real-time monitoring to detect and mitigate such attacks effectively. Automated response mechanisms help in immediate containment, while threat intelligence integration ensures preparedness against evolving threats. These actions align with best practices from the ddos-synthetic-dataset.json knowledge base, emphasizing predictive analytics, behavioral modeling, and continuous learning to maintain robust defense against DOS attacks.
+
+  Framework Alignment:
+    NIST: DE.CM-1: Establish and maintain monitoring capabilities to detect cybersecurity events., DE.CM-7: Monitor network traffic to detect anomalies and potential attacks., RS.MI-1: Execute response plans to mitigate detected cybersecurity incidents.
+    OWASP: Implement rate limiting to prevent resource exhaustion., Use real-time monitoring and alerting to detect abnormal traffic patterns.
+
+
+================================================================================
+SAMPLE 4
+================================================================================
+
+Detection:
+  Attack Type: DOS
+  Confidence: 98.28%
+  True Label: DOS
+  Correct: True
+
+SHAP Explanation:
+  Dominant Party: Volume_Rate_Sensor_Party1
+  Dominant Contribution: 94.27%
+
+LLM Action Plan:
+  Threat Level: Critical
+  Execution Priority: Immediate
+
+  Primary Actions:
+    1. Implement real-time monitoring dashboards to visualize incoming traffic and detect anomalies early.
+    2. Apply automated response mechanisms such as traffic rerouting, rate limiting, and scrubbing processes to filter malicious requests.
+    3. Integrate external threat intelligence feeds to stay updated on emerging DDoS attack vectors and refine detection models.
+    4. Continuously train and update machine learning models to adapt to evolving attack patterns and improve detection accuracy.
+    5. Analyze traffic patterns and apply behavioral modeling to identify and mitigate abnormal traffic surges.
+
+  Supporting Actions:
+    1. Correlate timing and direction data from Timing_Direction_Sensor_Party2 and Party3 to enhance detection accuracy and response precision.
+    2. Coordinate with network operations teams to validate sensor alerts and implement network-level controls such as firewall rules and intrusion prevention systems.
+    3. Conduct post-incident analysis to refine feature engineering and anomaly detection parameters for future attacks.
+
+  Reasoning:
+    The dominant party, Volume_Rate_Sensor_Party1, detected this DOS attack primarily through monitoring traffic volume and rate, which are key indicators of DOS activity. The recommended actions leverage advanced AI/ML techniques and real-time monitoring to detect and mitigate the attack quickly. Automated response mechanisms reduce manual intervention time, while threat intelligence integration ensures the system adapts to new threats. Supporting actions from timing and direction sensors complement volume-based detection, providing a multi-layered defense. These measures align with best practices from the ddos-synthetic-dataset.json knowledge base and general cybersecurity frameworks, ensuring a robust defense against DOS attacks.
+
+  Framework Alignment:
+    NIST: DE.CM-1: Establish and maintain monitoring capabilities to detect cybersecurity events., DE.CM-7: Monitor network traffic to detect anomalies and potential attacks., RS.MI-1: Execute response plans to contain and mitigate detected cybersecurity incidents.
+    OWASP: Implement rate limiting to prevent resource exhaustion., Deploy automated detection and response mechanisms for denial of service attacks.
+
+
+================================================================================
+SAMPLE 5
+================================================================================
+
+Detection:
+  Attack Type: DOS
+  Confidence: 97.93%
+  True Label: DOS
+  Correct: True
+
+SHAP Explanation:
+  Dominant Party: Volume_Rate_Sensor_Party1
+  Dominant Contribution: 84.20%
+
+LLM Action Plan:
+  Threat Level: Critical
+  Execution Priority: Immediate
+
+  Primary Actions:
+    1. Implement real-time monitoring dashboards to visualize incoming traffic and detect anomalies early.
+    2. Apply automated response mechanisms such as traffic rerouting, rate limiting, and scrubbing processes to filter malicious requests.
+    3. Integrate external threat intelligence feeds to update detection models with emerging threats and attack vectors.
+    4. Continuously train and update machine learning models to adapt to evolving DOS attack patterns.
+    5. Leverage volume and rate-based detection thresholds from Volume_Rate_Sensor_Party1 to trigger mitigation steps.
+
+  Supporting Actions:
+    1. Use timing and direction analysis from Timing_Direction_Sensor_Party2 and Party3 to corroborate attack patterns and refine detection accuracy.
+    2. Coordinate multi-layer protection involving firewalls and intrusion prevention systems to block malicious traffic identified by all sensors.
+    3. Conduct anomaly detection using statistical and clustering methods to identify deviations from normal traffic patterns.
+
+  Reasoning:
+    The Volume_Rate_Sensor_Party1 detected the DOS attack due to abnormal traffic volume and rate spikes, which are typical indicators of DOS attacks. The primary actions focus on leveraging real-time monitoring and automated mitigation strategies recommended in the ddos-synthetic-dataset.json knowledge base, which is prioritized for DOS attacks. Supporting actions from timing and direction sensors enhance detection accuracy and help in multi-layer defense. These actions collectively address the attack by detecting, mitigating, and adapting to DOS traffic surges, aligning with best practices for network security and incident response.
+
+  Framework Alignment:
+    NIST: DE.CM-1: Establish and maintain monitoring capabilities to detect cybersecurity events., DE.CM-7: Implement detection processes to identify anomalies and events., RS.MI-1: Execute response plans to contain and mitigate incidents., PR.PT-1: Implement protective technologies to limit or contain impact.
+    OWASP: Implement rate limiting to prevent denial of service., Use logging and monitoring to detect abnormal traffic patterns.
+
+
+================================================================================
+SAMPLE 6
+================================================================================
+
+Detection:
+  Attack Type: DOS
+  Confidence: 98.18%
+  True Label: DOS
+  Correct: True
+
+SHAP Explanation:
+  Dominant Party: Volume_Rate_Sensor_Party1
+  Dominant Contribution: 76.87%
+
+LLM Action Plan:
+  Threat Level: Critical
+  Execution Priority: Immediate
+
+  Primary Actions:
+    1. Implement real-time monitoring dashboards to visualize incoming traffic and detect anomalies early.
+    2. Apply automated response mechanisms such as traffic rerouting, rate limiting, and scrubbing processes to filter malicious requests.
+    3. Integrate external threat intelligence feeds to update detection models with emerging attack vectors.
+    4. Continuously train and update machine learning models to adapt to evolving attack patterns.
+    5. Utilize volume and rate-based detection thresholds from Volume_Rate_Sensor_Party1 to trigger mitigation controls.
+
+  Supporting Actions:
+    1. Leverage timing and direction analysis from Timing_Direction_Sensor_Party2 and Party3 to refine detection and response accuracy.
+    2. Conduct anomaly detection using statistical and clustering techniques to identify deviations in traffic patterns.
+    3. Coordinate multi-layer protection involving firewalls and intrusion prevention systems to block malicious traffic.
+
+  Reasoning:
+    The Volume_Rate_Sensor_Party1 detected this DOS attack due to abnormal traffic volume and rate spikes, which are characteristic indicators of denial-of-service attempts. The recommended actions directly address these indicators by enabling real-time visibility, automated mitigation, and adaptive learning to quickly respond to and neutralize the attack. Supporting sensors analyzing timing and direction provide complementary insights to improve detection fidelity. These measures align with best practices from the ddos-synthetic-dataset knowledge base emphasizing predictive analytics, automated mitigation, and continuous learning to combat DOS attacks effectively.
+
+  Framework Alignment:
+    NIST: DE.CM-1: Establish and maintain monitoring capabilities to detect cybersecurity events, PR.IP-4: Backups are conducted and tested periodically to ensure availability, RS.RP-1: Response plan is executed during or after an incident, DE.DP-4: Detection processes are continuously improved
+    OWASP: A10:2021 - Server-Side Request Forgery (SSRF) - Mitigate by validating and filtering incoming traffic, A5:2021 - Security Misconfiguration - Ensure proper configuration of network devices and sensors
+
+
+================================================================================
+SAMPLE 7
+================================================================================
+
+Detection:
+  Attack Type: DOS
+  Confidence: 97.85%
+  True Label: DOS
+  Correct: True
+
+SHAP Explanation:
+  Dominant Party: Volume_Rate_Sensor_Party1
+  Dominant Contribution: 87.37%
+
+LLM Action Plan:
+  Threat Level: Critical
+  Execution Priority: Immediate
+
+  Primary Actions:
+    1. Implement real-time traffic monitoring dashboards to visualize incoming traffic and detect anomalies early.
+    2. Deploy automated response mechanisms such as traffic rerouting, rate limiting, and scrubbing to mitigate malicious requests.
+    3. Integrate external threat intelligence feeds to update detection models and improve identification of emerging DOS attack vectors.
+    4. Continuously train and update machine learning models to adapt to evolving attack patterns and improve detection accuracy.
+    5. Apply multi-layer protection including firewalls and intrusion prevention systems tailored to volumetric traffic anomalies.
+
+  Supporting Actions:
+    1. Analyze timing and direction sensor data to correlate traffic patterns and refine detection accuracy.
+    2. Coordinate with Timing_Direction_Sensor_Party2 and Timing_Direction_Sensor_Party3 to validate attack signatures and adjust mitigation thresholds.
+    3. Conduct behavioral modeling of traffic sources to identify and block suspicious traffic bursts.
+    4. Review and update network security policies to ensure rapid response capabilities to DOS attacks.
+
+  Reasoning:
+    The dominant party, Volume_Rate_Sensor_Party1, detected this DOS attack due to its focus on volumetric traffic rate anomalies, which are characteristic of DOS attacks. The primary actions leverage advanced AI/ML-driven traffic pattern analysis, automated mitigation, and threat intelligence integration as recommended by the high priority DDoS synthetic dataset knowledge base. These actions address the attack by detecting abnormal traffic surges, filtering malicious requests, and adapting defenses dynamically. Supporting actions from timing and direction sensors enhance detection fidelity and response coordination. This approach aligns with cybersecurity best practices emphasizing real-time monitoring, automated mitigation, and continuous learning to protect availability against DOS threats.
+
+  Framework Alignment:
+    NIST: DE.CM-1: Establish and maintain monitoring capabilities to detect cybersecurity events, DE.CM-7: Monitor network traffic to detect anomalies, PR.IP-4: Backups are conducted and tested periodically to ensure availability, RS.MI-1: Response plans are executed during or after an incident
+    OWASP: Implement rate limiting to prevent abuse of resources, Use traffic filtering and blocking to mitigate volumetric attacks
