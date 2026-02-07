@@ -5,9 +5,14 @@ This module contains:
 - Label simplification functions
 - Feature categorization functions
 - Attack action mappings
+- Party name generation with feature categories
 - Action formatting utilities
 """
 
+
+# ============================================================================
+# LABEL SIMPLIFICATION
+# ============================================================================
 
 def simplify_label(label_str):
     """
@@ -56,7 +61,10 @@ def simplify_label(label_str):
         return label_str.upper()[:8]
 
 
-# IDS-style attack-type action mapping
+# ============================================================================
+# ATTACK ACTION MAPPINGS
+# ============================================================================
+
 ATTACK_ACTIONS = {
     'BENIGN': " No action, log only",
     'DDOS': "rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers",
@@ -69,6 +77,10 @@ ATTACK_ACTIONS = {
     'OTHERS': "safe response: alert + collect evidence + temporary throttling (not hard block)"
 }
 
+
+# ============================================================================
+# FEATURE CATEGORIZATION
+# ============================================================================
 
 def categorize_feature_by_evidence(feature_name):
     """
@@ -139,6 +151,283 @@ def categorize_feature_by_evidence(feature_name):
     return 'evidence_timing_direction'
 
 
+def get_evidence_type(features):
+    """
+    Determine evidence type for party based on features.
+    
+    Args:
+        features: List of feature names
+        
+    Returns:
+        str: Dominant evidence type
+    """
+    evidence_counts = {
+        'evidence_volume_rate': 0,
+        'evidence_packet_size': 0,
+        'evidence_timing_direction': 0
+    }
+    
+    for feat in features:
+        cat = categorize_feature_by_evidence(feat)
+        if cat in evidence_counts:
+            evidence_counts[cat] += 1
+    
+    # Return dominant evidence type
+    return max(evidence_counts.items(), key=lambda x: x[1])[0]
+
+
+def get_feature_category_summary(features):
+    """
+    Get a summary of feature categories for a party.
+    
+    Args:
+        features: List of feature names
+        
+    Returns:
+        dict: Summary with category counts and top feature types
+    """
+    category_counts = {
+        'volume_rate': 0,
+        'packet_size': 0,
+        'timing_direction': 0,
+        'protocol': 0,
+        'other': 0
+    }
+    
+    feature_types = {
+        'duration': 0,
+        'packet_count': 0,
+        'byte_count': 0,
+        'packet_size_stats': 0,
+        'timing_intervals': 0,
+        'direction': 0,
+        'protocol_flags': 0
+    }
+    
+    for feat in features:
+        feat_lower = feat.lower()
+        cat = categorize_feature_by_evidence(feat)
+        
+        if cat == 'evidence_volume_rate':
+            category_counts['volume_rate'] += 1
+        elif cat == 'evidence_packet_size':
+            category_counts['packet_size'] += 1
+        elif cat == 'evidence_timing_direction':
+            category_counts['timing_direction'] += 1
+        
+        # Count specific feature types
+        if 'duration' in feat_lower:
+            feature_types['duration'] += 1
+        if 'packet_count' in feat_lower or 'packet_num' in feat_lower:
+            feature_types['packet_count'] += 1
+        if 'byte' in feat_lower and 'count' in feat_lower:
+            feature_types['byte_count'] += 1
+        if any(x in feat_lower for x in ['ps_', 'packet_length', 'packet_size']):
+            feature_types['packet_size_stats'] += 1
+        if any(x in feat_lower for x in ['piat', 'iat', 'interval']):
+            feature_types['timing_intervals'] += 1
+        if any(x in feat_lower for x in ['src2dst', 'dst2src', 'fwd', 'bwd', 'bidirectional']):
+            feature_types['direction'] += 1
+        if any(x in feat_lower for x in ['syn', 'ack', 'fin', 'rst', 'urg', 'cwr', 'ece', 'psh', 'port', 'protocol']):
+            feature_types['protocol_flags'] += 1
+    
+    return {
+        'category_counts': category_counts,
+        'feature_types': feature_types,
+        'total_features': len(features)
+    }
+
+
+# ============================================================================
+# PARTY NAME GENERATION (UNIQUE WITH FEATURE CATEGORY)
+# ============================================================================
+
+def generate_party_name(features, party_num):
+    """
+    Generate unique and distinct party name based on evidence type and feature category.
+    
+    Creates names like:
+    - "Volume_Rate_Flow_Analyzer_Party1" (for volume/rate features)
+    - "Packet_Size_Distribution_Analyzer_Party2" (for packet size features)
+    - "Timing_Direction_Protocol_Analyzer_Party3" (for timing/direction features)
+    
+    Args:
+        features: List of feature names
+        party_num: Party number (1, 2, or 3)
+        
+    Returns:
+        str: Unique party name with feature category
+    """
+    evidence_type = get_evidence_type(features)
+    category_summary = get_feature_category_summary(features)
+    
+    # Build unique name based on evidence type and dominant feature category
+    if evidence_type == 'evidence_volume_rate':
+        # Check for dominant feature type
+        if category_summary['feature_types']['duration'] > category_summary['feature_types']['packet_count']:
+            name = f"Volume_Rate_Flow_Duration_Analyzer_Party{party_num}"
+        elif category_summary['feature_types']['byte_count'] > 0:
+            name = f"Volume_Rate_Byte_Flow_Analyzer_Party{party_num}"
+        else:
+            name = f"Volume_Rate_Packet_Flow_Analyzer_Party{party_num}"
+    
+    elif evidence_type == 'evidence_packet_size':
+        if category_summary['feature_types']['packet_size_stats'] > 0:
+            name = f"Packet_Size_Distribution_Stats_Analyzer_Party{party_num}"
+        else:
+            name = f"Packet_Size_Distribution_Analyzer_Party{party_num}"
+    
+    else:  # evidence_timing_direction
+        # Check for dominant feature type
+        if category_summary['feature_types']['protocol_flags'] > category_summary['feature_types']['timing_intervals']:
+            name = f"Timing_Direction_Protocol_Flags_Analyzer_Party{party_num}"
+        elif category_summary['feature_types']['direction'] > category_summary['feature_types']['timing_intervals']:
+            name = f"Timing_Direction_Flow_Direction_Analyzer_Party{party_num}"
+        else:
+            name = f"Timing_Direction_Interval_Analyzer_Party{party_num}"
+    
+    # Add feature count suffix for uniqueness
+    feature_count = category_summary['total_features']
+    if feature_count < 25:
+        name += f"_SmallSet{feature_count}"
+    elif feature_count < 35:
+        name += f"_MediumSet{feature_count}"
+    else:
+        name += f"_LargeSet{feature_count}"
+    
+    return name
+
+
+def generate_domain(features, party_num):
+    """
+    Generate party domain description based on evidence type and feature category.
+    
+    Args:
+        features: List of feature names
+        party_num: Party number (1, 2, or 3)
+        
+    Returns:
+        str: Domain description with feature category details
+    """
+    evidence_type = get_evidence_type(features)
+    category_summary = get_feature_category_summary(features)
+    
+    if evidence_type == 'evidence_volume_rate':
+        domain = f"Volume & Rate Analysis (DoS/DDoS Detection) - {category_summary['total_features']} features"
+        if category_summary['feature_types']['duration'] > 0:
+            domain += " | Focus: Flow Duration & Packet/Byte Counts"
+        else:
+            domain += " | Focus: Packet & Byte Volume Metrics"
+    
+    elif evidence_type == 'evidence_packet_size':
+        domain = f"Packet Size Distribution Analysis (Scan/Web Attack Detection) - {category_summary['total_features']} features"
+        if category_summary['feature_types']['packet_size_stats'] > 0:
+            domain += " | Focus: Packet Length Statistics"
+        else:
+            domain += " | Focus: Size Distribution Patterns"
+    
+    else:  # evidence_timing_direction
+        domain = f"Timing & Directionality Analysis (Brute Force/Scan Detection) - {category_summary['total_features']} features"
+        if category_summary['feature_types']['protocol_flags'] > 0:
+            domain += " | Focus: Protocol Flags & Port Analysis"
+        elif category_summary['feature_types']['direction'] > 0:
+            domain += " | Focus: Flow Direction & Bidirectional Patterns"
+        else:
+            domain += " | Focus: Inter-Arrival Time & Timing Intervals"
+    
+    return domain
+
+
+# ============================================================================
+# ACTION GENERATION
+# ============================================================================
+
+def generate_action(features, party_num):
+    """
+    Generate attack-type specific actions based on evidence type.
+    Each party has different actions for different attack types.
+    
+    Args:
+        features: List of feature names
+        party_num: Party number (1, 2, or 3)
+        
+    Returns:
+        str: Formatted action string
+    """
+    evidence_type = get_evidence_type(features)
+    
+    # Map evidence type to which attacks it detects best (primary focus)
+    evidence_to_primary_attacks = {
+        'evidence_volume_rate': ['DDOS', 'DOS'],
+        'evidence_packet_size': ['PORTSCAN', 'WEBATTACK'],
+        'evidence_timing_direction': ['SSHPATATOR', 'FTPPATATOR', 'PORTSCAN']
+    }
+    
+    primary_attacks = evidence_to_primary_attacks.get(evidence_type, [])
+    
+    # Build comprehensive action mapping for all attack types
+    action_dict = {}
+    for attack_type in ATTACK_ACTIONS.keys():
+        if attack_type in primary_attacks:
+            # Primary detection - use full action
+            action_dict[attack_type] = ATTACK_ACTIONS[attack_type]
+        else:
+            # Secondary detection - use generic monitoring
+            if evidence_type == 'evidence_volume_rate':
+                action_dict[attack_type] = "monitor volume/rate patterns and alert"
+            elif evidence_type == 'evidence_packet_size':
+                action_dict[attack_type] = "monitor packet size patterns and alert"
+            elif evidence_type == 'evidence_timing_direction':
+                action_dict[attack_type] = "monitor timing/direction patterns and alert"
+            else:
+                action_dict[attack_type] = "monitor and alert"
+    
+    # Return formatted string for display
+    primary_str = "; ".join([f"{atk}: {action_dict[atk]}" for atk in primary_attacks])
+    return primary_str if primary_str else "monitor and alert"
+
+
+def get_party_actions_for_attack(party_features, attack_type, evidence_type=None):
+    """
+    Get action for specific party and attack type.
+    
+    Args:
+        party_features: List of features for this party
+        attack_type: Attack type name (e.g., 'DDOS', 'PORTSCAN')
+        evidence_type: Optional evidence type (if None, will be determined from features)
+        
+    Returns:
+        str: Recommended action for this party+attack combination
+    """
+    if evidence_type is None:
+        evidence_type = get_evidence_type(party_features)
+    
+    # Primary attacks per evidence type
+    evidence_to_primary = {
+        'evidence_volume_rate': ['DDOS', 'DOS'],
+        'evidence_packet_size': ['PORTSCAN', 'WEBATTACK'],
+        'evidence_timing_direction': ['SSHPATATOR', 'FTPPATATOR', 'PORTSCAN']
+    }
+    
+    primary_attacks = evidence_to_primary.get(evidence_type, [])
+    
+    if attack_type.upper() in primary_attacks:
+        return ATTACK_ACTIONS.get(attack_type.upper(), "monitor and alert")
+    else:
+        # Secondary detection
+        if evidence_type == 'evidence_volume_rate':
+            return "monitor volume/rate patterns and alert"
+        elif evidence_type == 'evidence_packet_size':
+            return "monitor packet size patterns and alert"
+        elif evidence_type == 'evidence_timing_direction':
+            return "monitor timing/direction patterns and alert"
+        return "monitor and alert"
+
+
+# ============================================================================
+# ACTION FORMATTING
+# ============================================================================
+
 def format_action_readable(action_string):
     """
     Convert action string to human-readable bullet points.
@@ -187,119 +476,9 @@ def format_action_readable(action_string):
     return "\n".join(formatted)
 
 
-def get_evidence_type(features):
-    """
-    Determine evidence type for party based on features.
-    
-    Args:
-        features: List of feature names
-        
-    Returns:
-        str: Dominant evidence type
-    """
-    # Check which evidence category dominates
-    evidence_counts = {
-        'evidence_volume_rate': 0,
-        'evidence_packet_size': 0,
-        'evidence_timing_direction': 0
-    }
-    
-    for feat in features:
-        cat = categorize_feature_by_evidence(feat)
-        if cat in evidence_counts:
-            evidence_counts[cat] += 1
-    
-    # Return dominant evidence type
-    dominant = max(evidence_counts.items(), key=lambda x: x[1])[0]
-    return dominant
-
-
-def generate_party_name(features, party_num):
-    """
-    Generate party name based on evidence type.
-    
-    Args:
-        features: List of feature names
-        party_num: Party number (1, 2, or 3)
-        
-    Returns:
-        str: Party name
-    """
-    evidence_type = get_evidence_type(features)
-    
-    name_map = {
-        'evidence_volume_rate': f"Volume_Rate_Sensor_Party{party_num}",
-        'evidence_packet_size': f"Packet_Size_Sensor_Party{party_num}",
-        'evidence_timing_direction': f"Timing_Direction_Sensor_Party{party_num}"
-    }
-    return name_map.get(evidence_type, f"Network_Sensor_Party{party_num}")
-
-
-def generate_domain(features, party_num):
-    """
-    Generate party domain description based on evidence type.
-    
-    Args:
-        features: List of feature names
-        party_num: Party number (1, 2, or 3)
-        
-    Returns:
-        str: Domain description
-    """
-    evidence_type = get_evidence_type(features)
-    
-    domain_map = {
-        'evidence_volume_rate': "Volume & Rate Analysis (DoS/DDoS Detection)",
-        'evidence_packet_size': "Packet Size Distribution Analysis (Scan/Web Attack Detection)",
-        'evidence_timing_direction': "Timing & Directionality Analysis (Brute Force/Scan Detection)"
-    }
-    return domain_map.get(evidence_type, f"Network Analysis Party {party_num}")
-
-
-def generate_action(features, party_num):
-    """
-    Generate attack-type specific actions based on evidence type.
-    Each party has different actions for different attack types.
-    
-    Args:
-        features: List of feature names
-        party_num: Party number (1, 2, or 3)
-        
-    Returns:
-        str: Formatted action string
-    """
-    evidence_type = get_evidence_type(features)
-    
-    # Map evidence type to which attacks it detects best (primary focus)
-    evidence_to_primary_attacks = {
-        'evidence_volume_rate': ['DDOS', 'DOS'],  # Party 1 detects DoS/DDoS
-        'evidence_packet_size': ['PORTSCAN', 'WEBATTACK'],  # Party 2 detects scans/web
-        'evidence_timing_direction': ['SSHPATATOR', 'FTPPATATOR', 'PORTSCAN']  # Party 3 detects brute force/scans
-    }
-    
-    primary_attacks = evidence_to_primary_attacks.get(evidence_type, [])
-    
-    # Build comprehensive action mapping for all attack types
-    action_dict = {}
-    for attack_type in ATTACK_ACTIONS.keys():
-        if attack_type in primary_attacks:
-            # Primary detection - use full action
-            action_dict[attack_type] = ATTACK_ACTIONS[attack_type]
-        else:
-            # Secondary detection - use generic monitoring
-            if evidence_type == 'evidence_volume_rate':
-                action_dict[attack_type] = "monitor volume/rate patterns and alert"
-            elif evidence_type == 'evidence_packet_size':
-                action_dict[attack_type] = "monitor packet size patterns and alert"
-            elif evidence_type == 'evidence_timing_direction':
-                action_dict[attack_type] = "monitor timing/direction patterns and alert"
-            else:
-                action_dict[attack_type] = "monitor and alert"
-    
-    # Return formatted string for display
-    primary_str = "; ".join([f"{atk}: {action_dict[atk]}" for atk in primary_attacks])
-    return primary_str if primary_str else "monitor and alert"
-
+# ============================================================================
+# FEATURE SPLITTING
+# ============================================================================
 
 def get_feature_semantic_group(feature_name):
     """
@@ -385,9 +564,9 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
     
     # Step 1: Categorize features by evidence type (for attack relevance)
     feature_categories = {
-        'evidence_volume_rate': [],      # Party 1: Volume/Rate (DoS/DDoS)
-        'evidence_packet_size': [],      # Party 2: Packet Size (Scans/Web)
-        'evidence_timing_direction': []  # Party 3: Timing/Direction (Brute Force/Scans)
+        'evidence_volume_rate': [],
+        'evidence_packet_size': [],
+        'evidence_timing_direction': []
     }
     
     for feat in all_features:
@@ -399,7 +578,6 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
             feature_categories['evidence_timing_direction'].append(feat)
     
     # Step 2: Group features by semantic similarity within each category
-    # This keeps related features together (e.g., all fwd_ features, all packet_count features)
     semantic_groups = defaultdict(lambda: defaultdict(list))
     for cat, feats in feature_categories.items():
         for feat in feats:
@@ -412,32 +590,25 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
     target_size_per_party = max(total_features / num_parties, min_features_per_party)
     
     # Step 4: Redistribute features to ensure minimum per party and balance
-    # Strategy: Move entire semantic groups to maintain feature coherence
     sorted_categories = sorted(category_sizes.items(), key=lambda x: x[1], reverse=True)
     
     # If any category has less than minimum, we need to redistribute
     for cat, size in category_sizes.items():
         if size < min_features_per_party:
-            # Need to get features from larger categories
             needed = min_features_per_party - size
             
-            # Try to get entire semantic groups from larger categories
             for larger_cat, larger_size in sorted_categories:
                 if larger_cat == cat or larger_size <= min_features_per_party:
                     continue
                 
-                # Get semantic groups from larger category
                 available_groups = list(semantic_groups[larger_cat].items())
-                # Sort by size (smaller groups first to minimize disruption)
                 available_groups.sort(key=lambda x: len(x[1]))
                 
                 for sem_group_name, group_feats in available_groups:
                     if needed <= 0:
                         break
                     
-                    # Move entire semantic group if it fits
                     if len(group_feats) <= needed or len(group_feats) <= (larger_size - min_features_per_party):
-                        # Move the entire group
                         semantic_groups[cat][sem_group_name].extend(group_feats)
                         del semantic_groups[larger_cat][sem_group_name]
                         needed -= len(group_feats)
@@ -445,7 +616,6 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
                         category_sizes[larger_cat] -= len(group_feats)
     
     # Step 5: Further balance by moving semantic groups if still imbalanced
-    # Calculate target size
     target_size = max(total_features / num_parties, min_features_per_party)
     max_iterations = 50
     iteration = 0
@@ -457,31 +627,25 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
         max_size = max(sizes)
         min_size = min(sizes)
         
-        # Check if balanced enough and meets minimum
         if min_size >= min_features_per_party and (max_size - min_size) <= target_size * balance_threshold:
             break
         
-        # Find largest and smallest categories
         largest_cat = max(category_sizes.items(), key=lambda x: x[1])[0]
         smallest_cat = min(category_sizes.items(), key=lambda x: x[1])[0]
         
         if largest_cat == smallest_cat:
             break
         
-        # Move a semantic group from largest to smallest
         available_groups = list(semantic_groups[largest_cat].items())
         if not available_groups:
             break
         
-        # Prefer moving smaller groups to minimize disruption
         available_groups.sort(key=lambda x: len(x[1]))
         
         moved = False
         for sem_group_name, group_feats in available_groups:
-            # Only move if it doesn't violate minimum for source category
             if (category_sizes[largest_cat] - len(group_feats) >= min_features_per_party and
                 len(group_feats) <= (max_size - min_size) // 2):
-                # Move the group
                 semantic_groups[smallest_cat][sem_group_name].extend(group_feats)
                 del semantic_groups[largest_cat][sem_group_name]
                 moved = True
@@ -510,14 +674,11 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
     all_party_features = [party1_features, party2_features, party3_features]
     party_sizes = [len(p) for p in all_party_features]
     
-    # If any party has less than minimum, redistribute from others
     for i, size in enumerate(party_sizes):
         if size < min_features_per_party:
             needed = min_features_per_party - size
-            # Get from largest party
             largest_idx = party_sizes.index(max(party_sizes))
             if largest_idx != i and party_sizes[largest_idx] > min_features_per_party:
-                # Move features (prefer keeping semantic groups together)
                 to_move = min(needed, party_sizes[largest_idx] - min_features_per_party)
                 moved_feats = all_party_features[largest_idx][:to_move]
                 all_party_features[largest_idx] = all_party_features[largest_idx][to_move:]
@@ -525,7 +686,7 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
                 party_sizes[i] += to_move
                 party_sizes[largest_idx] -= to_move
     
-    # Step 8: Shuffle features within each party (but semantic groups are already together)
+    # Step 8: Shuffle features within each party
     for party_feats in all_party_features:
         np.random.shuffle(party_feats)
     
@@ -537,40 +698,3 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
     }
     
     return all_party_features[0], all_party_features[1], all_party_features[2], feature_categories
-
-
-def get_party_actions_for_attack(party_features, attack_type, evidence_type=None):
-    """
-    Get action for specific party and attack type.
-    
-    Args:
-        party_features: List of features for this party
-        attack_type: Attack type name (e.g., 'DDOS', 'PORTSCAN')
-        evidence_type: Optional evidence type (if None, will be determined from features)
-        
-    Returns:
-        str: Recommended action for this party+attack combination
-    """
-    if evidence_type is None:
-        evidence_type = get_evidence_type(party_features)
-    
-    # Primary attacks per evidence type
-    evidence_to_primary = {
-        'evidence_volume_rate': ['DDOS', 'DOS'],
-        'evidence_packet_size': ['PORTSCAN', 'WEBATTACK'],
-        'evidence_timing_direction': ['SSHPATATOR', 'FTPPATATOR', 'PORTSCAN']
-    }
-    
-    primary_attacks = evidence_to_primary.get(evidence_type, [])
-    
-    if attack_type.upper() in primary_attacks:
-        return ATTACK_ACTIONS.get(attack_type.upper(), "monitor and alert")
-    else:
-        # Secondary detection
-        if evidence_type == 'evidence_volume_rate':
-            return "monitor volume/rate patterns and alert"
-        elif evidence_type == 'evidence_packet_size':
-            return "monitor packet size patterns and alert"
-        elif evidence_type == 'evidence_timing_direction':
-            return "monitor timing/direction patterns and alert"
-        return "monitor and alert"
