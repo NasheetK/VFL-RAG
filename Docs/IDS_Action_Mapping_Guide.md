@@ -16,7 +16,7 @@ This guide documents the IDS-style action mapping and evidence-type based featur
 
 Instead of random or round-robin partitioning, features are now grouped by **evidence type** - each party represents a different network sensor:
 
-#### **Party 1: Volume/Rate Evidence (DoS/DDoS Detection)**
+#### **Agent 1: Volume/Rate Evidence (DoS/DDoS Detection)**
 - **Features:** Flow duration, total packet/byte counts, flow rates
 - **Examples:**
   - `Flow Duration`
@@ -26,7 +26,7 @@ Instead of random or round-robin partitioning, features are now grouped by **evi
 - **Why:** DoS/DDoS attacks show high volume/rate patterns
 - **Expected Dominance:** DDOS, DOS classes
 
-#### **Party 2: Packet Size Distribution (Scan/Web Attack Detection)**
+#### **Agent 2: Packet Size Distribution (Scan/Web Attack Detection)**
 - **Features:** Packet length statistics, size distributions, header lengths
 - **Examples:**
   - `Fwd Packet Length Mean/Std/Max/Min`
@@ -36,7 +36,7 @@ Instead of random or round-robin partitioning, features are now grouped by **evi
 - **Why:** Scans and web attacks show distinctive packet size patterns
 - **Expected Dominance:** PORTSCAN, WEBATTACK classes
 
-#### **Party 3: Timing/Directionality (Brute Force/Scan Detection)**
+#### **Agent 3: Timing/Directionality (Brute Force/Scan Detection)**
 - **Features:** IAT, timing intervals, active/idle, directionality ratios, burst patterns
 - **Examples:**
   - `Fwd IAT Mean/Std/Max/Min`
@@ -69,24 +69,24 @@ ATTACK_ACTIONS = {
 }
 ```
 
-### Party-Specific Actions
+### Agent-Specific Actions
 
 Each party has **different actions** for different attack types:
 
-#### **Party 1 (Volume/Rate Sensor)**
+#### **Agent 1 (Volume/Rate Sensor)**
 - **Primary Detection:** DDOS, DOS
   - **Action:** `rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers`
 - **Secondary Detection:** Other attacks
   - **Action:** `monitor volume/rate patterns and alert`
 
-#### **Party 2 (Packet Size Sensor)**
+#### **Agent 2 (Packet Size Sensor)**
 - **Primary Detection:** PORTSCAN, WEBATTACK
   - **PORTSCAN:** `scan detection: block scanner IP, tarpitting, tighten firewall rules`
   - **WEBATTACK:** `WAF rules, block patterns, patching, isolate vulnerable service`
 - **Secondary Detection:** Other attacks
   - **Action:** `monitor packet size patterns and alert`
 
-#### **Party 3 (Timing/Direction Sensor)**
+#### **Agent 3 (Timing/Direction Sensor)**
 - **Primary Detection:** SSHPATATOR, FTPPATATOR, PORTSCAN
   - **SSHPATATOR/FTPPATATOR:** `brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation`
   - **PORTSCAN:** `scan detection: block scanner IP, tarpitting, tighten firewall rules`
@@ -103,7 +103,7 @@ The `categorize_feature_by_evidence()` function uses priority-based matching:
 
 1. **Priority 1:** Exact feature name matches (e.g., `flow_duration`, `packet_length_mean`)
 2. **Priority 2:** Pattern matching (e.g., features with "total" + "packet" but not "length")
-3. **Priority 3:** Fallback rules (e.g., protocol/flag features → Party 3)
+3. **Priority 3:** Fallback rules (e.g., protocol/flag features → Agent 3)
 
 ### Action Generation
 
@@ -127,38 +127,38 @@ In Cell 12 (Agent-Level Mitigation Summary):
 ### Feature Distribution
 
 After partitioning, you should see:
-- **Party 1:** ~25-35 features (volume/rate)
-- **Party 2:** ~20-30 features (packet size)
-- **Party 3:** ~30-40 features (timing/direction/protocol)
+- **Agent 1:** ~25-35 features (volume/rate)
+- **Agent 2:** ~20-30 features (packet size)
+- **Agent 3:** ~30-40 features (timing/direction/protocol)
 
 ### SHAP Dominance Patterns
 
 Expected dominant parties per attack type:
-- **DDOS/DOS:** Party 1 (Volume/Rate) should dominate
-- **PORTSCAN:** Party 2 (Packet Size) or Party 3 (Timing) should dominate
-- **WEBATTACK:** Party 2 (Packet Size) should dominate
-- **SSHPATATOR/FTPPATATOR:** Party 3 (Timing/Direction) should dominate
+- **DDOS/DOS:** Agent 1 (Volume/Rate) should dominate
+- **PORTSCAN:** Agent 2 (Packet Size) or Agent 3 (Timing) should dominate
+- **WEBATTACK:** Agent 2 (Packet Size) should dominate
+- **SSHPATATOR/FTPPATATOR:** Agent 3 (Timing/Direction) should dominate
 
 ### Action Diversity
 
 **Before:** All parties had same generic action
 ```
-Party 1: "configure packet-level security policies"
-Party 2: "configure packet-level security policies"
-Party 3: "configure packet-level security policies"
+Agent 1: "configure packet-level security policies"
+Agent 2: "configure packet-level security policies"
+Agent 3: "configure packet-level security policies"
 ```
 
 **After:** Each party has attack-specific actions
 ```
 DDOS detected:
-  Party 1: "rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers"
-  Party 2: "monitor packet size patterns and alert"
-  Party 3: "monitor timing/direction patterns and alert"
+  Agent 1: "rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers"
+  Agent 2: "monitor packet size patterns and alert"
+  Agent 3: "monitor timing/direction patterns and alert"
 
 SSHPATATOR detected:
-  Party 1: "monitor volume/rate patterns and alert"
-  Party 2: "monitor packet size patterns and alert"
-  Party 3: "brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation"
+  Agent 1: "monitor volume/rate patterns and alert"
+  Agent 2: "monitor packet size patterns and alert"
+  Agent 3: "brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation"
 ```
 
 ---
@@ -188,7 +188,7 @@ SSHPATATOR detected:
 ### Cell 2: Feature Partitioning
 - Features are categorized by evidence type
 - Parties are assigned based on evidence type
-- Party names/domains reflect evidence type
+- Agent names/domains reflect evidence type
 
 ### Cell 12: Mitigation Summary
 - Uses `party_action_mapping` for attack-specific actions
@@ -229,7 +229,7 @@ SSHPATATOR detected:
 ## Future Improvements
 
 1. **Dynamic Action Selection:** Based on SHAP contribution threshold
-2. **Multi-Party Actions:** Combine actions from multiple parties if all contribute significantly
+2. **Multi-Agent Actions:** Combine actions from multiple parties if all contribute significantly
 3. **Action Priority:** Rank actions by severity/impact
 4. **Feature Rebalancing:** Option to balance parties by feature importance scores
 
