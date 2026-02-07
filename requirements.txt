@@ -1,13 +1,22 @@
+# Core ML/DL libraries
 pandas>=1.5.0
 numpy>=1.23.0
 torch>=2.0.0
 scikit-learn>=1.2.0
 shap>=0.42.0
+
+# RAG and LLM libraries (for RAG_LLM_action_plan.ipynb)
 python-dotenv>=1.0.0
-sentence-transformers>=2.2.0
-faiss-cpu>=1.7.4
-PyPDF2>=3.0.0
 openai>=1.0.0
-langgraph>=0.2.0
 langchain>=0.3.0
 langchain-openai>=0.2.0
+langchain-text-splitters>=0.0.1
+langchain-community>=0.0.1
+langchain-core>=0.1.0
+faiss-cpu>=1.7.4
+# For GPU support (optional): faiss-gpu>=1.7.4
+
+# Additional utilities
+sentence-transformers>=2.2.0
+PyPDF2>=3.0.0
+langgraph>=0.2.0
