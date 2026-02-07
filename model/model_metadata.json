@@ -119,9 +119,9 @@
   "embed_dim": 64,
   "hidden_dim": 128,
   "party_names": [
-    "Volume_Rate_Packet_Flow_Analyzer_Party1_SmallSet23",
-    "Timing_Direction_Protocol_Flags_Analyzer_Party2_MediumSet27",
-    "Timing_Direction_Protocol_Flags_Analyzer_Party3_LargeSet38"
+    "evidence_volume_rate_agent1",
+    "evidence_timing_direction_agent2",
+    "evidence_timing_direction_agent3"
   ],
   "party_domains": [
     "Volume & Rate Analysis (DoS/DDoS Detection) - 23 features | Focus: Flow Duration & Packet/Byte Counts",
@@ -177,11 +177,11 @@
   },
   "training_info": {
     "best_epoch": 19,
-    "best_val_f1": 0.6920781860326799,
-    "best_val_loss": 0.2221308946609497,
-    "test_accuracy": 0.9210040983606558,
-    "test_recall": 0.8604132948856906,
-    "test_f1": 0.6974283507454682
+    "best_val_f1": 0.7017079952026664,
+    "best_val_loss": 0.25813692808151245,
+    "test_accuracy": 0.9264344262295082,
+    "test_recall": 0.8618460175501423,
+    "test_f1": 0.7083442063624829
   },
-  "saved_timestamp": "2026-02-06T22:18:53.539745"
+  "saved_timestamp": "2026-02-07T11:30:21.973622"
 }
