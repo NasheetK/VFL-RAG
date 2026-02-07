@@ -4,69 +4,69 @@ AGENTIC MITIGATION RECOMMENDATIONS (Attack-Type Specific)
 
 
 BENIGN (Attack Type: BENIGN):
-  Dominant Party: Volume_Rate_Packet_Flow_Analyzer_Party1_SmallSet23 (Volume & Rate Analysis (DoS/DDoS Detection) - 23 features | Focus: Flow Duration & Packet/Byte Counts)
-  Contribution: 39.40%
+  Dominant Agent: Volume_Rate_Sensor_Agent1 (Volume & Rate Analysis (DoS/DDoS Detection))
+  Contribution: 36.53%
 
 ================================================================================
 BENIGN Attack - Mitigation Recommendations
 ================================================================================
 
-PRIMARY MITIGATION (Detected by dominant party):
+PRIMARY MITIGATION (Detected by dominant agent):
 
-   Volume_Rate_Packet_Flow_Analyzer_Party1_SmallSet23 (39.40% contribution) - PRIMARY MITIGATION:
+   Volume_Rate_Sensor_Agent1 (36.53% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • No action
      • log only
 
-SUPPORTING MONITORING (Other parties):
+SUPPORTING MONITORING (Other agents):
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party2_MediumSet27 (33.03% contribution):
+   Timing_Direction_Sensor_Agent2 (33.74% contribution):
      Action: monitor timing/direction patterns and alert
      Status:  Monitoring mode - No active mitigation
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party3_LargeSet38 (27.58% contribution):
+   Timing_Direction_Sensor_Agent3 (29.72% contribution):
      Action: monitor timing/direction patterns and alert
      Status:  Monitoring mode - No active mitigation
 
 
 BOT (Attack Type: BOT):
-  Dominant Party: Timing_Direction_Protocol_Flags_Analyzer_Party2_MediumSet27 (Timing & Directionality Analysis (Brute Force/Scan Detection) - 27 features | Focus: Protocol Flags & Port Analysis)
-  Contribution: 57.57%
+  Dominant Agent: Volume_Rate_Sensor_Agent1 (Volume & Rate Analysis (DoS/DDoS Detection))
+  Contribution: 47.95%
 
 ================================================================================
 BOT Attack - Mitigation Recommendations
 ================================================================================
 
-PRIMARY MITIGATION (Detected by dominant party):
+PRIMARY MITIGATION (Detected by dominant agent):
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party2_MediumSet27 (57.57% contribution) - PRIMARY MITIGATION:
+   Volume_Rate_Sensor_Agent1 (47.95% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • bot detection: block bot IPs
      • implement CAPTCHA
      • Rate Limiting: Limit requests from suspected bots
 
-SUPPORTING MONITORING (Other parties):
+SUPPORTING MONITORING (Other agents):
 
-   Volume_Rate_Packet_Flow_Analyzer_Party1_SmallSet23 (0.00% contribution):
-     Action: monitor volume/rate patterns and alert
+   Timing_Direction_Sensor_Agent2 (10.01% contribution):
+     Action: monitor timing/direction patterns and alert
      Status:  Monitoring mode - No active mitigation
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party3_LargeSet38 (42.43% contribution):
+   Timing_Direction_Sensor_Agent3 (42.05% contribution):
      Action: monitor timing/direction patterns and alert
      Status:  Monitoring mode - No active mitigation
 
 
 DDOS (Attack Type: DDOS):
-  Dominant Party: Timing_Direction_Protocol_Flags_Analyzer_Party2_MediumSet27 (Timing & Directionality Analysis (Brute Force/Scan Detection) - 27 features | Focus: Protocol Flags & Port Analysis)
-  Contribution: 44.81%
+  Dominant Agent: Timing_Direction_Sensor_Agent2 (Timing & Directionality Analysis (Brute Force/Scan Detection))
+  Contribution: 37.57%
 
 ================================================================================
 DDOS Attack - Mitigation Recommendations
 ================================================================================
 
-PRIMARY MITIGATION (Detected by dominant party):
+PRIMARY MITIGATION (Detected by dominant agent):
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party2_MediumSet27 (44.81% contribution) - PRIMARY MITIGATION:
+   Timing_Direction_Sensor_Agent2 (37.57% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • Rate Limiting: Limit incoming request rate per IP/connection
      • SYN cookies
@@ -75,28 +75,28 @@ PRIMARY MITIGATION (Detected by dominant party):
      • Auto-Scale: Scale up resources to handle load
      • Block Top Talkers: Block IPs with highest traffic volume
 
-SUPPORTING MONITORING (Other parties):
+SUPPORTING MONITORING (Other agents):
 
-   Volume_Rate_Packet_Flow_Analyzer_Party1_SmallSet23 (18.50% contribution):
+   Volume_Rate_Sensor_Agent1 (35.81% contribution):
      Action: rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers
      Status:  Monitoring mode - No active mitigation
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party3_LargeSet38 (36.68% contribution):
+   Timing_Direction_Sensor_Agent3 (26.62% contribution):
      Action: monitor timing/direction patterns and alert
      Status:  Monitoring mode - No active mitigation
 
 
 DOS (Attack Type: DOS):
-  Dominant Party: Timing_Direction_Protocol_Flags_Analyzer_Party2_MediumSet27 (Timing & Directionality Analysis (Brute Force/Scan Detection) - 27 features | Focus: Protocol Flags & Port Analysis)
-  Contribution: 45.23%
+  Dominant Agent: Timing_Direction_Sensor_Agent2 (Timing & Directionality Analysis (Brute Force/Scan Detection))
+  Contribution: 38.52%
 
 ================================================================================
 DOS Attack - Mitigation Recommendations
 ================================================================================
 
-PRIMARY MITIGATION (Detected by dominant party):
+PRIMARY MITIGATION (Detected by dominant agent):
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party2_MediumSet27 (45.23% contribution) - PRIMARY MITIGATION:
+   Timing_Direction_Sensor_Agent2 (38.52% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • Rate Limiting: Limit incoming request rate per IP/connection
      • SYN cookies
@@ -105,123 +105,123 @@ PRIMARY MITIGATION (Detected by dominant party):
      • Auto-Scale: Scale up resources to handle load
      • Block Top Talkers: Block IPs with highest traffic volume
 
-SUPPORTING MONITORING (Other parties):
+SUPPORTING MONITORING (Other agents):
 
-   Volume_Rate_Packet_Flow_Analyzer_Party1_SmallSet23 (28.59% contribution):
+   Volume_Rate_Sensor_Agent1 (34.34% contribution):
      Action: rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers
      Status:  Monitoring mode - No active mitigation
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party3_LargeSet38 (26.19% contribution):
+   Timing_Direction_Sensor_Agent3 (27.13% contribution):
      Action: monitor timing/direction patterns and alert
      Status:  Monitoring mode - No active mitigation
 
 
 FTPPATATOR (Attack Type: FTPPATATOR):
-  Dominant Party: Timing_Direction_Protocol_Flags_Analyzer_Party3_LargeSet38 (Timing & Directionality Analysis (Brute Force/Scan Detection) - 38 features | Focus: Protocol Flags & Port Analysis)
-  Contribution: 48.29%
+  Dominant Agent: Timing_Direction_Sensor_Agent3 (Timing & Directionality Analysis (Brute Force/Scan Detection))
+  Contribution: 41.48%
 
 ================================================================================
 FTPPATATOR Attack - Mitigation Recommendations
 ================================================================================
 
-PRIMARY MITIGATION (Detected by dominant party):
+PRIMARY MITIGATION (Detected by dominant agent):
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party3_LargeSet38 (48.29% contribution) - PRIMARY MITIGATION:
+   Timing_Direction_Sensor_Agent3 (41.48% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • Fail2Ban: Automatically ban IPs after failed login attempts
      • Account Lockout: Lock accounts after multiple failed attempts
      • MFA
      • geo/IP reputation
 
-SUPPORTING MONITORING (Other parties):
+SUPPORTING MONITORING (Other agents):
 
-   Volume_Rate_Packet_Flow_Analyzer_Party1_SmallSet23 (38.20% contribution):
+   Volume_Rate_Sensor_Agent1 (37.75% contribution):
      Action: monitor volume/rate patterns and alert
      Status:  Monitoring mode - No active mitigation
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party2_MediumSet27 (13.51% contribution):
+   Timing_Direction_Sensor_Agent2 (20.77% contribution):
      Action: brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation
      Status:  Monitoring mode - No active mitigation
 
 
 PORTSCAN (Attack Type: PORTSCAN):
-  Dominant Party: Timing_Direction_Protocol_Flags_Analyzer_Party3_LargeSet38 (Timing & Directionality Analysis (Brute Force/Scan Detection) - 38 features | Focus: Protocol Flags & Port Analysis)
-  Contribution: 37.85%
+  Dominant Agent: Timing_Direction_Sensor_Agent2 (Timing & Directionality Analysis (Brute Force/Scan Detection))
+  Contribution: 35.76%
 
 ================================================================================
 PORTSCAN Attack - Mitigation Recommendations
 ================================================================================
 
-PRIMARY MITIGATION (Detected by dominant party):
+PRIMARY MITIGATION (Detected by dominant agent):
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party3_LargeSet38 (37.85% contribution) - PRIMARY MITIGATION:
+   Timing_Direction_Sensor_Agent2 (35.76% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • scan detection: block scanner IP
      • Tarpitting: Slow down scanner responses to waste attacker time
      • Firewall Rules: Tighten firewall rules to restrict access
 
-SUPPORTING MONITORING (Other parties):
+SUPPORTING MONITORING (Other agents):
 
-   Volume_Rate_Packet_Flow_Analyzer_Party1_SmallSet23 (27.95% contribution):
+   Volume_Rate_Sensor_Agent1 (30.86% contribution):
      Action: monitor volume/rate patterns and alert
      Status:  Monitoring mode - No active mitigation
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party2_MediumSet27 (34.20% contribution):
+   Timing_Direction_Sensor_Agent3 (33.38% contribution):
      Action: scan detection: block scanner IP, tarpitting, tighten firewall rules
      Status:  Monitoring mode - No active mitigation
 
 
 SSHPATATOR (Attack Type: SSHPATATOR):
-  Dominant Party: Volume_Rate_Packet_Flow_Analyzer_Party1_SmallSet23 (Volume & Rate Analysis (DoS/DDoS Detection) - 23 features | Focus: Flow Duration & Packet/Byte Counts)
-  Contribution: 65.19%
+  Dominant Agent: Volume_Rate_Sensor_Agent1 (Volume & Rate Analysis (DoS/DDoS Detection))
+  Contribution: 60.30%
 
 ================================================================================
 SSHPATATOR Attack - Mitigation Recommendations
 ================================================================================
 
-PRIMARY MITIGATION (Detected by dominant party):
+PRIMARY MITIGATION (Detected by dominant agent):
 
-   Volume_Rate_Packet_Flow_Analyzer_Party1_SmallSet23 (65.19% contribution) - PRIMARY MITIGATION:
+   Volume_Rate_Sensor_Agent1 (60.30% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • Fail2Ban: Automatically ban IPs after failed login attempts
      • Account Lockout: Lock accounts after multiple failed attempts
      • MFA
      • geo/IP reputation
 
-SUPPORTING MONITORING (Other parties):
+SUPPORTING MONITORING (Other agents):
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party2_MediumSet27 (0.78% contribution):
+   Timing_Direction_Sensor_Agent2 (23.85% contribution):
      Action: brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation
      Status:  Monitoring mode - No active mitigation
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party3_LargeSet38 (34.03% contribution):
+   Timing_Direction_Sensor_Agent3 (15.86% contribution):
      Action: brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation
      Status:  Monitoring mode - No active mitigation
 
 
 WEBATTACK (Attack Type: WEBATTACK):
-  Dominant Party: Timing_Direction_Protocol_Flags_Analyzer_Party2_MediumSet27 (Timing & Directionality Analysis (Brute Force/Scan Detection) - 27 features | Focus: Protocol Flags & Port Analysis)
-  Contribution: 76.94%
+  Dominant Agent: Volume_Rate_Sensor_Agent1 (Volume & Rate Analysis (DoS/DDoS Detection))
+  Contribution: 45.50%
 
 ================================================================================
 WEBATTACK Attack - Mitigation Recommendations
 ================================================================================
 
-PRIMARY MITIGATION (Detected by dominant party):
+PRIMARY MITIGATION (Detected by dominant agent):
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party2_MediumSet27 (76.94% contribution) - PRIMARY MITIGATION:
+   Volume_Rate_Sensor_Agent1 (45.50% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • WAF rules
      • Block Patterns: Block known attack patterns
      • Patching: Apply security patches to vulnerable services
      • Isolate Service: Isolate the vulnerable service from network
 
-SUPPORTING MONITORING (Other parties):
+SUPPORTING MONITORING (Other agents):
 
-   Volume_Rate_Packet_Flow_Analyzer_Party1_SmallSet23 (10.55% contribution):
-     Action: monitor volume/rate patterns and alert
+   Timing_Direction_Sensor_Agent2 (31.41% contribution):
+     Action: monitor timing/direction patterns and alert
      Status:  Monitoring mode - No active mitigation
 
-   Timing_Direction_Protocol_Flags_Analyzer_Party3_LargeSet38 (12.52% contribution):
+   Timing_Direction_Sensor_Agent3 (23.09% contribution):
      Action: monitor timing/direction patterns and alert
      Status:  Monitoring mode - No active mitigation
