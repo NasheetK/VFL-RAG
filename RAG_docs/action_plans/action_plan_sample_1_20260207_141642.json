@@ -1,0 +1,54 @@
+{
+  "sample_id": 1,
+  "prediction": {
+    "predicted_label": "DDOS",
+    "confidence": 0.9999557733535767
+  },
+  "rag_info": {
+    "documents_used": 5,
+    "search_method": "vector_similarity",
+    "search_queries": [
+      "Explain and mitigate a DDOS attack and provide SOC triage steps and mitigations."
+    ],
+    "top_results": [
+      {
+        "title": "What are the best practices for configuring DDoS protection in cloud-based content delivery networks (CDNs)?",
+        "text": "To effectively configure DDoS protection in cloud-based CDNs, consider the following best practices:\n\n1. **Use Built-in DDoS Protection Services**: Leverage the CDN's native DDoS protection features. Providers like AWS, Cloudflare, and Akamai offer robust security measures that are optimized for their platforms.\n\n2. **Enable Rate Limiting**: Configure rate limiting to control the number of requests your application can handle over a specific time period. This helps to mitigate excessive traffic that could lead to service disruption.\n\n3. **Implement Web Application Firewalls (WAF)**: A WAF can filter and monitor HTTP traffic, blocking malicious requests and protecting against common attack vectors like SQL injection and cross-site scripting.\n\n4. **Geolocation Blocking**: If your audience is geographically localized, consider blocking or throttling traffic from regions that are not your target market, as these could be sources of DDoS attacks.\n\n5. **Set Up Traffic Analysis and Alerts**: Monitor your inbound traffic for anomalies using analytics tools. Configure alerts to notify you of sudden spikes indicative of a DDoS attack.\n\n6. **Use Anycast Routing**: Distribute incoming traffic across multiple data centers geographically. This not only balances the load but also makes it harder for attackers to overwhelm a single point.\n\n7. **Regularly Update Security Protocols**: Keep your CDN configurations and security measures current. Update your WAF rules and other security settings based on the latest threat intelligence.\n\n8. **Create a Response Plan**: Establish a DDoS incident response plan that outlines specific steps for detection, escalation, and mitigation during an attack.\n\n9. **Leverage CDN Caching**: Utilize caching capabilities to serve static content from edge servers. This reduces load on the origin server and mitigates impacts from increased traffic.\n\n10. **Test Your Configuration**: Conduct regular security audits and DDoS simulations to ensure your configurations can withstand actual attack scenarios.\n\nBy following these practices, you can significantly enhance your DDoS protection and maintain service availability even during an attack.",
+        "similarity_score": 0.6452844738960266,
+        "source_file": "ddos-synthetic-dataset.json"
+      },
+      {
+        "title": "How can cloud providers ensure high availability during a DDoS attack?",
+        "text": "To ensure high availability during a DDoS attack, cloud providers implement several key strategies:\n\n1. **Traffic Filtering**: Use advanced DDoS protection services that can detect and filter out malicious traffic. This includes deploying Web Application Firewalls (WAF) and Intrusion Detection Systems (IDS) that can differentiate between legitimate and malicious requests.\n\n2. **Rate Limiting**: Apply rate limiting to APIs and endpoints to restrict the number of requests from a single IP address. This can help mitigate the impact of an attack by reducing the ability of attackers to overwhelm the service.\n\n3. **Redundant Infrastructure**: Build redundant and geographically distributed infrastructure. Utilizing multiple data centers allows cloud providers to reroute traffic and service requests to less affected servers during an attack.\n\n4. **Load Balancing**: Implement advanced load balancing techniques that can distribute incoming traffic across multiple servers. This helps prevent any single server from being a bottleneck and increases overall service resilience.\n\n5. **Traffic Anomaly Detection**: Utilize machine learning algorithms to identify anomalies in traffic patterns. Early detection of unusual spikes can trigger automated responses, like IP blacklisting or traffic redirection.\n\n6. **Elastic Scaling**: Leverage autoscaling capabilities to dynamically increase resource allocation in response to traffic spikes caused by a DDoS attack. This allows providers to absorb increased load without service degradation.\n\n7. **Content Delivery Networks (CDNs)**: Use CDNs to cache static content and offload traffic from the origin servers. This reduces the total load on the servers and speeds up responses for legitimate users.\n\n8. **Incident Response Plans**: Develop and regularly test an incident response plan specifically for DDoS scenarios. Preparing a clear strategy helps in quick mitigation efforts during an attack.\n\n9. **Collaboration with ISPs**: Partner with Internet Service Providers to implement network-level filtering and blocking techniques that can stop the attack upstream from the target servers.\n\n10. **Customer Communication**: Keep open channels of communication with customers during incidents. This involves providing updates and possibly alternative access channels to maintain service levels.\n\nBy combining these strategies, cloud providers can significantly enhance their resilience against DDoS attacks, maintaining high availability for their services.",
+        "similarity_score": 0.6400686502456665,
+        "source_file": "ddos-synthetic-dataset.json"
+      },
+      {
+        "title": "How can cloud providers use multi-tiered DDoS protection strategies to enhance security?",
+        "text": "Multi-tiered DDoS protection strategies involve implementing several layers of defense to effectively mitigate distributed denial-of-service (DDoS) attacks. Cloud providers can enhance security using the following approaches:\n\n1. **Network Layer Protection**:\n   - **Traffic Filtering**: Utilize firewalls and intrusion detection/prevention systems (IDS/IPS) to filter out malicious traffic based on predefined rules, such as IP reputation or traffic signatures.\n   - **Rate Limiting**: Implement rate limiting on network traffic to prevent overwhelming a service while allowing legitimate users through.\n\n2. **Application Layer Protection**:\n   - **Web Application Firewalls (WAF)**: Deploy WAFs to monitor and filter HTTP traffic to and from web applications, blocking malicious requests designed to exhaust resources.\n   - **Bot Management**: Use bot detection and management solutions to distinguish between human and bot traffic, mitigating automated DDoS attacks.\n\n3. **Global Traffic Management**:\n   - **Anycast Routing**: Leverage Anycast IP addresses to distribute incoming traffic across multiple geographical locations, ensuring that legitimate traffic is balanced and denied access to localized attacked services.\n   - **Load Balancing**: Implement load balancers to distribute incoming requests intelligently across servers, thus reducing the impact of high traffic volumes from DDoS attacks.\n\n4. **Cloud-Based DDoS Protection Services**:\n   - **Always-On Protection**: Employ third-party DDoS protection services that continuously monitor traffic, perform anomaly detection, and absorb attacks before reaching the cloud infrastructure.\n   - **Scrubbing Centers**: Route traffic through scrubbing centers where malicious packets are filtered out before reaching the target.\n\n5. **Incident Response Plans**:\n   - **DDoS Response Playbook**: Develop a clear incident response plan that includes identification, mitigation, recovery, and communication during an attack.\n   - **Regular Testing**: Conduct penetration testing and DDoS simulations to test the effectiveness of the protection measures in place and identify weaknesses.\n\n6. **Monitoring and Threat Intelligence**:\n   - **Real-Time Analytics**: Utilize advanced monitoring tools to analyze traffic patterns and detect anomalies in real time, triggering automatic defenses.\n   - **Integrate Threat Intelligence**: Collaborate with threat intelligence services to stay informed about emerging threats and adapt protection strategies accordingly.\n\nBy implementing a multi-tiered approach, cloud providers can create robust defenses against DDoS attacks, ensuring service continuity and protection of valuable resources against evolving threat landscapes.",
+        "similarity_score": 0.6375157833099365,
+        "source_file": "ddos-synthetic-dataset.json"
+      }
+    ]
+  },
+  "llm_action_plan": {
+    "threat_level": "Critical",
+    "primary_actions": [
+      "Enable Rate Limiting",
+      "Implement Traffic Filtering",
+      "Activate Web Application Firewall"
+    ],
+    "supporting_actions": [
+      "Set Up Traffic Analysis and Alerts",
+      "Geolocation Blocking"
+    ],
+    "reasoning": "Given the 100% confidence in the DDoS prediction, immediate actions are required to mitigate potential service disruption. The evidence volume rate from Party1 indicates a high level of incoming traffic, necessitating rate limiting and traffic filtering to prevent overload. The timing direction evidence from Party3 suggests a pattern that can be monitored and managed through WAF and traffic analysis.",
+    "execution_priority": "Immediate",
+    "knowledge_sources_used": [
+      "1",
+      "2",
+      "3"
+    ]
+  },
+  "processed_at": "2026-02-07T14:16:42.066467"
+}
