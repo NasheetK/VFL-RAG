@@ -8,7 +8,7 @@ import torch.nn as nn
 
 
 class LocalEncoder(nn.Module):
-    """Local encoder for each party in Vertical Federated Learning."""
+    """Local encoder for each agent in Vertical Federated Learning."""
     
     def __init__(self, input_dim, embed_dim=64, hidden_dim=128):
         super().__init__()
@@ -27,7 +27,7 @@ class LocalEncoder(nn.Module):
 
 
 class ActiveClassifier(nn.Module):
-    """Active party classifier that combines embeddings from all parties."""
+    """Active agent classifier that combines embeddings from all agents."""
     
     def __init__(self, embed_dim=64, num_classes=5, hidden_dim=128):
         super().__init__()
@@ -45,7 +45,7 @@ class ActiveClassifier(nn.Module):
 
 
 class VFLModel(nn.Module):
-    """Vertical Federated Learning model with multiple parties."""
+    """Vertical Federated Learning model with multiple agents."""
     
     def __init__(self, input_dims, embed_dim=64, num_classes=5, hidden_dim=128):
         super().__init__()
@@ -63,16 +63,16 @@ class VFLModel(nn.Module):
         y_hat = self.classifier(h)
         return y_hat
 
-    def get_party_embeddings(self, x_parts):
-        """Get embeddings from each party without computing final prediction."""
+    def get_agent_embeddings(self, x_parts):
+        """Get embeddings from each agent without computing final prediction."""
         self.eval()
         with torch.no_grad():
             embeddings = [enc(x) for x, enc in zip(x_parts, self.encoders)]
         return embeddings
 
 
-class PartyMetaModel(nn.Module):
-    """Meta-model that operates on concatenated party embeddings."""
+class AgentMetaModel(nn.Module):
+    """Meta-model that operates on concatenated agent embeddings."""
     
     def __init__(self, in_dim=192, num_classes=9, hidden_dim=128):
         super().__init__()
@@ -89,3 +89,31 @@ class PartyMetaModel(nn.Module):
     def forward(self, x_meta):
         # Return logits (NO softmax) - soft distillation uses logits
         return self.net(x_meta)
+
+
+class StandardNeuralNetwork(nn.Module):
+    """Standard (non-federated) neural network for comparison with VFL model."""
+    
+    def __init__(self, input_dim, num_classes=9, hidden_dims=[256, 128, 64], dropout=0.2):
+        super().__init__()
+        self.num_classes = num_classes
+        self.input_dim = input_dim
+        
+        # Build layers dynamically
+        layers = []
+        prev_dim = input_dim
+        
+        for hidden_dim in hidden_dims:
+            layers.append(nn.Linear(prev_dim, hidden_dim))
+            layers.append(nn.ReLU())
+            layers.append(nn.Dropout(dropout))
+            prev_dim = hidden_dim
+        
+        # Output layer
+        layers.append(nn.Linear(prev_dim, num_classes))
+        
+        self.net = nn.Sequential(*layers)
+    
+    def forward(self, x):
+        # Return logits (NO softmax) - CrossEntropyLoss applies softmax internally
+        return self.net(x)

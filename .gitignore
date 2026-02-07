@@ -35,3 +35,5 @@ vectorstore/
 .DS_Store
 Thumbs.db
 
+# Datasets folder
+datasets/

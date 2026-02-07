@@ -73,12 +73,12 @@ ATTACK_ACTIONS = {
 def categorize_feature_by_evidence(feature_name):
     """
     Categorize features by evidence type for IDS-style partitioning.
-    Each party represents a different sensor/evidence type.
+    Each agent represents a different sensor/evidence type.
     
     Strategy:
-    - Party 1: Volume/Rate (DoS/DDoS) - flow duration, packet/byte counts, rates
-    - Party 2: Packet Size (Scans/Web) - packet length stats, size distributions
-    - Party 3: Timing/Direction (Brute Force/Scans) - IAT, intervals, directionality
+    - Agent 1: Volume/Rate (DoS/DDoS) - flow duration, packet/byte counts, rates
+    - Agent 2: Packet Size (Scans/Web) - packet length stats, size distributions
+    - Agent 3: Timing/Direction (Brute Force/Scans) - IAT, intervals, directionality
     
     Args:
         feature_name: Name of the feature to categorize
@@ -89,7 +89,7 @@ def categorize_feature_by_evidence(feature_name):
     """
     feat_lower = feature_name.lower()
     
-    # Party 1: Volume/Rate evidence (DoS/DDoS strong)
+    # Agent 1: Volume/Rate evidence (DoS/DDoS strong)
     # Priority: flow duration, total packets/bytes, packet/byte counts, rates
     if any(x in feat_lower for x in ['flow_duration', 'duration_ms', 'total_fwd_packets', 
                                      'total_backward_packets', 'total_length_of_fwd_packets',
@@ -102,7 +102,7 @@ def categorize_feature_by_evidence(feature_name):
         if not any(x in feat_lower for x in ['length', 'size', 'mean', 'std', 'max', 'min', 'avg']):
             return 'evidence_volume_rate'
     
-    # Party 2: Packet size distribution (scans + web attacks)
+    # Agent 2: Packet size distribution (scans + web attacks)
     # Priority: packet length stats (mean/std/max/min), size distributions, header lengths
     if any(x in feat_lower for x in ['packet_length', 'packet_size', 'ps_', 'fwd_packet_length',
                                      'bwd_packet_length', 'header_length', 'segment_size',
@@ -114,7 +114,7 @@ def categorize_feature_by_evidence(feature_name):
     if any(x in feat_lower for x in ['length', 'size']) and any(x in feat_lower for x in ['mean', 'std', 'max', 'min', 'avg', 'var', 'stddev']):
         return 'evidence_packet_size'
     
-    # Party 3: Timing/Directionality/Burstiness (brute force + scanning)
+    # Agent 3: Timing/Directionality/Burstiness (brute force + scanning)
     # Priority: IAT, PIAT, timing intervals, active/idle, directionality ratios, burst patterns
     if any(x in feat_lower for x in ['piat', 'iat', 'interval', 'active_mean', 'active_std',
                                      'idle_mean', 'idle_std', 'active_max', 'idle_max',
@@ -126,7 +126,7 @@ def categorize_feature_by_evidence(feature_name):
     if any(x in feat_lower for x in ['time', 'timing', 'interval']):
         return 'evidence_timing_direction'
     
-    # Protocol/Flag features: assign to Party 3 (timing/direction)
+    # Protocol/Flag features: assign to Agent 3 (timing/direction)
     if any(x in feat_lower for x in ['syn', 'ack', 'fin', 'rst', 'urg', 'cwr', 'ece', 'psh',
                                      'flag', 'protocol', 'port', 'udp', 'tcp', 'init_win']):
         return 'evidence_timing_direction'
@@ -189,7 +189,7 @@ def format_action_readable(action_string):
 
 def get_evidence_type(features):
     """
-    Determine evidence type for party based on features.
+    Determine evidence type for agent based on features.
     
     Args:
         features: List of feature names
@@ -214,34 +214,34 @@ def get_evidence_type(features):
     return dominant
 
 
-def generate_party_name(features, party_num):
+def generate_agent_name(features, agent_num):
     """
-    Generate party name based on evidence type.
+    Generate agent name based on evidence type.
     
     Args:
         features: List of feature names
-        party_num: Party number (1, 2, or 3)
+        agent_num: Agent number (1, 2, or 3)
         
     Returns:
-        str: Party name
+        str: Agent name
     """
     evidence_type = get_evidence_type(features)
     
     name_map = {
-        'evidence_volume_rate': f"Volume_Rate_Sensor_Party{party_num}",
-        'evidence_packet_size': f"Packet_Size_Sensor_Party{party_num}",
-        'evidence_timing_direction': f"Timing_Direction_Sensor_Party{party_num}"
+        'evidence_volume_rate': f"Volume_Rate_Sensor_Agent{agent_num}",
+        'evidence_packet_size': f"Packet_Size_Sensor_Agent{agent_num}",
+        'evidence_timing_direction': f"Timing_Direction_Sensor_Agent{agent_num}"
     }
-    return name_map.get(evidence_type, f"Network_Sensor_Party{party_num}")
+    return name_map.get(evidence_type, f"Network_Sensor_Agent{agent_num}")
 
 
-def generate_domain(features, party_num):
+def generate_domain(features, agent_num):
     """
-    Generate party domain description based on evidence type.
+    Generate agent domain description based on evidence type.
     
     Args:
         features: List of feature names
-        party_num: Party number (1, 2, or 3)
+        agent_num: Agent number (1, 2, or 3)
         
     Returns:
         str: Domain description
@@ -253,17 +253,17 @@ def generate_domain(features, party_num):
         'evidence_packet_size': "Packet Size Distribution Analysis (Scan/Web Attack Detection)",
         'evidence_timing_direction': "Timing & Directionality Analysis (Brute Force/Scan Detection)"
     }
-    return domain_map.get(evidence_type, f"Network Analysis Party {party_num}")
+    return domain_map.get(evidence_type, f"Network Analysis Agent {agent_num}")
 
 
-def generate_action(features, party_num):
+def generate_action(features, agent_num):
     """
     Generate attack-type specific actions based on evidence type.
-    Each party has different actions for different attack types.
+    Each agent has different actions for different attack types.
     
     Args:
         features: List of feature names
-        party_num: Party number (1, 2, or 3)
+        agent_num: Agent number (1, 2, or 3)
         
     Returns:
         str: Formatted action string
@@ -272,9 +272,9 @@ def generate_action(features, party_num):
     
     # Map evidence type to which attacks it detects best (primary focus)
     evidence_to_primary_attacks = {
-        'evidence_volume_rate': ['DDOS', 'DOS'],  # Party 1 detects DoS/DDoS
-        'evidence_packet_size': ['PORTSCAN', 'WEBATTACK'],  # Party 2 detects scans/web
-        'evidence_timing_direction': ['SSHPATATOR', 'FTPPATATOR', 'PORTSCAN']  # Party 3 detects brute force/scans
+        'evidence_volume_rate': ['DDOS', 'DOS'],  # Agent 1 detects DoS/DDoS
+        'evidence_packet_size': ['PORTSCAN', 'WEBATTACK'],  # Agent 2 detects scans/web
+        'evidence_timing_direction': ['SSHPATATOR', 'FTPPATATOR', 'PORTSCAN']  # Agent 3 detects brute force/scans
     }
     
     primary_attacks = evidence_to_primary_attacks.get(evidence_type, [])
@@ -304,7 +304,7 @@ def generate_action(features, party_num):
 def get_feature_semantic_group(feature_name):
     """
     Group features by semantic similarity to keep related features together.
-    This helps maintain meaningful feature clusters within each party.
+    This helps maintain meaningful feature clusters within each agent.
     
     Returns:
         str: Semantic group name
@@ -355,25 +355,25 @@ def get_feature_semantic_group(feature_name):
     return 'other'
 
 
-def split_features_balanced(all_features, num_parties=3, min_features_per_party=20, balance_threshold=0.15, random_seed=42):
+def split_features_balanced(all_features, num_agents=3, min_features_per_agent=20, balance_threshold=0.15, random_seed=42):
     """
-    Split features into parties in a balanced way while preserving semantic grouping.
+    Split features into agents in a balanced way while preserving semantic grouping.
     
     Strategy:
     1. First categorize features by evidence type (for attack detection relevance)
     2. Group features by semantic similarity within each category
-    3. Ensure minimum features per party (default: 20)
+    3. Ensure minimum features per agent (default: 20)
     4. Redistribute to balance while keeping semantically similar features together
     
     Args:
         all_features: List of all feature names
-        num_parties: Number of parties (default: 3)
-        min_features_per_party: Minimum number of features per party (default: 20)
-        balance_threshold: Maximum allowed difference ratio between largest and smallest party (default: 0.15 = 15%)
+        num_agents: Number of agents (default: 3)
+        min_features_per_agent: Minimum number of features per agent (default: 20)
+        balance_threshold: Maximum allowed difference ratio between largest and smallest agent (default: 0.15 = 15%)
         random_seed: Random seed for reproducibility
         
     Returns:
-        tuple: (party1_features, party2_features, party3_features, feature_categories)
+        tuple: (agent1_features, agent2_features, agent3_features, feature_categories)
     """
     import numpy as np
     import random
@@ -385,9 +385,9 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
     
     # Step 1: Categorize features by evidence type (for attack relevance)
     feature_categories = {
-        'evidence_volume_rate': [],      # Party 1: Volume/Rate (DoS/DDoS)
-        'evidence_packet_size': [],      # Party 2: Packet Size (Scans/Web)
-        'evidence_timing_direction': []  # Party 3: Timing/Direction (Brute Force/Scans)
+        'evidence_volume_rate': [],      # Agent 1: Volume/Rate (DoS/DDoS)
+        'evidence_packet_size': [],      # Agent 2: Packet Size (Scans/Web)
+        'evidence_timing_direction': []  # Agent 3: Timing/Direction (Brute Force/Scans)
     }
     
     for feat in all_features:
@@ -409,21 +409,21 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
     # Step 3: Check if we need to redistribute to meet minimum requirements
     category_sizes = {cat: len(feats) for cat, feats in feature_categories.items()}
     total_features = sum(category_sizes.values())
-    target_size_per_party = max(total_features / num_parties, min_features_per_party)
+    target_size_per_agent = max(total_features / num_agents, min_features_per_agent)
     
-    # Step 4: Redistribute features to ensure minimum per party and balance
+    # Step 4: Redistribute features to ensure minimum per agent and balance
     # Strategy: Move entire semantic groups to maintain feature coherence
     sorted_categories = sorted(category_sizes.items(), key=lambda x: x[1], reverse=True)
     
     # If any category has less than minimum, we need to redistribute
     for cat, size in category_sizes.items():
-        if size < min_features_per_party:
+        if size < min_features_per_agent:
             # Need to get features from larger categories
-            needed = min_features_per_party - size
+            needed = min_features_per_agent - size
             
             # Try to get entire semantic groups from larger categories
             for larger_cat, larger_size in sorted_categories:
-                if larger_cat == cat or larger_size <= min_features_per_party:
+                if larger_cat == cat or larger_size <= min_features_per_agent:
                     continue
                 
                 # Get semantic groups from larger category
@@ -436,7 +436,7 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
                         break
                     
                     # Move entire semantic group if it fits
-                    if len(group_feats) <= needed or len(group_feats) <= (larger_size - min_features_per_party):
+                    if len(group_feats) <= needed or len(group_feats) <= (larger_size - min_features_per_agent):
                         # Move the entire group
                         semantic_groups[cat][sem_group_name].extend(group_feats)
                         del semantic_groups[larger_cat][sem_group_name]
@@ -446,7 +446,7 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
     
     # Step 5: Further balance by moving semantic groups if still imbalanced
     # Calculate target size
-    target_size = max(total_features / num_parties, min_features_per_party)
+    target_size = max(total_features / num_agents, min_features_per_agent)
     max_iterations = 50
     iteration = 0
     
@@ -458,7 +458,7 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
         min_size = min(sizes)
         
         # Check if balanced enough and meets minimum
-        if min_size >= min_features_per_party and (max_size - min_size) <= target_size * balance_threshold:
+        if min_size >= min_features_per_agent and (max_size - min_size) <= target_size * balance_threshold:
             break
         
         # Find largest and smallest categories
@@ -479,7 +479,7 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
         moved = False
         for sem_group_name, group_feats in available_groups:
             # Only move if it doesn't violate minimum for source category
-            if (category_sizes[largest_cat] - len(group_feats) >= min_features_per_party and
+            if (category_sizes[largest_cat] - len(group_feats) >= min_features_per_agent and
                 len(group_feats) <= (max_size - min_size) // 2):
                 # Move the group
                 semantic_groups[smallest_cat][sem_group_name].extend(group_feats)
@@ -493,66 +493,66 @@ def split_features_balanced(all_features, num_parties=3, min_features_per_party=
         iteration += 1
     
     # Step 6: Reconstruct feature lists from semantic groups
-    party1_features = []
-    party2_features = []
-    party3_features = []
+    agent1_features = []
+    agent2_features = []
+    agent3_features = []
     
     for sem_group_name, group_feats in semantic_groups['evidence_volume_rate'].items():
-        party1_features.extend(group_feats)
+        agent1_features.extend(group_feats)
     
     for sem_group_name, group_feats in semantic_groups['evidence_packet_size'].items():
-        party2_features.extend(group_feats)
+        agent2_features.extend(group_feats)
     
     for sem_group_name, group_feats in semantic_groups['evidence_timing_direction'].items():
-        party3_features.extend(group_feats)
+        agent3_features.extend(group_feats)
     
-    # Step 7: Final check - ensure minimum features per party
-    all_party_features = [party1_features, party2_features, party3_features]
-    party_sizes = [len(p) for p in all_party_features]
+    # Step 7: Final check - ensure minimum features per agent
+    all_agent_features = [agent1_features, agent2_features, agent3_features]
+    agent_sizes = [len(p) for p in all_agent_features]
     
-    # If any party has less than minimum, redistribute from others
-    for i, size in enumerate(party_sizes):
-        if size < min_features_per_party:
-            needed = min_features_per_party - size
-            # Get from largest party
-            largest_idx = party_sizes.index(max(party_sizes))
-            if largest_idx != i and party_sizes[largest_idx] > min_features_per_party:
+    # If any agent has less than minimum, redistribute from others
+    for i, size in enumerate(agent_sizes):
+        if size < min_features_per_agent:
+            needed = min_features_per_agent - size
+            # Get from largest agent
+            largest_idx = agent_sizes.index(max(agent_sizes))
+            if largest_idx != i and agent_sizes[largest_idx] > min_features_per_agent:
                 # Move features (prefer keeping semantic groups together)
-                to_move = min(needed, party_sizes[largest_idx] - min_features_per_party)
-                moved_feats = all_party_features[largest_idx][:to_move]
-                all_party_features[largest_idx] = all_party_features[largest_idx][to_move:]
-                all_party_features[i].extend(moved_feats)
-                party_sizes[i] += to_move
-                party_sizes[largest_idx] -= to_move
+                to_move = min(needed, agent_sizes[largest_idx] - min_features_per_agent)
+                moved_feats = all_agent_features[largest_idx][:to_move]
+                all_agent_features[largest_idx] = all_agent_features[largest_idx][to_move:]
+                all_agent_features[i].extend(moved_feats)
+                agent_sizes[i] += to_move
+                agent_sizes[largest_idx] -= to_move
     
-    # Step 8: Shuffle features within each party (but semantic groups are already together)
-    for party_feats in all_party_features:
-        np.random.shuffle(party_feats)
+    # Step 8: Shuffle features within each agent (but semantic groups are already together)
+    for agent_feats in all_agent_features:
+        np.random.shuffle(agent_feats)
     
     # Reconstruct feature_categories for return
     feature_categories = {
-        'evidence_volume_rate': party1_features,
-        'evidence_packet_size': party2_features,
-        'evidence_timing_direction': party3_features
+        'evidence_volume_rate': agent1_features,
+        'evidence_packet_size': agent2_features,
+        'evidence_timing_direction': agent3_features
     }
     
-    return all_party_features[0], all_party_features[1], all_party_features[2], feature_categories
+    return all_agent_features[0], all_agent_features[1], all_agent_features[2], feature_categories
 
 
-def get_party_actions_for_attack(party_features, attack_type, evidence_type=None):
+def get_agent_actions_for_attack(agent_features, attack_type, evidence_type=None):
     """
-    Get action for specific party and attack type.
+    Get action for specific agent and attack type.
     
     Args:
-        party_features: List of features for this party
+        agent_features: List of features for this agent
         attack_type: Attack type name (e.g., 'DDOS', 'PORTSCAN')
         evidence_type: Optional evidence type (if None, will be determined from features)
         
     Returns:
-        str: Recommended action for this party+attack combination
+        str: Recommended action for this agent+attack combination
     """
     if evidence_type is None:
-        evidence_type = get_evidence_type(party_features)
+        evidence_type = get_evidence_type(agent_features)
     
     # Primary attacks per evidence type
     evidence_to_primary = {

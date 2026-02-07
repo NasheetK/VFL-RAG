@@ -4,11 +4,11 @@
 
 ### Current Mismatches
 
-| Attack Type | Dominant Party | Current Action | Primary Action Party | Issue |
+| Attack Type | Dominant Agent | Current Action | Primary Action Agent | Issue |
 |------------|----------------|----------------|---------------------|-------|
-| **DDOS** | Party 3 (44.84%) | "monitor timing/direction" | Party 1 | Party 3 detects but Party 1 should mitigate |
-| **SSHPATATOR** | Party 1 (47.28%) | "monitor volume/rate" | Party 3 | Party 1 detects but Party 3 should mitigate |
-| **WEBATTACK** | Party 1 (71.68%) | "monitor volume/rate" | Party 2 | Party 1 detects but Party 2 should mitigate |
+| **DDOS** | Agent 3 (44.84%) | "monitor timing/direction" | Agent 1 | Agent 3 detects but Agent 1 should mitigate |
+| **SSHPATATOR** | Agent 1 (47.28%) | "monitor volume/rate" | Agent 3 | Agent 1 detects but Agent 3 should mitigate |
+| **WEBATTACK** | Agent 1 (71.68%) | "monitor volume/rate" | Agent 2 | Agent 1 detects but Agent 2 should mitigate |
 
 ### Root Cause
 
@@ -37,7 +37,7 @@ But SHAP shows **actual detection dominance**, which may differ from predefined 
 ### Approach 2: Coordination Model
 
 **Logic:**
-- Dominant party: "monitor and coordinate with [Party X] for: [action]"
+- Dominant party: "monitor and coordinate with [Agent X] for: [action]"
 - Action party: Execute the primary action
 
 **Benefits:**
@@ -49,13 +49,13 @@ But SHAP shows **actual detection dominance**, which may differ from predefined 
 
 ## Implementation Plan
 
-### Step 1: Define Party Capabilities
+### Step 1: Define Agent Capabilities
 
 ```python
 PARTY_CAPABILITIES = {
-    0: ['DDOS', 'DOS'],  # Party 1: Volume/Rate -> DoS mitigation
-    1: ['PORTSCAN', 'WEBATTACK'],  # Party 2: Packet Size -> Scan/Web mitigation
-    2: ['SSHPATATOR', 'FTPPATATOR', 'PORTSCAN']  # Party 3: Timing -> Brute force mitigation
+    0: ['DDOS', 'DOS'],  # Agent 1: Volume/Rate -> DoS mitigation
+    1: ['PORTSCAN', 'WEBATTACK'],  # Agent 2: Packet Size -> Scan/Web mitigation
+    2: ['SSHPATATOR', 'FTPPATATOR', 'PORTSCAN']  # Agent 3: Timing -> Brute force mitigation
 }
 ```
 
@@ -83,7 +83,7 @@ def get_improved_action_for_party(party_idx, attack_type, is_dominant,
             return primary_action, "primary_reassigned"  # Reassign to dominant
         else:
             # Coordinate with action party
-            return f"monitor and coordinate with [Party] for: {primary_action}", "coordinated"
+            return f"monitor and coordinate with [Agent] for: {primary_action}", "coordinated"
     else:
         return current_action, "standard"
 ```
@@ -114,10 +114,10 @@ suggested_action = improved_action
 
 ```
 DDOS (Attack Type: DDOS):
-  Dominant Party: Timing_Direction_Sensor_Party3 (44.84%)
+  Dominant Agent: Timing_Direction_Sensor_Agent3 (44.84%)
   Recommended Action: monitor timing/direction patterns and alert  ❌ Mismatch
-  Other Party Actions:
-    Volume_Rate_Sensor_Party1: rate-limit, SYN cookies...  ✅ Has action but not dominant
+  Other Agent Actions:
+    Volume_Rate_Sensor_Agent1: rate-limit, SYN cookies...  ✅ Has action but not dominant
 ```
 
 ### After (Improved Output)
@@ -125,19 +125,19 @@ DDOS (Attack Type: DDOS):
 **Option A: Reassignment**
 ```
 DDOS (Attack Type: DDOS):
-  Dominant Party: Timing_Direction_Sensor_Party3 (44.84%)
-  Recommended Action: monitor and coordinate with Party 1 for: rate-limit, SYN cookies...  ✅ Coordinated
-  Other Party Actions:
-    Volume_Rate_Sensor_Party1: rate-limit, SYN cookies...  ✅ Executes
+  Dominant Agent: Timing_Direction_Sensor_Agent3 (44.84%)
+  Recommended Action: monitor and coordinate with Agent 1 for: rate-limit, SYN cookies...  ✅ Coordinated
+  Other Agent Actions:
+    Volume_Rate_Sensor_Agent1: rate-limit, SYN cookies...  ✅ Executes
 ```
 
-**Option B: Reassignment (if Party 3 has capabilities)**
+**Option B: Reassignment (if Agent 3 has capabilities)**
 ```
 DDOS (Attack Type: DDOS):
-  Dominant Party: Timing_Direction_Sensor_Party3 (44.84%)
+  Dominant Agent: Timing_Direction_Sensor_Agent3 (44.84%)
   Recommended Action: rate-limit, SYN cookies...  ✅ Reassigned to dominant
-  Other Party Actions:
-    Volume_Rate_Sensor_Party1: monitor volume/rate patterns  ✅ Monitors
+  Other Agent Actions:
+    Volume_Rate_Sensor_Agent1: monitor volume/rate patterns  ✅ Monitors
 ```
 
 ---
@@ -146,9 +146,9 @@ DDOS (Attack Type: DDOS):
 
 | Attack | Current Mismatch | After (Reassignment) | After (Coordination) |
 |--------|------------------|---------------------|---------------------|
-| DDOS | ❌ Party 3 monitors, Party 1 acts | ✅ Party 3 coordinates, Party 1 acts | ✅ Party 3 coordinates, Party 1 acts |
-| SSHPATATOR | ❌ Party 1 monitors, Party 3 acts | ✅ Party 1 coordinates, Party 3 acts | ✅ Party 1 coordinates, Party 3 acts |
-| WEBATTACK | ❌ Party 1 monitors, Party 2 acts | ✅ Party 1 coordinates, Party 2 acts | ✅ Party 1 coordinates, Party 2 acts |
+| DDOS | ❌ Agent 3 monitors, Agent 1 acts | ✅ Agent 3 coordinates, Agent 1 acts | ✅ Agent 3 coordinates, Agent 1 acts |
+| SSHPATATOR | ❌ Agent 1 monitors, Agent 3 acts | ✅ Agent 1 coordinates, Agent 3 acts | ✅ Agent 1 coordinates, Agent 3 acts |
+| WEBATTACK | ❌ Agent 1 monitors, Agent 2 acts | ✅ Agent 1 coordinates, Agent 2 acts | ✅ Agent 1 coordinates, Agent 2 acts |
 
 ---
 

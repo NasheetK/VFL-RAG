@@ -22,26 +22,26 @@ PART 1: SHAP COMPUTATION (Cell 10-11)
 - Saves per-class summaries to: summary/vfl_shap_*_summary.csv
 
 Output Example:
-=== Global SHAP Party Attributions ===
-Volume_Rate_Sensor_Party1: mean |SHAP| = 0.142427, mean contribution = 35.73%
-Packet_Size_Sensor_Party2: mean |SHAP| = 0.085198, mean contribution = 21.37%
-Timing_Direction_Sensor_Party3: mean |SHAP| = 0.171010, mean contribution = 42.90%
+=== Global SHAP Agent Attributions ===
+Volume_Rate_Sensor_Agent1: mean |SHAP| = 0.142427, mean contribution = 35.73%
+Packet_Size_Sensor_Agent2: mean |SHAP| = 0.085198, mean contribution = 21.37%
+Timing_Direction_Sensor_Agent3: mean |SHAP| = 0.171010, mean contribution = 42.90%
 
-=== SHAP Party Attributions by Class ===
+=== SHAP Agent Attributions by Class ===
 DDOS (class 2):
-  Volume_Rate_Sensor_Party1: mean |SHAP| = 0.161449, mean contribution = 16.99%
-  Packet_Size_Sensor_Party2: mean |SHAP| = 0.314207, mean contribution = 33.06%
-  Timing_Direction_Sensor_Party3: mean |SHAP| = 0.474859, mean contribution = 49.96%
+  Volume_Rate_Sensor_Agent1: mean |SHAP| = 0.161449, mean contribution = 16.99%
+  Packet_Size_Sensor_Agent2: mean |SHAP| = 0.314207, mean contribution = 33.06%
+  Timing_Direction_Sensor_Agent3: mean |SHAP| = 0.474859, mean contribution = 49.96%
 
-=== Dominant Party per Class ===
-DDOS: Timing_Direction_Sensor_Party3 (49.96%)
+=== Dominant Agent per Class ===
+DDOS: Timing_Direction_Sensor_Agent3 (49.96%)
 
 
 ================================================================================
 PART 2: ACTION DETERMINATION (Cell 12)
 ================================================================================
 
-## Step 1: Identify Dominant Party Per Attack Class
+## Step 1: Identify Dominant Agent Per Attack Class
 For each attack class:
 1. Calculate mean SHAP contribution per party
 2. Find party with highest contribution (dominant party)
@@ -73,11 +73,11 @@ For each attack class and each party:
 
 If party is DOMINANT:
     → Gets PRIMARY ACTION from ATTACK_ACTIONS dictionary
-    → Example: DDOS detected by Party 3 → Party 3 gets "rate-limit, SYN cookies, ..."
+    → Example: DDOS detected by Agent 3 → Agent 3 gets "rate-limit, SYN cookies, ..."
 
 If party is NOT DOMINANT:
     → Gets SECONDARY ACTION (monitoring only)
-    → Example: DDOS detected by Party 3 → Party 1 gets "monitor volume/rate patterns and alert"
+    → Example: DDOS detected by Agent 3 → Agent 1 gets "monitor volume/rate patterns and alert"
 
 Code Logic:
 for i, name in enumerate(party_names):
@@ -116,7 +116,7 @@ DDOS Attack - Mitigation Recommendations
 
 PRIMARY MITIGATION (Detected by dominant party):
 
-   Timing_Direction_Sensor_Party3 (49.96% contribution) - PRIMARY MITIGATION:
+   Timing_Direction_Sensor_Agent3 (49.96% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • Rate Limiting: Limit incoming request rate per IP/connection
      • SYN Cookies: Enable SYN flood protection
@@ -127,11 +127,11 @@ PRIMARY MITIGATION (Detected by dominant party):
 
 SUPPORTING MONITORING (Other parties):
 
-   Volume_Rate_Sensor_Party1 (16.99% contribution):
+   Volume_Rate_Sensor_Agent1 (16.99% contribution):
      Action: rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers
      Status:  Monitoring mode - No active mitigation
 
-   Packet_Size_Sensor_Party2 (33.06% contribution):
+   Packet_Size_Sensor_Agent2 (33.06% contribution):
      Action: monitor packet size patterns and alert
      Status:  Monitoring mode - No active mitigation
 
@@ -144,8 +144,8 @@ PART 3: OUTPUT FILES GENERATED
 Contains:
 - Class: Attack type name
 - Class_Index: Numeric class ID
-- Party: Party name
-- Domain: Party domain description
+- Agent: Agent name
+- Domain: Agent domain description
 - Feature_Group: Features this party uses
 - Mean_contrib: SHAP contribution percentage
 - Suggested_Action: Action string for this party+attack combination
@@ -153,7 +153,7 @@ Contains:
 
 Example Row:
 Class: DDOS
-Party: Timing_Direction_Sensor_Party3
+Agent: Timing_Direction_Sensor_Agent3
 Mean_contrib: 0.4996
 Suggested_Action: rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers
 Is_Dominant: True
@@ -169,7 +169,7 @@ Contains:
 ## File 3: outputs/vfl_shap_global_summary.csv
 Contains:
 - Global party contributions (across all attack types)
-- Party domains and feature groups
+- Agent domains and feature groups
 - Mean SHAP values
 
 ## File 4: summary/vfl_shap_*_summary.csv (per attack class)

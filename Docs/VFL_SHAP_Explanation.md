@@ -18,9 +18,9 @@ This notebook implements **Vertical Federated Learning (VFL) with SHAP explanati
 - **Actionable Insights**: SHAP values identify which party should take mitigation actions
 - **Trust**: Stakeholders need explanations to trust AI decisions in critical security applications
 
-### **Why Party-Level Meta-Features?**
+### **Why Agent-Level Meta-Features?**
 - **Dimensionality Reduction**: VFL embeddings are high-dimensional (32D) - aggregating to party-level summaries makes SHAP computation feasible
-- **Interpretability**: Party-level explanations are more actionable than individual feature explanations
+- **Interpretability**: Agent-level explanations are more actionable than individual feature explanations
 - **Efficiency**: Computing SHAP on 3 party features is much faster than on hundreds of original features
 
 ### **Why Knowledge Distillation (Meta-Model)?**
@@ -108,7 +108,7 @@ party1_features = [
     "Flow Duration", "Total Fwd Packets", "Total Backward Packets", "Total Length of Fwd Packets"
 ]
 ```
-- **Lines 26-29**: Defines features for **Party 1** (first data owner):
+- **Lines 26-29**: Defines features for **Agent 1** (first data owner):
   - Flow duration and forward packet counts/lengths
   - Represents: RAN/ISP edge data
 
@@ -117,7 +117,7 @@ party2_features = [
     "Total Length of Bwd Packets", "Fwd Packet Length Max", "Fwd Packet Length Min", "Fwd Packet Length Mean"
 ]
 ```
-- **Lines 30-33**: Defines features for **Party 2** (second data owner):
+- **Lines 30-33**: Defines features for **Agent 2** (second data owner):
   - Backward packet lengths and forward packet statistics
   - Represents: Cloud/datacenter data
 
@@ -126,7 +126,7 @@ party3_features = [
     "Bwd Packet Length Max", "Bwd Packet Length Min", "Bwd Packet Length Mean", "Bwd Packet Length Std"
 ]
 ```
-- **Lines 34-37**: Defines features for **Party 3** (third data owner):
+- **Lines 34-37**: Defines features for **Agent 3** (third data owner):
   - Backward packet statistics (mean, min, max, std)
   - Represents: Enterprise/edge gateway data
 
@@ -136,7 +136,7 @@ label_col = "label"   # binary 0/1
 - **Line 39**: Defines the target column name (binary classification: 0=benign, 1=attack)
 
 ```python
-party_names = ["Party 1", "Party 2", "Party 3"]
+party_names = ["Agent 1", "Agent 2", "Agent 3"]
 ```
 - **Line 41**: List of party names for labeling
 
@@ -152,9 +152,9 @@ party_feature_groups = [
 ```python
 # Agentic roles (for magazine narrative)
 party_domains = [
-    "RAN / ISP edge",              # Party 1
-    "Cloud / datacenter",          # Party 2
-    "Enterprise / edge gateway",   # Party 3
+    "RAN / ISP edge",              # Agent 1
+    "Cloud / datacenter",          # Agent 2
+    "Enterprise / edge gateway",   # Agent 3
 ]
 ```
 - **Lines 48-53**: Describes the "domain" or role of each party in the network infrastructure
@@ -212,10 +212,10 @@ y = torch.tensor(df[label_col].values, dtype=torch.float32)
 
 **⚠️ IMPORTANT: Label Ownership in VFL**
 
-In this simulation, labels are extracted separately, but **in real VFL, labels belong to the "Active Party"** (also called "Label Party" or "Coordinator Party").
+In this simulation, labels are extracted separately, but **in real VFL, labels belong to the "Active Agent"** (also called "Label Agent" or "Coordinator Agent").
 
 **In Real VFL:**
-- **Active Party** (typically Party 1, but can be any party):
+- **Active Agent** (typically Agent 1, but can be any party):
   - Has BOTH their own features AND the labels
   - Runs the `ActiveClassifier` 
   - Coordinates training by:
@@ -237,9 +237,9 @@ In this simulation, labels are extracted separately, but **in real VFL, labels b
 
 **Typical VFL Setup:**
 ```
-Party 1 (Active): Has X1 features + labels y → Runs ActiveClassifier
-Party 2 (Passive): Has X2 features only → Runs LocalEncoder
-Party 3 (Passive): Has X3 features only → Runs LocalEncoder
+Agent 1 (Active): Has X1 features + labels y → Runs ActiveClassifier
+Agent 2 (Passive): Has X2 features only → Runs LocalEncoder
+Agent 3 (Passive): Has X3 features only → Runs LocalEncoder
 ```
 
 ```python
@@ -496,11 +496,11 @@ perf_df.to_csv("vfl_shap_performance.csv", index=False)
 
 ---
 
-### **Section 9: Build Party-Level Meta-Features**
+### **Section 9: Build Agent-Level Meta-Features**
 
 ```python
 # -----------------------------
-# 8. Build Party-Level Meta-Features
+# 8. Build Agent-Level Meta-Features
 # -----------------------------
 model.eval()
 with torch.no_grad():
@@ -541,7 +541,7 @@ X_test_meta  = torch.cat([h1_test,  h2_test,  h3_test],  dim=1)  # [N_test, 3]
 # -----------------------------
 # 9. Meta-Model on [h1, h2, h3]
 # -----------------------------
-class PartyMetaModel(nn.Module):
+class AgentMetaModel(nn.Module):
     def __init__(self):
         super().__init__()
         self.fc = nn.Linear(3, 1)
@@ -554,7 +554,7 @@ class PartyMetaModel(nn.Module):
   - Purpose: Mimic VFL model using only party-level summaries
 
 ```python
-meta_model = PartyMetaModel()
+meta_model = AgentMetaModel()
 criterion = nn.BCELoss()
 optimizer = optim.Adam(meta_model.parameters(), lr=1e-3)
 meta_epochs = 50
@@ -604,7 +604,7 @@ print(f"[META] Correlation between VFL and meta-model outputs on test set: {meta
 
 ```python
 # -----------------------------
-# 10. SHAP on Party Meta-Features (KernelExplainer)
+# 10. SHAP on Agent Meta-Features (KernelExplainer)
 # -----------------------------
 meta_model.eval()
 
@@ -674,14 +674,14 @@ mean_phi_pct = mean_phi_abs / mean_phi_abs.sum() # [3]
   - **Line 263**: Percentage contribution per party
 
 ```python
-print("\n=== Global SHAP Party Attributions (All Explained Flows) ===")
+print("\n=== Global SHAP Agent Attributions (All Explained Flows) ===")
 global_rows = []
 for i, name in enumerate(party_names):
     m_abs = float(np.asarray(mean_phi_abs[i]))
     m_pct = float(np.asarray(mean_phi_pct[i]))
     print(f"{name}: mean |SHAP| = {m_abs:.6f}, mean contribution = {m_pct*100:5.2f}%")
     global_rows.append({
-        "Party": name,
+        "Agent": name,
         "Domain": party_domains[i],
         "Feature_Group": party_feature_groups[i],
         "Mean_abs_SHAP_All": m_abs,
@@ -726,14 +726,14 @@ mean_phi_benign, mean_pct_benign = compute_subset_shap(benign_mask)
 - **Lines 295-296**: Compute statistics separately for attacks and benign flows
 
 ```python
-print("\n=== SHAP Party Attributions (DDoS/attack flows) ===")
+print("\n=== SHAP Agent Attributions (DDoS/attack flows) ===")
 attack_rows = []
 for i, name in enumerate(party_names):
     a_abs = float(np.asarray(mean_phi_attack[i]))
     a_pct = float(np.asarray(mean_pct_attack[i]))
     print(f"{name}: mean |SHAP| = {a_abs:.6f}, mean contribution = {a_pct*100:5.2f}%")
     attack_rows.append({
-        "Party": name,
+        "Agent": name,
         "Domain": party_domains[i],
         "Feature_Group": party_feature_groups[i],
         "Mean_abs_SHAP_Attack": a_abs,
@@ -745,14 +745,14 @@ attack_df.to_csv("vfl_shap_ddos_summary.csv", index=False)
 - **Lines 298-312**: Print and save attack-specific SHAP summary
 
 ```python
-print("\n=== SHAP Party Attributions (Benign flows) ===")
+print("\n=== SHAP Agent Attributions (Benign flows) ===")
 benign_rows = []
 for i, name in enumerate(party_names):
     b_abs = float(np.asarray(mean_phi_benign[i]))
     b_pct = float(np.asarray(mean_pct_benign[i]))
     print(f"{name}: mean |SHAP| = {b_abs:.6f}, mean contribution = {b_pct*100:5.2f}%")
     benign_rows.append({
-        "Party": name,
+        "Agent": name,
         "Domain": party_domains[i],
         "Feature_Group": party_feature_groups[i],
         "Mean_abs_SHAP_Benign": b_abs,
@@ -794,7 +794,7 @@ print(f"Recommended primary mitigation: {top_party_action}.")
 agent_rows = []
 for i, name in enumerate(party_names):
     agent_rows.append({
-        "Party": name,
+        "Agent": name,
         "Domain": party_domains[i],
         "Feature_Group": party_feature_groups[i],
         "Mean_contrib_Attack": float(mean_pct_attack[i]),
@@ -850,13 +850,13 @@ for i in range(min(5, n_explain)):
 ```python
     if label_i == 1:
         top_j = int(np.argmax(pct_i))
-        row["Top_Party"] = party_names[top_j]
+        row["Top_Agent"] = party_names[top_j]
         row["Top_Domain"] = party_domains[top_j]
         row["Suggested_Action"] = party_actions[top_j]
         print(f"  -> Agent recommendation: {party_names[top_j]} "
               f"({party_domains[top_j]}) should {party_actions[top_j]}.")
     else:
-        row["Top_Party"] = ""
+        row["Top_Agent"] = ""
         row["Top_Domain"] = ""
         row["Suggested_Action"] = ""
 ```
@@ -931,7 +931,7 @@ benign_block_rate_global = (
 # Use only first n_explain flows where we have SHAP (phi, y_explain)
 # For each explained flow:
 #   - If predicted as attack (y_scores > 0.5) AND true label = 1
-#   - AND Party 3 has highest SHAP share and share > 0.7
+#   - AND Agent 3 has highest SHAP share and share > 0.7
 #   -> blocked by enterprise agent.
 #
 # For benign flows, we check how many would be (incorrectly) blocked by same rule.
@@ -942,7 +942,7 @@ labels_explain = y_explain[:n_explain]   # already defined above for SHAP subset
 ```
 - **Lines 28-40**: **Policy 2** setup:
   - Uses only flows with SHAP values
-  - Rule: Block if predicted attack AND Party 3 dominant AND share > 70%
+  - Rule: Block if predicted attack AND Agent 3 dominant AND share > 70%
 
 ```python
 # Compute per-flow SHAP contributions
@@ -971,11 +971,11 @@ top_share = pct_explain[np.arange(n_explain), top_party]
   - `top_share`: SHAP percentage of dominant party
 
 ```python
-# Agentic rule: block if predicted attack AND Party 3 dominant AND share > 0.7
+# Agentic rule: block if predicted attack AND Agent 3 dominant AND share > 0.7
 agent_block = (pred_attack & (top_party == 2) & (top_share > 0.7))
 ```
 - **Line 56**: **Agentic blocking rule**:
-  - Block if: predicted attack AND Party 3 (index 2) is dominant AND share > 0.7
+  - Block if: predicted attack AND Agent 3 (index 2) is dominant AND share > 0.7
 
 ```python
 # Compute rates over explained subset
@@ -1038,4 +1038,4 @@ This notebook demonstrates:
 3. **Agentic Mitigation**: Uses SHAP to recommend which party should take action
 4. **Policy Comparison**: Compares simple threshold vs. SHAP-guided blocking
 
-The key insight: **Party 3 (Enterprise/edge gateway) dominates DDoS detection decisions**, suggesting mitigation should focus on firewall/ACL adjustments.
+The key insight: **Agent 3 (Enterprise/edge gateway) dominates DDoS detection decisions**, suggesting mitigation should focus on firewall/ACL adjustments.
