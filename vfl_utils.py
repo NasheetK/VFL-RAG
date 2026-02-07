@@ -62,6 +62,34 @@ def simplify_label(label_str):
 
 
 # ============================================================================
+# FIXED PARTY NAMES
+# ============================================================================
+
+# Fixed static party names (used consistently across all functions)
+FIXED_PARTY_NAMES = {
+    1: "evidence_volume_rate_agent1",
+    2: "evidence_packet_size_agent2",
+    3: "evidence_timing_direction_agent3"
+}
+
+# Fixed agent names as a list (for easy indexing: agent_names[0], agent_names[1], agent_names[2])
+FIXED_AGENT_NAMES = [
+    FIXED_PARTY_NAMES[1],  # Agent 1 (index 0)
+    FIXED_PARTY_NAMES[2],  # Agent 2 (index 1)
+    FIXED_PARTY_NAMES[3]   # Agent 3 (index 2)
+]
+
+def get_agent_names():
+    """
+    Get fixed agent names as a list.
+    
+    Returns:
+        list: List of 3 fixed agent names in order [agent1, agent2, agent3]
+    """
+    return FIXED_AGENT_NAMES.copy()
+
+
+# ============================================================================
 # ATTACK ACTION MAPPINGS
 # ============================================================================
 
@@ -258,17 +286,10 @@ def generate_party_name(features, party_num):
     Returns:
         str: Fixed party name based on party number
     """
-    # Fixed party name mapping
-    party_names = {
-        1: "evidence_volume_rate_agent1",
-        2: "evidence_packet_size_agent2",
-        3: "evidence_timing_direction_agent3"
-    }
-    
-    if party_num not in party_names:
+    if party_num not in FIXED_PARTY_NAMES:
         raise ValueError(f"Invalid party number: {party_num}. Must be 1, 2, or 3.")
     
-    return party_names[party_num]
+    return FIXED_PARTY_NAMES[party_num]
 
 
 def generate_domain(features, party_num):
@@ -478,23 +499,24 @@ def get_evidence_type(features):
 
 def generate_agent_name(features, agent_num):
     """
-    Generate agent name based on evidence type.
+    Generate fixed agent name based on agent number.
+    
+    Fixed agent naming convention (matches party names):
+    1) evidence_volume_rate_agent1 (Agent 1)
+    2) evidence_packet_size_agent2 (Agent 2)
+    3) evidence_timing_direction_agent3 (Agent 3)
     
     Args:
-        features: List of feature names
+        features: List of feature names (kept for compatibility, not used)
         agent_num: Agent number (1, 2, or 3)
         
     Returns:
-        str: Agent name
+        str: Fixed agent name based on agent number
     """
-    evidence_type = get_evidence_type(features)
+    if agent_num not in FIXED_PARTY_NAMES:
+        raise ValueError(f"Invalid agent number: {agent_num}. Must be 1, 2, or 3.")
     
-    name_map = {
-        'evidence_volume_rate': f"Volume_Rate_Sensor_Agent{agent_num}",
-        'evidence_packet_size': f"Packet_Size_Sensor_Agent{agent_num}",
-        'evidence_timing_direction': f"Timing_Direction_Sensor_Agent{agent_num}"
-    }
-    return name_map.get(evidence_type, f"Network_Sensor_Agent{agent_num}")
+    return FIXED_PARTY_NAMES[agent_num]
 
 
 def generate_domain(features, agent_num):

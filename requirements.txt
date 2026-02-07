@@ -8,15 +8,19 @@ shap>=0.42.0
 # RAG and LLM libraries (for RAG_LLM_action_plan.ipynb)
 python-dotenv>=1.0.0
 openai>=1.0.0
+
+# LangChain packages (modular structure for langchain>=0.3.0)
 langchain>=0.3.0
+langchain-core>=0.1.0
+langchain-community>=0.0.1
 langchain-openai>=0.2.0
 langchain-text-splitters>=0.0.1
-langchain-community>=0.0.1
-langchain-core>=0.1.0
+
+# Vector store and embeddings
 faiss-cpu>=1.7.4
 # For GPU support (optional): faiss-gpu>=1.7.4
+sentence-transformers>=2.2.0
 
 # Additional utilities
-sentence-transformers>=2.2.0
 PyPDF2>=3.0.0
 langgraph>=0.2.0
