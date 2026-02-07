@@ -244,58 +244,24 @@ def get_feature_category_summary(features):
 
 def generate_party_name(features, party_num):
     """
-    Generate unique and distinct party name based on evidence type and feature category.
+    Generate simple party name based on evidence type.
     
     Creates names like:
-    - "Volume_Rate_Flow_Analyzer_Party1" (for volume/rate features)
-    - "Packet_Size_Distribution_Analyzer_Party2" (for packet size features)
-    - "Timing_Direction_Protocol_Analyzer_Party3" (for timing/direction features)
+    - "evidence_volume_rate_agent1" (for volume/rate features)
+    - "evidence_packet_size_agent2" (for packet size features)
+    - "evidence_timing_direction_agent3" (for timing/direction features)
     
     Args:
         features: List of feature names
         party_num: Party number (1, 2, or 3)
         
     Returns:
-        str: Unique party name with feature category
+        str: Simple party name with evidence type and agent number
     """
     evidence_type = get_evidence_type(features)
-    category_summary = get_feature_category_summary(features)
     
-    # Build unique name based on evidence type and dominant feature category
-    if evidence_type == 'evidence_volume_rate':
-        # Check for dominant feature type
-        if category_summary['feature_types']['duration'] > category_summary['feature_types']['packet_count']:
-            name = f"Volume_Rate_Flow_Duration_Analyzer_Party{party_num}"
-        elif category_summary['feature_types']['byte_count'] > 0:
-            name = f"Volume_Rate_Byte_Flow_Analyzer_Party{party_num}"
-        else:
-            name = f"Volume_Rate_Packet_Flow_Analyzer_Party{party_num}"
-    
-    elif evidence_type == 'evidence_packet_size':
-        if category_summary['feature_types']['packet_size_stats'] > 0:
-            name = f"Packet_Size_Distribution_Stats_Analyzer_Party{party_num}"
-        else:
-            name = f"Packet_Size_Distribution_Analyzer_Party{party_num}"
-    
-    else:  # evidence_timing_direction
-        # Check for dominant feature type
-        if category_summary['feature_types']['protocol_flags'] > category_summary['feature_types']['timing_intervals']:
-            name = f"Timing_Direction_Protocol_Flags_Analyzer_Party{party_num}"
-        elif category_summary['feature_types']['direction'] > category_summary['feature_types']['timing_intervals']:
-            name = f"Timing_Direction_Flow_Direction_Analyzer_Party{party_num}"
-        else:
-            name = f"Timing_Direction_Interval_Analyzer_Party{party_num}"
-    
-    # Add feature count suffix for uniqueness
-    feature_count = category_summary['total_features']
-    if feature_count < 25:
-        name += f"_SmallSet{feature_count}"
-    elif feature_count < 35:
-        name += f"_MediumSet{feature_count}"
-    else:
-        name += f"_LargeSet{feature_count}"
-    
-    return name
+    # Map evidence type to simple name format
+    return f"{evidence_type}_agent{party_num}"
 
 
 def generate_domain(features, party_num):

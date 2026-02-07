@@ -119,14 +119,14 @@
   "embed_dim": 64,
   "hidden_dim": 128,
   "party_names": [
-    "Volume_Rate_Sensor_Party1",
-    "Timing_Direction_Sensor_Party2",
-    "Timing_Direction_Sensor_Party3"
+    "Volume_Rate_Packet_Flow_Analyzer_Party1_SmallSet23",
+    "Timing_Direction_Protocol_Flags_Analyzer_Party2_MediumSet27",
+    "Timing_Direction_Protocol_Flags_Analyzer_Party3_LargeSet38"
   ],
   "party_domains": [
-    "Volume & Rate Analysis (DoS/DDoS Detection)",
-    "Timing & Directionality Analysis (Brute Force/Scan Detection)",
-    "Timing & Directionality Analysis (Brute Force/Scan Detection)"
+    "Volume & Rate Analysis (DoS/DDoS Detection) - 23 features | Focus: Flow Duration & Packet/Byte Counts",
+    "Timing & Directionality Analysis (Brute Force/Scan Detection) - 27 features | Focus: Protocol Flags & Port Analysis",
+    "Timing & Directionality Analysis (Brute Force/Scan Detection) - 38 features | Focus: Protocol Flags & Port Analysis"
   ],
   "party_actions": [
     "DDOS: rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers; DOS: rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers",
@@ -176,12 +176,12 @@
     "scaler3_path": "model\\scaler3.pkl"
   },
   "training_info": {
-    "best_epoch": 185,
-    "best_val_f1": 0.9472449179537011,
-    "best_val_loss": 0.009536515921354294,
-    "test_accuracy": 0.9946337090163935,
-    "test_recall": 0.9950349173774006,
-    "test_f1": 0.9427124014520492
+    "best_epoch": 19,
+    "best_val_f1": 0.6920781860326799,
+    "best_val_loss": 0.2221308946609497,
+    "test_accuracy": 0.9210040983606558,
+    "test_recall": 0.8604132948856906,
+    "test_f1": 0.6974283507454682
   },
-  "saved_timestamp": "2026-02-06T17:04:16.518790"
+  "saved_timestamp": "2026-02-06T22:18:53.539745"
 }
