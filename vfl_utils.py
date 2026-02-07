@@ -244,24 +244,31 @@ def get_feature_category_summary(features):
 
 def generate_party_name(features, party_num):
     """
-    Generate simple party name based on evidence type.
+    Generate fixed party name based on party number.
     
-    Creates names like:
-    - "evidence_volume_rate_agent1" (for volume/rate features)
-    - "evidence_packet_size_agent2" (for packet size features)
-    - "evidence_timing_direction_agent3" (for timing/direction features)
+    Fixed party naming convention:
+    1) evidence_volume_rate_agent1 (Party 1)
+    2) evidence_packet_size_agent2 (Party 2)
+    3) evidence_timing_direction_agent3 (Party 3)
     
     Args:
-        features: List of feature names
+        features: List of feature names (kept for compatibility, not used)
         party_num: Party number (1, 2, or 3)
         
     Returns:
-        str: Simple party name with evidence type and agent number
+        str: Fixed party name based on party number
     """
-    evidence_type = get_evidence_type(features)
+    # Fixed party name mapping
+    party_names = {
+        1: "evidence_volume_rate_agent1",
+        2: "evidence_packet_size_agent2",
+        3: "evidence_timing_direction_agent3"
+    }
     
-    # Map evidence type to simple name format
-    return f"{evidence_type}_agent{party_num}"
+    if party_num not in party_names:
+        raise ValueError(f"Invalid party number: {party_num}. Must be 1, 2, or 3.")
+    
+    return party_names[party_num]
 
 
 def generate_domain(features, party_num):
