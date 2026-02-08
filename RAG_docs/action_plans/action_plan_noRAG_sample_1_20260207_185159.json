@@ -1,0 +1,34 @@
+{
+  "sample_id": 1,
+  "prediction": {
+    "predicted_label": "DDOS",
+    "confidence": 0.9999557733535767
+  },
+  "rag_info": {
+    "documents_used": 0,
+    "search_method": "vector_similarity",
+    "search_queries": [
+      "Explain and mitigate a DDOS attack and provide SOC triage steps and mitigations."
+    ],
+    "top_results": []
+  },
+  "llm_action_plan": {
+    "threat_level": "Critical",
+    "primary_actions": [
+      "rate limiting",
+      "escalation"
+    ],
+    "supporting_actions": [
+      "flow inspection",
+      "filtering"
+    ],
+    "reasoning": "The prediction of a DDOS attack with 100% confidence indicates an imminent threat. The evidence volume rate from Party1 (43.50%) is significant, suggesting a high volume of traffic which is characteristic of DDOS attacks. Therefore, immediate actions such as rate limiting and escalation are necessary to mitigate the threat. The packet size from Party2 is negligible (0.00%), indicating no immediate concern from that party, while Party3's timing direction (34.43%) suggests potential patterns in the attack that warrant further inspection.",
+    "execution_priority": "Immediate",
+    "knowledge_sources_used": [
+      "network traffic analysis",
+      "historical attack patterns",
+      "DDOS mitigation strategies"
+    ]
+  },
+  "processed_at": "2026-02-07T18:51:59.854936"
+}
