@@ -1,0 +1,47 @@
+{
+  "sample_id": 1,
+  "prediction": {
+    "predicted_label": "DDOS",
+    "confidence": 0.9999557733535767
+  },
+  "rag_info": {
+    "documents_used": 0,
+    "search_method": "vector_similarity",
+    "search_queries": [
+      "Explain and mitigate a DDOS attack and provide SOC triage steps and mitigations."
+    ],
+    "top_results": []
+  },
+  "llm_action_plan": {
+    "threat_level": "Critical",
+    "primary_actions": [
+      {
+        "action": "Implement rate limiting to control incoming traffic volume.",
+        "party": "Party1",
+        "party_evidence_type": "evidence_volume_rate",
+        "rationale": "Party1 has the highest evidence volume rate, indicating a significant influx of traffic consistent with a DDOS attack."
+      }
+    ],
+    "supporting_actions": [
+      {
+        "action": "Monitor packet sizes for anomalies and potential malicious patterns.",
+        "party": "Party2",
+        "party_evidence_type": "evidence_packet_size",
+        "rationale": "Although Party2 shows 0.00% evidence packet size, monitoring is essential to identify any unusual packet behavior that could indicate a DDOS attack."
+      },
+      {
+        "action": "Analyze timing and direction of traffic flows to identify attack patterns.",
+        "party": "Party3",
+        "party_evidence_type": "evidence_timing_direction",
+        "rationale": "Party3's evidence timing direction indicates a significant portion of traffic that should be analyzed to understand the attack's characteristics and timing."
+      }
+    ],
+    "reasoning": "Given the prediction of a DDOS attack with 100% confidence, the immediate action is to implement rate limiting on Party1 due to its high evidence volume rate. Supporting actions involve monitoring Party2 for packet size anomalies and analyzing traffic timing from Party3 to gather further insights into the attack.",
+    "execution_priority": "Immediate",
+    "knowledge_sources_used": [
+      "NIST Cybersecurity Framework",
+      "OWASP DDOS Prevention Cheat Sheet"
+    ]
+  },
+  "processed_at": "2026-02-07T19:51:51.616092"
+}
