@@ -36,13 +36,13 @@
     "primary_actions": [
       "Enable Rate Limiting",
       "Implement Traffic Filtering",
-      "Activate Web Application Firewall"
+      "Deploy Web Application Firewall (WAF)"
     ],
     "supporting_actions": [
       "Set Up Traffic Analysis and Alerts",
       "Geolocation Blocking"
     ],
-    "reasoning": "Given the 100% confidence in the DDoS prediction, immediate actions are required to mitigate potential service disruption. The evidence volume rate from Party1 indicates a high level of incoming traffic, necessitating rate limiting and traffic filtering to prevent overload. The timing direction evidence from Party3 suggests a pattern that can be monitored and managed through WAF and traffic analysis.",
+    "reasoning": "Given the 100% confidence in the DDoS prediction, immediate actions are necessary to mitigate the attack. The evidence volume rate from Party1 indicates a significant amount of traffic, warranting rate limiting and traffic filtering. The packet size from Party2 is zero, suggesting no immediate threat from that party, while the timing direction from Party3 indicates a high likelihood of attack. Thus, WAF deployment is critical to protect against malicious requests.",
     "execution_priority": "Immediate",
     "knowledge_sources_used": [
       "1",
@@ -50,5 +50,5 @@
       "3"
     ]
   },
-  "processed_at": "2026-02-07T14:16:42.066467"
+  "processed_at": "2026-02-07T19:27:24.944363"
 }
