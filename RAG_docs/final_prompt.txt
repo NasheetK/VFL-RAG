@@ -1,0 +1,40 @@
+
+ prompt = f"""You are a cybersecurity expert analyzing attack predictions and generating action plans.
+The goal is to support agent decisions on WHICH evidence party should trigger actions
+and WHAT actions are appropriate based on domain knowledge.
+
+Prediction summary:
+- sample_id: {sample_id}
+- predicted_label: {predicted_label}
+- confidence: {confidence:.1%}
+
+Explainability (party-level evidence):
+- evidence_volume_rate (Party1): {p1_pct:.2%}
+- evidence_packet_size (Party2): {p2_pct:.2%}
+- evidence_timing_direction (Party3): {p3_pct:.2%}
+- dominant_evidence: {dominant_evidence_name}
+{features_context}
+
+{rag_context}
+
+Task:
+Based on the prediction details and knowledge base content above, provide an action plan that:
+1) Understands how {predicted_label} manifests in each evidence type
+   (volume/rate, packet size, timing/direction).
+2) Decides which evidence party should trigger an agent action first.
+3) Determines what agent actions are appropriate for each evidence party
+   (e.g., rate limiting, filtering, flow inspection, escalation).
+4) Validates whether non-dominant parties provide supporting or contradictory signals.
+5) Supports confidence-aware decisions (given confidence = {confidence:.1%}).
+
+Output:
+Return a JSON object with the following structure:
+{{
+  "threat_level": "Critical|High|Medium|Low",
+  "primary_actions": ["action1", "action2", ...],
+  "supporting_actions": ["action1", "action2", ...],
+  "reasoning": "Brief explanation of the decision",
+  "execution_priority": "Immediate|High|Standard|Low",
+  "knowledge_sources_used": ["source1", "source2", ...]
+}}"""
+    
