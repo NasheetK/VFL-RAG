@@ -1,0 +1,534 @@
+[
+
+{
+    "sample_id": 0,
+    "true_label": "DDOS",
+    "true_label_idx": 2,
+    "predicted_label": "DDOS",
+    "predicted_label_idx": 2,
+    "confidence": 0.9999997615814209,
+    "all_probabilities": {
+      "BENIGN": 1.0071878620010466e-07,
+      "BOT": 1.6810012937185093e-08,
+      "DDOS": 0.9999997615814209,
+      "DOS": 1.679763386164268e-07,
+      "FTPPATATOR": 6.436292832034951e-09,
+      "OTHERS": 1.6818437753585158e-09,
+      "PORTSCAN": 3.701782702592027e-08,
+      "SSHPATATOR": 2.0128296251975542e-10,
+      "WEBATTACK": 3.743025445146486e-08
+    },
+    "is_correct": true,
+    "shap_explanation": {
+      "party_contributions": {
+        "RAN": 1.6920671688372435,
+        "Edge": 0.3524944360904745,
+        "Core": 0.05350958670617838
+      },
+      "party_contributions_pct": {
+        "RAN": 0.8064870132073676,
+        "Edge": 0.16800880613396418,
+        "Core": 0.025504180658668302
+      },
+      "dominant_agent": "RAN",
+      "dominant_agent_idx": 0,
+      "dominant_contribution": 1.6920671688372435,
+      "dominant_contribution_pct": 0.8064870132073676,
+      "total_contribution": 2.0980711916338963,
+      "feature_contributions": {
+        "RAN": {
+          "udps.srcdst_rst_packet_count": {
+            "shap_value": 0.847406804561615,
+            "abs_shap_value": 0.847406804561615,
+            "pct_contribution": 22.053192688053713
+          },
+          "udps.srcdst_tcp_packet_count": {
+            "shap_value": 0.22239522635936737,
+            "abs_shap_value": 0.22239522635936737,
+            "pct_contribution": 5.787686331293606
+          },
+          "bidirectional_duration_ms": {
+            "shap_value": -0.026187384501099586,
+            "abs_shap_value": 0.026187384501099586,
+            "pct_contribution": 0.6815090854712501
+          },
+          "udps.udp_packet_count": {
+            "shap_value": 0.08361811190843582,
+            "abs_shap_value": 0.08361811190843582,
+            "pct_contribution": 2.17610517664175
+          },
+          "udps.srcdst_psh_packet_count": {
+            "shap_value": -0.1080358624458313,
+            "abs_shap_value": 0.1080358624458313,
+            "pct_contribution": 2.8115607272831964
+          },
+          "udps.ack_packet_count": {
+            "shap_value": -0.012804990634322166,
+            "abs_shap_value": 0.012804990634322166,
+            "pct_contribution": 0.33324127716146656
+          },
+          "udps.bidirectional_packet_count": {
+            "shap_value": 0.007145344745367765,
+            "abs_shap_value": 0.007145344745367765,
+            "pct_contribution": 0.18595279580470958
+          },
+          "udps.srcdst_fin_packet_count": {
+            "shap_value": 0.28031519055366516,
+            "abs_shap_value": 0.28031519055366516,
+            "pct_contribution": 7.2950144811104
+          },
+          "udps.srcdst_src2dst_packet_count": {
+            "shap_value": 0.02391035482287407,
+            "abs_shap_value": 0.02391035482287407,
+            "pct_contribution": 0.6222509181069908
+          },
+          "udps.srcdst_bidirectional_packet_count": {
+            "shap_value": -0.005577900912612677,
+            "abs_shap_value": 0.005577900912612677,
+            "pct_contribution": 0.14516112327461717
+          },
+          "udps.srcdst_ack_packet_count": {
+            "shap_value": -0.03838426619768143,
+            "abs_shap_value": 0.03838426619768143,
+            "pct_contribution": 0.9989247361365349
+          },
+          "udps.syn_packet_count": {
+            "shap_value": 0.4474281966686249,
+            "abs_shap_value": 0.4474281966686249,
+            "pct_contribution": 11.644018176495692
+          },
+          "src2dst_duration_ms": {
+            "shap_value": -0.08005788177251816,
+            "abs_shap_value": 0.08005788177251816,
+            "pct_contribution": 2.0834525795908854
+          },
+          "udps.src2dst_packet_count": {
+            "shap_value": -0.005476160906255245,
+            "abs_shap_value": 0.005476160906255245,
+            "pct_contribution": 0.1425134079716406
+          },
+          "udps.psh_packet_count": {
+            "shap_value": 0.05880961939692497,
+            "abs_shap_value": 0.05880961939692497,
+            "pct_contribution": 1.5304808286764082
+          },
+          "udps.rst_packet_count": {
+            "shap_value": 0.3831440806388855,
+            "abs_shap_value": 0.3831440806388855,
+            "pct_contribution": 9.97106725144566
+          },
+          "udps.srcdst_icmp_packet_count": {
+            "shap_value": 0.004826501943171024,
+            "abs_shap_value": 0.004826501943171024,
+            "pct_contribution": 0.12560646998472036
+          },
+          "udps.icmp_packet_count": {
+            "shap_value": 0.008238025940954685,
+            "abs_shap_value": 0.008238025940954685,
+            "pct_contribution": 0.2143890897112204
+          },
+          "udps.srcdst_udp_packet_count": {
+            "shap_value": 0.044318392872810364,
+            "abs_shap_value": 0.044318392872810364,
+            "pct_contribution": 1.1533563955207646
+          },
+          "udps.tcp_packet_count": {
+            "shap_value": 0.06839927285909653,
+            "abs_shap_value": 0.06839927285909653,
+            "pct_contribution": 1.7800451164240574
+          },
+          "udps.fin_packet_count": {
+            "shap_value": 0.3163861036300659,
+            "abs_shap_value": 0.3163861036300659,
+            "pct_contribution": 8.233735756684087
+          },
+          "udps.srcdst_syn_packet_count": {
+            "shap_value": 0.7368163466453552,
+            "abs_shap_value": 0.7368163466453552,
+            "pct_contribution": 19.175150330169814
+          },
+          "dst2src_duration_ms": {
+            "shap_value": 0.0328759104013443,
+            "abs_shap_value": 0.0328759104013443,
+            "pct_contribution": 0.8555734777833248
+          }
+        },
+        "Edge": {
+          "src2dst_max_piat_ms": {
+            "shap_value": 0.7332928776741028,
+            "abs_shap_value": 0.7332928776741028,
+            "pct_contribution": 14.212967763794879
+          },
+          "src2dst_bytes": {
+            "shap_value": 0.0005918065435253084,
+            "abs_shap_value": 0.0005918065435253084,
+            "pct_contribution": 0.011470624605284007
+          },
+          "udps.dns_port_src_count": {
+            "shap_value": -0.0005275621660985053,
+            "abs_shap_value": 0.0005275621660985053,
+            "pct_contribution": 0.010225415094633292
+          },
+          "src2dst_mean_ps": {
+            "shap_value": 0.015080800279974937,
+            "abs_shap_value": 0.015080800279974937,
+            "pct_contribution": 0.29230193658961595
+          },
+          "src2dst_psh_packets": {
+            "shap_value": -0.012385210022330284,
+            "abs_shap_value": 0.012385210022330284,
+            "pct_contribution": 0.24005495778651603
+          },
+          "udps.dns_port_count": {
+            "shap_value": 0.09876731038093567,
+            "abs_shap_value": 0.09876731038093567,
+            "pct_contribution": 1.9143464246012247
+          },
+          "src2dst_stddev_piat_ms": {
+            "shap_value": 0.37133342027664185,
+            "abs_shap_value": 0.37133342027664185,
+            "pct_contribution": 7.197328779125543
+          },
+          "udps.srcdst_packet_size_variation": {
+            "shap_value": 0.5026032328605652,
+            "abs_shap_value": 0.5026032328605652,
+            "pct_contribution": 9.741651343027337
+          },
+          "udps.http_ports_count": {
+            "shap_value": 0.01389379519969225,
+            "abs_shap_value": 0.01389379519969225,
+            "pct_contribution": 0.2692949424469338
+          },
+          "udps.srcdst_unique_ports_count": {
+            "shap_value": 1.0380383729934692,
+            "abs_shap_value": 1.0380383729934692,
+            "pct_contribution": 20.119663482529017
+          },
+          "src2dst_stddev_ps": {
+            "shap_value": 0.032774023711681366,
+            "abs_shap_value": 0.032774023711681366,
+            "pct_contribution": 0.6352388747883064
+          },
+          "udps.srcdst_vul_ports_count": {
+            "shap_value": 0.1446859985589981,
+            "abs_shap_value": 0.1446859985589981,
+            "pct_contribution": 2.8043602985946983
+          },
+          "src2dst_cwr_packets": {
+            "shap_value": 0.001386977732181549,
+            "abs_shap_value": 0.001386977732181549,
+            "pct_contribution": 0.026882941859635464
+          },
+          "udps.srcdst_dns_port_src_count": {
+            "shap_value": 0.0009146950906142592,
+            "abs_shap_value": 0.0009146950906142592,
+            "pct_contribution": 0.017728976010018917
+          },
+          "src2dst_urg_packets": {
+            "shap_value": 2.057696292467881e-05,
+            "abs_shap_value": 2.057696292467881e-05,
+            "pct_contribution": 0.0003988306986601337
+          },
+          "udps.srcdst_dns_port_count": {
+            "shap_value": 0.12351229041814804,
+            "abs_shap_value": 0.12351229041814804,
+            "pct_contribution": 2.3939632520551974
+          },
+          "udps.srcdst_http_ports_count": {
+            "shap_value": 0.328762948513031,
+            "abs_shap_value": 0.328762948513031,
+            "pct_contribution": 6.372211337940406
+          },
+          "src2dst_ack_packets": {
+            "shap_value": -0.001295452006161213,
+            "abs_shap_value": 0.001295452006161213,
+            "pct_contribution": 0.025108954639670812
+          },
+          "src2dst_syn_packets": {
+            "shap_value": -0.02042882703244686,
+            "abs_shap_value": 0.02042882703244686,
+            "pct_contribution": 0.39595947118055985
+          },
+          "src2dst_max_ps": {
+            "shap_value": 0.019485805183649063,
+            "abs_shap_value": 0.019485805183649063,
+            "pct_contribution": 0.3776814549259493
+          },
+          "src2dst_min_piat_ms": {
+            "shap_value": 0.007155868224799633,
+            "abs_shap_value": 0.007155868224799633,
+            "pct_contribution": 0.13869782115385895
+          },
+          "src2dst_packets": {
+            "shap_value": 0.0004468039842322469,
+            "abs_shap_value": 0.0004468039842322469,
+            "pct_contribution": 0.008660128603417791
+          },
+          "src2dst_mean_piat_ms": {
+            "shap_value": 0.024769583716988564,
+            "abs_shap_value": 0.024769583716988564,
+            "pct_contribution": 0.4800937055448099
+          },
+          "src2dst_fin_packets": {
+            "shap_value": 0.0785617083311081,
+            "abs_shap_value": 0.0785617083311081,
+            "pct_contribution": 1.5227135868554598
+          },
+          "src2dst_ece_packets": {
+            "shap_value": 0.001780386664904654,
+            "abs_shap_value": 0.001780386664904654,
+            "pct_contribution": 0.03450814680710186
+          },
+          "src2dst_rst_packets": {
+            "shap_value": 0.17215731739997864,
+            "abs_shap_value": 0.17215731739997864,
+            "pct_contribution": 3.3368200851321514
+          },
+          "src2dst_min_ps": {
+            "shap_value": 0.02672756090760231,
+            "abs_shap_value": 0.02672756090760231,
+            "pct_contribution": 0.5180439809936964
+          },
+          "bidirectional_duration_ms": {
+            "shap_value": 0.17833779752254486,
+            "abs_shap_value": 0.17833779752254486,
+            "pct_contribution": 3.4566125547187014
+          },
+          "udps.bidirectional_packet_count": {
+            "shap_value": 0.025992702692747116,
+            "abs_shap_value": 0.025992702692747116,
+            "pct_contribution": 0.5038006732558316
+          },
+          "udps.syn_packet_count": {
+            "shap_value": 0.8882793188095093,
+            "abs_shap_value": 0.8882793188095093,
+            "pct_contribution": 17.216975246684715
+          },
+          "udps.tcp_packet_count": {
+            "shap_value": 0.2075425088405609,
+            "abs_shap_value": 0.2075425088405609,
+            "pct_contribution": 4.022669628435942
+          },
+          "udps.udp_packet_count": {
+            "shap_value": 0.08778911828994751,
+            "abs_shap_value": 0.08778911828994751,
+            "pct_contribution": 1.7015628356089587
+          }
+        },
+        "Core": {
+          "bidirectional_min_ps": {
+            "shap_value": -0.01583595760166645,
+            "abs_shap_value": 0.01583595760166645,
+            "pct_contribution": 0.24261117226539275
+          },
+          "bidirectional_packets": {
+            "shap_value": -1.142116616392741e-05,
+            "abs_shap_value": 1.142116616392741e-05,
+            "pct_contribution": 0.00017497536816950558
+          },
+          "dst2src_max_ps": {
+            "shap_value": 0.3947467505931854,
+            "abs_shap_value": 0.3947467505931854,
+            "pct_contribution": 6.0476274512940895
+          },
+          "dst2src_cwr_packets": {
+            "shap_value": -3.917163485311903e-05,
+            "abs_shap_value": 3.917163485311903e-05,
+            "pct_contribution": 0.0006001200868501348
+          },
+          "bidirectional_ece_packets": {
+            "shap_value": -5.435718776425347e-05,
+            "abs_shap_value": 5.435718776425347e-05,
+            "pct_contribution": 0.0008327668825753759
+          },
+          "udps.srcdst_bidirectional_duration_avg": {
+            "shap_value": 0.26069629192352295,
+            "abs_shap_value": 0.26069629192352295,
+            "pct_contribution": 3.9939380099218784
+          },
+          "bidirectional_syn_packets": {
+            "shap_value": 0.6124818325042725,
+            "abs_shap_value": 0.6124818325042725,
+            "pct_contribution": 9.383388053494189
+          },
+          "dst2src_packets": {
+            "shap_value": -1.2827930731873494e-05,
+            "abs_shap_value": 1.2827930731873494e-05,
+            "pct_contribution": 0.00019652738349536773
+          },
+          "bidirectional_stddev_ps": {
+            "shap_value": 0.3735566735267639,
+            "abs_shap_value": 0.3735566735267639,
+            "pct_contribution": 5.722989714392246
+          },
+          "bidirectional_psh_packets": {
+            "shap_value": 0.0007634120993316174,
+            "abs_shap_value": 0.0007634120993316174,
+            "pct_contribution": 0.011695680741209984
+          },
+          "bidirectional_stddev_piat_ms": {
+            "shap_value": 0.3075120449066162,
+            "abs_shap_value": 0.3075120449066162,
+            "pct_contribution": 4.711168063033417
+          },
+          "dst2src_rst_packets": {
+            "shap_value": 0.017289459705352783,
+            "abs_shap_value": 0.017289459705352783,
+            "pct_contribution": 0.26487921933495845
+          },
+          "dst2src_ack_packets": {
+            "shap_value": -4.343669206718914e-05,
+            "abs_shap_value": 4.343669206718914e-05,
+            "pct_contribution": 0.000665461921964396
+          },
+          "dst2src_stddev_piat_ms": {
+            "shap_value": 0.3184870779514313,
+            "abs_shap_value": 0.3184870779514313,
+            "pct_contribution": 4.879308550626906
+          },
+          "bidirectional_ack_packets": {
+            "shap_value": -0.00018854334484785795,
+            "abs_shap_value": 0.00018854334484785795,
+            "pct_contribution": 0.0028885352605113957
+          },
+          "dst2src_ece_packets": {
+            "shap_value": 0.0009354050853289664,
+            "abs_shap_value": 0.0009354050853289664,
+            "pct_contribution": 0.014330660008257974
+          },
+          "dst2src_min_ps": {
+            "shap_value": 0.0598427839577198,
+            "abs_shap_value": 0.0598427839577198,
+            "pct_contribution": 0.9168077064110873
+          },
+          "dst2src_mean_ps": {
+            "shap_value": 0.2055303305387497,
+            "abs_shap_value": 0.2055303305387497,
+            "pct_contribution": 3.148780495778318
+          },
+          "dst2src_min_piat_ms": {
+            "shap_value": 0.0024237302131950855,
+            "abs_shap_value": 0.0024237302131950855,
+            "pct_contribution": 0.03713220526786653
+          },
+          "bidirectional_cwr_packets": {
+            "shap_value": 0.0004051506402902305,
+            "abs_shap_value": 0.0004051506402902305,
+            "pct_contribution": 0.006207017867649734
+          },
+          "dst2src_max_piat_ms": {
+            "shap_value": 0.33045414090156555,
+            "abs_shap_value": 0.33045414090156555,
+            "pct_contribution": 5.062647205852928
+          },
+          "dst2src_stddev_ps": {
+            "shap_value": 0.6723626255989075,
+            "abs_shap_value": 0.6723626255989075,
+            "pct_contribution": 10.300778070207928
+          },
+          "dst2src_psh_packets": {
+            "shap_value": -3.829037450486794e-05,
+            "abs_shap_value": 3.829037450486794e-05,
+            "pct_contribution": 0.0005866189389222251
+          },
+          "bidirectional_max_piat_ms": {
+            "shap_value": 0.33518531918525696,
+            "abs_shap_value": 0.33518531918525696,
+            "pct_contribution": 5.135130142374692
+          },
+          "dst2src_bytes": {
+            "shap_value": 4.477158290683292e-05,
+            "abs_shap_value": 4.477158290683292e-05,
+            "pct_contribution": 0.0006859128122483048
+          },
+          "bidirectional_max_ps": {
+            "shap_value": 0.47554606199264526,
+            "abs_shap_value": 0.47554606199264526,
+            "pct_contribution": 7.285494850913586
+          },
+          "dst2src_fin_packets": {
+            "shap_value": 0.7436440587043762,
+            "abs_shap_value": 0.7436440587043762,
+            "pct_contribution": 11.392828988849885
+          },
+          "dst2src_syn_packets": {
+            "shap_value": 0.32733866572380066,
+            "abs_shap_value": 0.32733866572380066,
+            "pct_contribution": 5.014917279816643
+          },
+          "dst2src_urg_packets": {
+            "shap_value": -0.0,
+            "abs_shap_value": 0.0,
+            "pct_contribution": 0.0
+          },
+          "bidirectional_fin_packets": {
+            "shap_value": 0.36450108885765076,
+            "abs_shap_value": 0.36450108885765076,
+            "pct_contribution": 5.584255697329024
+          },
+          "bidirectional_mean_ps": {
+            "shap_value": 0.16663815081119537,
+            "abs_shap_value": 0.16663815081119537,
+            "pct_contribution": 2.55294173736529
+          },
+          "bidirectional_rst_packets": {
+            "shap_value": 0.12237051874399185,
+            "abs_shap_value": 0.12237051874399185,
+            "pct_contribution": 1.8747495888773977
+          },
+          "bidirectional_urg_packets": {
+            "shap_value": -1.6947740732575767e-05,
+            "abs_shap_value": 1.6947740732575767e-05,
+            "pct_contribution": 0.00025964399184470337
+          },
+          "bidirectional_mean_piat_ms": {
+            "shap_value": 0.1026926040649414,
+            "abs_shap_value": 0.1026926040649414,
+            "pct_contribution": 1.573278590526125
+          },
+          "bidirectional_min_piat_ms": {
+            "shap_value": 0.004021571949124336,
+            "abs_shap_value": 0.004021571949124336,
+            "pct_contribution": 0.06161157471298123
+          },
+          "dst2src_mean_piat_ms": {
+            "shap_value": -0.028270265087485313,
+            "abs_shap_value": 0.028270265087485313,
+            "pct_contribution": 0.4331081407041949
+          },
+          "udps.bidirectional_duration_avg": {
+            "shap_value": 0.15048344433307648,
+            "abs_shap_value": 0.15048344433307648,
+            "pct_contribution": 2.3054472457251176
+          },
+          "bidirectional_bytes": {
+            "shap_value": -7.215122604975477e-05,
+            "abs_shap_value": 7.215122604975477e-05,
+            "pct_contribution": 0.0011053763828260245
+          },
+          "bidirectional_duration_ms": {
+            "shap_value": 0.11212298274040222,
+            "abs_shap_value": 0.11212298274040222,
+            "pct_contribution": 1.7177545535786751
+          },
+          "src2dst_bytes": {
+            "shap_value": 0.0007496566395275295,
+            "abs_shap_value": 0.0007496566395275295,
+            "pct_contribution": 0.011484943360366777
+          },
+          "src2dst_packets": {
+            "shap_value": -0.00020837652846239507,
+            "abs_shap_value": 0.00020837652846239507,
+            "pct_contribution": 0.003192385021132836
+          },
+          "udps.bidirectional_packet_count": {
+            "shap_value": 0.01968160644173622,
+            "abs_shap_value": 0.01968160644173622,
+            "pct_contribution": 0.30152755715847895
+          }
+        }
+      }
+    },
+    "timestamp": "2026-02-09T22:11:52.931455"
+  }
+]
