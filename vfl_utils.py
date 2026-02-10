@@ -9,6 +9,10 @@ This module contains:
 - Action formatting utilities
 """
 
+import json
+import re
+from pathlib import Path
+
 
 # ============================================================================
 # LABEL SIMPLIFICATION
@@ -104,6 +108,131 @@ ATTACK_ACTIONS = {
     'BOT': "bot detection: block bot IPs, implement CAPTCHA, rate limiting",
     'OTHERS': "safe response: alert + collect evidence + temporary throttling (not hard block)"
 }
+
+
+# ============================================================================
+# AGENT DEFINITIONS FROM JSON (agentic_features.json)
+# ============================================================================
+
+
+def _normalize_feature_name(name):
+    """Normalize for matching: lowercase, spaces to underscores."""
+    if not isinstance(name, str):
+        return name
+    return name.lower().strip().replace(" ", "_")
+
+
+def load_agent_definitions(json_path):
+    """
+    Load agent definitions from agentic_features.json (schema_version 1.0).
+    Expects: {"agents": {"RAN": {"description", "logged_features", "action_capabilities"}, ...}}.
+
+    Returns:
+        dict: {
+            "agent_names": ["RAN", "Edge", "Core"],
+            "agent_features": [list, list, list],  # 3 lists of feature names (logged_features)
+            "agent_domains": list of description strings,
+            "agent_actions": [list, list, list],   # action_capabilities per agent
+            "feature_categories": dict              # for compatibility
+        }
+    """
+    path = Path(json_path)
+    if not path.exists():
+        raise FileNotFoundError(f"Agent definitions file not found: {path}")
+    raw = json.loads(path.read_text(encoding="utf-8"))
+
+    agents = raw.get("agents") or {}
+    agent_order = ["RAN", "Edge", "Core"]
+    agent_names = [n for n in agent_order if n in agents]
+    agent_features = []
+    agent_domains = []
+    agent_actions = []
+    for name in agent_order:
+        a = agents.get(name) or {}
+        agent_features.append(list(a.get("logged_features") or []))
+        agent_domains.append(a.get("description") or name)
+        agent_actions.append(list(a.get("action_capabilities") or []))
+
+    feature_categories = {
+        "evidence_volume_rate": agent_features[0] if len(agent_features) > 0 else [],
+        "evidence_packet_size": agent_features[1] if len(agent_features) > 1 else [],
+        "evidence_timing_direction": agent_features[2] if len(agent_features) > 2 else [],
+    }
+    return {
+        "agent_names": agent_names,
+        "agent_features": agent_features,
+        "agent_domains": agent_domains,
+        "agent_actions": agent_actions,
+        "feature_categories": feature_categories,
+    }
+
+
+def load_attack_options(json_path):
+    """
+    Load attack options from attack_options.json (schema_version 1.0).
+    Expects: {"attacks": {"BENIGN": ["log only", ...], "DDOS": [...], ...}}.
+    Not used for splitting, training, or inference; for reference/display only.
+
+    Returns:
+        dict: {"schema_version": ..., "attacks": {attack_type: [action_strings]}}
+    """
+    path = Path(json_path)
+    if not path.exists():
+        return {"schema_version": "1.0", "attacks": {}}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def split_features_by_agent_definitions(dataset_columns, agent_definitions):
+    """
+    Split dataset columns into three agent feature lists using the loaded agent definitions.
+    Only features that exist in dataset_columns are included; order follows the JSON definition.
+    Matching is exact first, then normalized (lowercase, spaces to underscores) so JSON names
+    like "flow_id" can match dataset columns like "Flow ID".
+
+    Args:
+        dataset_columns: List of column names in the dataset (e.g. df.columns or all_features).
+        agent_definitions: dict from load_agent_definitions().
+
+    Returns:
+        tuple: (agent1_features, agent2_features, agent3_features, feature_categories)
+        - feature_categories is the same structure as in agent_definitions for compatibility.
+    """
+    agent_features = agent_definitions["agent_features"]
+    feature_categories = agent_definitions.get("feature_categories", {})
+    set_cols = set(dataset_columns)
+    # Normalized (lower, spaces->underscores) -> original column name for flexible matching
+    norm_to_col = {_normalize_feature_name(c): c for c in dataset_columns}
+
+    def resolve(f):
+        if f in set_cols:
+            return f
+        n = _normalize_feature_name(f)
+        return norm_to_col.get(n)
+
+    out = []
+    for feats in agent_features:
+        # Keep only features present in the dataset, preserve order from JSON
+        filtered = []
+        seen = set()
+        for f in feats:
+            c = resolve(f)
+            if c is not None and c not in seen:
+                filtered.append(c)
+                seen.add(c)
+        out.append(filtered)
+
+    # Ensure we have exactly 3 agents
+    while len(out) < 3:
+        out.append([])
+    agent1_features, agent2_features, agent3_features = out[0], out[1], out[2]
+
+    # Update feature_categories to reflect filtered lists (for reporting)
+    feature_categories = {
+        "evidence_volume_rate": agent1_features,
+        "evidence_packet_size": agent2_features,
+        "evidence_timing_direction": agent3_features,
+    }
+    return agent1_features, agent2_features, agent3_features, feature_categories
 
 
 # ============================================================================
