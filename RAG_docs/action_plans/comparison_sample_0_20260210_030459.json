@@ -1,0 +1,95 @@
+{
+  "sample_id": 0,
+  "prediction": {
+    "predicted_label": "DDOS",
+    "confidence": 0.9999997615814209
+  },
+  "comparison_metadata": {
+    "compared_at": "2026-02-10T03:04:59.471847",
+    "with_rag_file": "action_plan_sample_0_20260210_030459_463716.json",
+    "without_rag_file": "action_plan_noRAG_sample_0_20260210_030459_465661.json",
+    "rag_query": "\"DDOS mitigation strategies for RAN network tier focusing on high-impact features like udps.srcdst_rst_packet_count, udps.srcdst_syn_packet_count, and udps.syn_packet_count. Include best practices for handling high packet counts and UDP traffic management.\"",
+    "rag_documents_found": 4
+  },
+  "rag_context": {
+    "documents_used": 4,
+    "top_documents": [
+      {
+        "title": "What strategies can be employed to defend against DDoS attacks on cloud storage services?",
+        "similarity_score": 0.6394670944921007,
+        "text_preview": "To defend against DDoS (Distributed Denial of Service) attacks on cloud storage services, you can consider implementing the following strategies:\n\n1. **Use a CDN (Content Delivery Network):** A CDN ca..."
+      },
+      {
+        "title": "What are the common challenges faced in defending against DDoS attacks in cloud environments?",
+        "similarity_score": 0.6287196267348965,
+        "text_preview": "Defending against DDoS attacks in cloud environments presents several challenges:\n\n1. **Scale and Volume**: Cloud environments can be targeted with large-scale attacks that generate overwhelming traff..."
+      },
+      {
+        "title": "How can cloud providers use multi-tiered DDoS protection strategies to enhance security?",
+        "similarity_score": 0.6169095461634674,
+        "text_preview": "Multi-tiered DDoS protection strategies involve implementing several layers of defense to effectively mitigate distributed denial-of-service (DDoS) attacks. Cloud providers can enhance security using ..."
+      }
+    ]
+  },
+  "action_plans": {
+    "with_rag": {
+      "threat_level": "Critical",
+      "execution_priority": "Immediate",
+      "primary_actions": [
+        {
+          "action": "rate limiting",
+          "network_tier": "RAN",
+          "party_evidence_type": "dominant party contribution",
+          "reasoning": "The RAN has the highest contribution (80.6%) to the DDOS prediction, indicating that it is the most affected and should take immediate action to limit the rate of incoming traffic to mitigate the attack."
+        }
+      ],
+      "supporting_actions": [
+        {
+          "action": "traffic scrubbing",
+          "network_tier": "Edge",
+          "party_evidence_type": "supporting party contribution",
+          "reasoning": "The Edge tier can complement the RAN's rate limiting by filtering out malicious traffic before it reaches the core systems, thus enhancing overall network resilience against the DDOS attack."
+        }
+      ],
+      "reasoning": "",
+      "knowledge_sources_used": [
+        "allowed_actions_context",
+        "attack_actions_context"
+      ]
+    },
+    "without_rag": {
+      "threat_level": "Critical",
+      "execution_priority": "Immediate",
+      "primary_actions": [
+        {
+          "action": "rate limiting",
+          "network_tier": "Edge",
+          "reasoning": "Rate limiting is essential to control the volume of traffic and mitigate the impact of a DDOS attack, especially given the 100% confidence in the prediction."
+        },
+        {
+          "action": "traffic scrubbing",
+          "network_tier": "Core",
+          "reasoning": "Traffic scrubbing will help filter out malicious traffic, ensuring that legitimate traffic can still reach the network during the attack."
+        },
+        {
+          "action": "blackhole routing",
+          "network_tier": "Core",
+          "reasoning": "Blackhole routing can be employed to redirect all traffic to a null route, effectively dropping malicious traffic and protecting the network."
+        }
+      ],
+      "supporting_actions": [],
+      "reasoning": "The actions selected are directly aligned with mitigating a DDOS attack, which is critical given the 100% confidence level in the prediction. Immediate action is necessary to prevent service disruption.",
+      "knowledge_sources_used": [
+        "allowed_actions_context",
+        "publicly_available_online_sources"
+      ]
+    }
+  },
+  "differences": {
+    "threat_level_different": false,
+    "priority_different": false,
+    "primary_actions_different": true,
+    "num_primary_actions_with_rag": 1,
+    "num_primary_actions_without_rag": 3
+  }
+}

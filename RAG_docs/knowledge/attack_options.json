@@ -1,45 +1,72 @@
 {
-  "description": "Attack options for various classification.",
-  "ATTACK_ACTIONS": {
+  "schema_version": "1.0",
+  "attacks": {
     "BENIGN": [
-      "log only"
+      "log only",
+      "monitor"
     ],
     "DDOS": [
-      "traffic scrubbing",
       "rate limiting",
-      "IP blocking"
+      "traffic scrubbing",
+      "blackhole routing",
+      "ACL update",
+      "IP blocking",
+      "auto scale"
     ],
     "DOS": [
       "SYN cookies",
       "rate limiting",
-      "IP blocking"
+      "ACL update",
+      "IP blocking",
+      "connection limiting",
+      "traffic scrubbing"
     ],
     "SSHPATATOR": [
       "account lockout",
+      "MFA enforce",
+      "credential throttle",
+      "fail2ban block",
       "IP blocking",
-      "rate limiting"
+      "ACL update"
     ],
     "FTPPATATOR": [
       "account lockout",
+      "MFA enforce",
+      "credential throttle",
+      "fail2ban block",
       "IP blocking",
-      "rate limiting"
+      "ACL update"
     ],
     "PORTSCAN": [
       "IP blocking",
-      "rate limiting"
+      "rate limiting",
+      "tarpitting",
+      "ACL update",
+      "port hardening",
+      "scan threshold"
     ],
     "WEBATTACK": [
       "WAF rules",
+      "virtual patching",
       "IP blocking",
-      "rate limiting"
+      "rate limiting",
+      "ACL update",
+      "isolate service"
     ],
     "BOT": [
+      "CAPTCHA challenge",
       "rate limiting",
       "WAF rules",
-      "IP blocking"
+      "reputation filter",
+      "IP blocking",
+      "JS challenge"
     ],
     "OTHERS": [
       "rate limiting",
+      "ACL update",
+      "IP blocking",
+      "traffic scrubbing",
+      "isolate service",
       "log only"
     ]
   }
