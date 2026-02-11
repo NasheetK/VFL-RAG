@@ -23,6 +23,7 @@ sentence-transformers>=2.2.0
 
 # Additional utilities
 PyPDF2>=3.0.0
+pypdf>=3.0.0
 langgraph>=0.2.0
 
 # Scoring and evaluation libraries (for scoring_evaluation.ipynb)
