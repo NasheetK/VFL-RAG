@@ -1,0 +1,73 @@
+{
+  "reference_text": "Rate limiting on RAN. Rate limiting on Edge. Rate limiting on Core. Traffic scrubbing on Core. Blackhole routing on Core. ACL update on RAN. ACL update on Edge. ACL update on Core. IP blocking on RAN. IP blocking on Edge. IP blocking on Core.",
+  "total_files": 2,
+  "timestamp": "2026-02-10T15:59:08.701486",
+  "individual_scores": [
+    {
+      "file_name": "comparison_sample_0_20260210_152216.json",
+      "sample_id": 0,
+      "method": "with_rag",
+      "text": "The RAN is prioritized for the primary action due to its dominant contribution to the DDOS attack, followed by the Edge tier for supporting actions. The actions selected are aggressive due to the 100% confidence in the DDOS prediction, ensuring immediate mitigation efforts are taken to protect the network.",
+      "bleu": 0,
+      "rouge1": 0.04301075268817204,
+      "sbert_cosine": 0.5181505680084229,
+      "bertscore_precision": 0.8253936171531677,
+      "bertscore_recall": 0.8258234262466431,
+      "bertscore_f1": 0.825608491897583
+    },
+    {
+      "file_name": "comparison_sample_0_20260210_152216.json",
+      "sample_id": 0,
+      "method": "without_rag",
+      "text": "The attack is predicted with 100% confidence, indicating an imminent threat. The selected actions are appropriate for a DDoS attack, focusing on immediate mitigation.",
+      "bleu": 0.0034390830876337925,
+      "rouge1": 0.029411764705882356,
+      "sbert_cosine": 0.2832738161087036,
+      "bertscore_precision": 0.8323490619659424,
+      "bertscore_recall": 0.8068907856941223,
+      "bertscore_f1": 0.8194222450256348
+    },
+    {
+      "file_name": "comparison_sample_0_20260210_152945.json",
+      "sample_id": 0,
+      "method": "with_rag",
+      "text": "The RAN is prioritized for the primary action due to its dominant contribution to the DDOS attack, while the Edge supports this action by filtering traffic. The critical threat level and the 100% confidence in the DDOS prediction necessitate immediate action to mitigate the attack effectively.",
+      "bleu": 0,
+      "rouge1": 0.06666666666666665,
+      "sbert_cosine": 0.5534511208534241,
+      "bertscore_precision": 0.8290728330612183,
+      "bertscore_recall": 0.8357712626457214,
+      "bertscore_f1": 0.832408607006073
+    },
+    {
+      "file_name": "comparison_sample_0_20260210_152945.json",
+      "sample_id": 0,
+      "method": "without_rag",
+      "text": "The predicted DDoS attack is assessed as Critical due to the high confidence level. Immediate action is required to prevent service disruption.",
+      "bleu": 0,
+      "rouge1": 0.0,
+      "sbert_cosine": 0.33708086609840393,
+      "bertscore_precision": 0.8322555422782898,
+      "bertscore_recall": 0.7996649742126465,
+      "bertscore_f1": 0.8156347870826721
+    }
+  ],
+  "average_scores": {
+    "with_rag": {
+      "bleu": 0.0,
+      "rouge1": 0.05483870967741934,
+      "sbert_cosine": 0.5358008444309235,
+      "bertscore_precision": 0.827233225107193,
+      "bertscore_recall": 0.8307973444461823,
+      "bertscore_f1": 0.829008549451828
+    },
+    "without_rag": {
+      "bleu": 0.0017195415438168962,
+      "rouge1": 0.014705882352941178,
+      "sbert_cosine": 0.31017734110355377,
+      "bertscore_precision": 0.8323023021221161,
+      "bertscore_recall": 0.8032778799533844,
+      "bertscore_f1": 0.8175285160541534
+    }
+  }
+}
