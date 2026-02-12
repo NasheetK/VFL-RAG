@@ -1,0 +1,76 @@
+================================================================================
+MODEL COMPARISON REPORT
+================================================================================
+Generated: 2026-02-06 12:05:48
+
+DATASET INFORMATION
+--------------------------------------------------------------------------------
+Total Features: 88
+Number of Classes: 23
+Class Names: BACKDOOR, BENIGN, BOT, BROWSERH, COMMANDI, DDOS, DNS_SPOO, DOS, EXPLOITS, FTPPATATOR, FUZZERS, GENERIC, MIRAI-GR, MIRAI-UD, MITM-ARP, OTHERS, PORTSCAN, RECON-HO, SHELLCOD, SQLINJEC, SSHPATATOR, TFTP, XSS
+Train Size: 107772
+Validation Size: 26943
+Test Size: 33679
+
+================================================================================
+VFL MODEL RESULTS
+================================================================================
+Architecture: Vertical Federated Learning (3 parties)
+  - Embedding Dimension: 64
+  - Hidden Dimension: 128
+  - Number of Parties: 3
+  - Party 1 Features: 23
+  - Party 2 Features: 27
+  - Party 3 Features: 38
+
+Performance Metrics:
+  - Test Accuracy: 0.6075
+  - Macro Recall: 0.5613
+  - Macro F1: 0.4337
+  - Best Validation F1: 0.4403
+  - Best Validation Loss: 1.5201
+  - Best Epoch: 19
+
+Training Parameters:
+  - Epochs: 20
+  - Learning Rate: 0.002
+  - Class Weights: True
+  - Early Stop Patience: 20
+
+================================================================================
+STANDARD NEURAL NETWORK RESULTS
+================================================================================
+Architecture: Standard (Non-Federated) Neural Network
+  - Input Dimension: 88
+  - Hidden Dimensions: [256, 128, 64]
+
+Performance Metrics:
+  - Test Accuracy: 0.5897
+  - Macro Recall: 0.5307
+  - Macro F1: 0.4102
+  - Best Validation F1: 0.4110
+  - Best Validation Loss: 1.5521
+  - Best Epoch: 19
+
+Training Parameters:
+  - Epochs: 20
+  - Learning Rate: 0.002
+  - Class Weights: True
+  - Early Stop Patience: 20
+
+Note: Standard NN uses IDENTICAL training parameters as VFL for fair comparison
+
+================================================================================
+COMPARISON SUMMARY
+================================================================================
+Accuracy Difference (Standard_NN - VFL): -0.0178
+Recall Difference (Standard_NN - VFL): -0.0306
+F1 Difference (Standard_NN - VFL): -0.0235
+Validation F1 Difference (Standard_NN - VFL): -0.0293
+
+Best Performing Model:
+  - Best Accuracy: VFL
+  - Best F1 Score: VFL
+  - Best Recall: VFL
+
+================================================================================

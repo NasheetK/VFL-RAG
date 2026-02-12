@@ -1,0 +1,47 @@
+{
+  "sample_id": 1,
+  "prediction": {
+    "predicted_label": "DDOS",
+    "confidence": 0.9999557733535767
+  },
+  "rag_info": {
+    "documents_used": 0,
+    "search_method": "vector_similarity",
+    "search_queries": [
+      "Explain and mitigate a DDOS attack and provide SOC triage steps and mitigations."
+    ],
+    "top_results": []
+  },
+  "llm_action_plan": {
+    "threat_level": "Critical",
+    "primary_actions": [
+      {
+        "action": "Implement rate limiting to control incoming traffic volume.",
+        "party": "Party1",
+        "party_evidence_type": "evidence_volume_rate",
+        "rationale": "Party1 has the highest evidence volume rate, indicating a significant amount of incoming traffic that could overwhelm resources."
+      }
+    ],
+    "supporting_actions": [
+      {
+        "action": "Monitor packet sizes for anomalies and potential malicious patterns.",
+        "party": "Party2",
+        "party_evidence_type": "evidence_packet_size",
+        "rationale": "Although Party2's evidence packet size is currently at 0.00%, monitoring is crucial to detect any sudden changes that may indicate an attack."
+      },
+      {
+        "action": "Analyze timing and direction of traffic to identify attack patterns.",
+        "party": "Party3",
+        "party_evidence_type": "evidence_timing_direction",
+        "rationale": "Party3's evidence timing direction shows a significant percentage, which can help in understanding the attack's nature and timing."
+      }
+    ],
+    "reasoning": "Given the 100% confidence in the DDOS prediction, immediate action is required. Party1's evidence volume rate indicates a clear need for rate limiting to mitigate the attack. Supporting actions from Party2 and Party3 will help in further analysis and monitoring of the attack's characteristics.",
+    "execution_priority": "Immediate",
+    "knowledge_sources_used": [
+      "Threat Intelligence Reports",
+      "DDoS Attack Patterns Analysis"
+    ]
+  },
+  "processed_at": "2026-02-08T01:14:46.410074"
+}

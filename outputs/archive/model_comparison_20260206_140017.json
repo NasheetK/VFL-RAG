@@ -1,0 +1,86 @@
+{
+  "experiment_info": {
+    "timestamp": "20260206_140017",
+    "dataset_info": {
+      "total_features": 88,
+      "num_classes": 12,
+      "train_size": 2998790,
+      "val_size": 749698,
+      "test_size": 937123,
+      "class_names": [
+        "BENIGN",
+        "DOS",
+        "LDAP",
+        "MSSQL",
+        "NETBIOS",
+        "OTHERS",
+        "PORTMAP",
+        "SYN",
+        "TFTP",
+        "UDP",
+        "UDP-LAG",
+        "UDPLAG"
+      ]
+    }
+  },
+  "vfl_model": {
+    "model_type": "VFL",
+    "accuracy": 0.5648692861022513,
+    "macro_recall": 0.6837071731568608,
+    "macro_f1": 0.5284230515118502,
+    "best_val_f1": 0.5330748757608955,
+    "best_epoch": 99,
+    "best_val_loss": 0.4916940927505493,
+    "num_classes": 12,
+    "embed_dim": 64,
+    "hidden_dim": 128,
+    "num_parties": 3,
+    "train_size": 2998790,
+    "val_size": 749698,
+    "test_size": 937123,
+    "training_params": {
+      "epochs": 100,
+      "learning_rate": 0.001,
+      "use_class_weights": true,
+      "early_stop_patience": 20,
+      "min_delta": 0.001,
+      "eval_every": 5
+    }
+  },
+  "standard_nn_model": {
+    "model_type": "Standard_NN",
+    "accuracy": 0.5500579966557219,
+    "macro_recall": 0.6090373867895846,
+    "macro_f1": 0.46388706108628774,
+    "best_val_f1": 0.4606370014084002,
+    "best_epoch": 95,
+    "best_val_loss": 0.5130926370620728,
+    "num_classes": 12,
+    "input_dim": 88,
+    "hidden_dims": [
+      256,
+      128,
+      64
+    ],
+    "train_size": 2998790,
+    "val_size": 749698,
+    "test_size": 937123,
+    "training_params": {
+      "epochs": 100,
+      "learning_rate": 0.001,
+      "use_class_weights": true,
+      "early_stop_patience": 20,
+      "min_delta": 0.001,
+      "eval_every": 5
+    }
+  },
+  "comparison": {
+    "accuracy_diff": -0.01481128944652943,
+    "recall_diff": -0.07466978636727617,
+    "f1_diff": -0.06453599042556246,
+    "val_f1_diff": -0.07243787435249532,
+    "best_accuracy": "VFL",
+    "best_f1": "VFL",
+    "best_recall": "VFL"
+  }
+}

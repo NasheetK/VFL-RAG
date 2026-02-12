@@ -1,0 +1,83 @@
+{
+  "experiment_info": {
+    "timestamp": "20260209_214207",
+    "dataset_info": {
+      "total_features": 97,
+      "num_classes": 9,
+      "train_size": 249854,
+      "val_size": 62464,
+      "test_size": 78080,
+      "class_names": [
+        "BENIGN",
+        "BOT",
+        "DDOS",
+        "DOS",
+        "FTPPATATOR",
+        "OTHERS",
+        "PORTSCAN",
+        "SSHPATATOR",
+        "WEBATTACK"
+      ]
+    }
+  },
+  "vfl_model": {
+    "model_type": "VFL",
+    "accuracy": 0.9611552254098361,
+    "macro_recall": 0.9861457323839227,
+    "macro_f1": 0.865751098969767,
+    "best_val_f1": 0.8725536024718269,
+    "best_epoch": 99,
+    "best_val_loss": 0.039625030010938644,
+    "num_classes": 9,
+    "embed_dim": 64,
+    "hidden_dim": 128,
+    "num_agents": 3,
+    "train_size": 249854,
+    "val_size": 62464,
+    "test_size": 78080,
+    "training_params": {
+      "epochs": 100,
+      "learning_rate": 0.001,
+      "use_class_weights": true,
+      "early_stop_patience": 20,
+      "min_delta": 0.001,
+      "eval_every": 5
+    }
+  },
+  "standard_nn_model": {
+    "model_type": "Standard_NN",
+    "accuracy": 0.9619108606557377,
+    "macro_recall": 0.9858985013508378,
+    "macro_f1": 0.856176779011157,
+    "best_val_f1": 0.8568547509048948,
+    "best_epoch": 99,
+    "best_val_loss": 0.05162999406456947,
+    "num_classes": 9,
+    "input_dim": 97,
+    "hidden_dims": [
+      256,
+      128,
+      64
+    ],
+    "train_size": 249854,
+    "val_size": 62464,
+    "test_size": 78080,
+    "training_params": {
+      "epochs": 100,
+      "learning_rate": 0.001,
+      "use_class_weights": true,
+      "early_stop_patience": 20,
+      "min_delta": 0.001,
+      "eval_every": 5
+    }
+  },
+  "comparison": {
+    "accuracy_diff": 0.0007556352459016091,
+    "recall_diff": -0.0002472310330848826,
+    "f1_diff": -0.009574319958610022,
+    "val_f1_diff": -0.01569885156693207,
+    "best_accuracy": "Standard_NN",
+    "best_f1": "VFL",
+    "best_recall": "VFL"
+  }
+}
