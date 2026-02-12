@@ -1,0 +1,26 @@
+{
+  "sample_id": 8,
+  "prediction": {
+    "predicted_label": "BENIGN",
+    "confidence": 0.9652683734893799
+  },
+  "rag_info": {
+    "documents_used": 0,
+    "search_method": "vector_similarity",
+    "search_queries": [
+      "\"Mitigation actions for BENIGN cybersecurity threats in RAN network tier focusing on udps.srcdst_tcp_packet_count, udps.srcdst_rst_packet_count, and udps.srcdst_psh_packet_count. Strategies to reduce risks associated with high packet counts and improve network resilience.\""
+    ],
+    "top_results": []
+  },
+  "llm_action_plan": {
+    "threat_level": "Low",
+    "all_actions": [],
+    "primary_actions": [],
+    "overall_reasoning": "The prediction indicates a BENIGN outcome with high confidence (96.5%), suggesting no immediate threat or need for action.",
+    "execution_priority": "Low",
+    "knowledge_sources_used": [
+      "publicly_available_online_sources"
+    ]
+  },
+  "processed_at": "2026-02-11T02:56:34.632910"
+}

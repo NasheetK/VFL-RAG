@@ -1,0 +1,36 @@
+{
+  "sample_id": 6,
+  "prediction": {
+    "predicted_label": "DDOS",
+    "confidence": 0.9999998807907104
+  },
+  "rag_info": {
+    "documents_used": 0,
+    "search_method": "vector_similarity",
+    "search_queries": [
+      "\"Mitigation strategies for DDoS attacks targeting RAN network tier, focusing on high-impact features such as udps.srcdst_rst_packet_count, udps.fin_packet_count, and udps.syn_packet_count. Include best practices for managing packet counts and traffic patterns in RAN environments.\""
+    ],
+    "top_results": []
+  },
+  "llm_action_plan": {
+    "threat_level": "Critical",
+    "all_actions": [
+      "Rate Limiting",
+      "Traffic Filtering",
+      "DDoS Mitigation Service"
+    ],
+    "primary_actions": [
+      {
+        "action": "DDoS Mitigation Service",
+        "network_tier": "Core",
+        "reasoning": "Given the 100% confidence in a DDoS attack, deploying a DDoS Mitigation Service is essential to absorb and mitigate the attack traffic effectively."
+      }
+    ],
+    "overall_reasoning": "The predicted DDoS attack is assessed as Critical due to the high confidence level. Immediate action is necessary to protect network resources.",
+    "execution_priority": "Immediate",
+    "knowledge_sources_used": [
+      "publicly_available_online_sources"
+    ]
+  },
+  "processed_at": "2026-02-11T02:55:58.598972"
+}

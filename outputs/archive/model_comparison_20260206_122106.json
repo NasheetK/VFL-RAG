@@ -1,0 +1,97 @@
+{
+  "experiment_info": {
+    "timestamp": "20260206_122106",
+    "dataset_info": {
+      "total_features": 88,
+      "num_classes": 23,
+      "train_size": 107772,
+      "val_size": 26943,
+      "test_size": 33679,
+      "class_names": [
+        "BACKDOOR",
+        "BENIGN",
+        "BOT",
+        "BROWSERH",
+        "COMMANDI",
+        "DDOS",
+        "DNS_SPOO",
+        "DOS",
+        "EXPLOITS",
+        "FTPPATATOR",
+        "FUZZERS",
+        "GENERIC",
+        "MIRAI-GR",
+        "MIRAI-UD",
+        "MITM-ARP",
+        "OTHERS",
+        "PORTSCAN",
+        "RECON-HO",
+        "SHELLCOD",
+        "SQLINJEC",
+        "SSHPATATOR",
+        "TFTP",
+        "XSS"
+      ]
+    }
+  },
+  "vfl_model": {
+    "model_type": "VFL",
+    "accuracy": 0.7841681760147273,
+    "macro_recall": 0.7201239019086938,
+    "macro_f1": 0.6119297929207622,
+    "best_val_f1": 0.6088074100369668,
+    "best_epoch": 49,
+    "best_val_loss": 0.7634363770484924,
+    "num_classes": 23,
+    "embed_dim": 64,
+    "hidden_dim": 128,
+    "num_parties": 3,
+    "train_size": 107772,
+    "val_size": 26943,
+    "test_size": 33679,
+    "training_params": {
+      "epochs": 50,
+      "learning_rate": 0.002,
+      "use_class_weights": true,
+      "early_stop_patience": 20,
+      "min_delta": 0.001,
+      "eval_every": 5
+    }
+  },
+  "standard_nn_model": {
+    "model_type": "Standard_NN",
+    "accuracy": 0.7911458178687015,
+    "macro_recall": 0.697826161452519,
+    "macro_f1": 0.6010487677314952,
+    "best_val_f1": 0.6065902907698446,
+    "best_epoch": 49,
+    "best_val_loss": 0.7760740518569946,
+    "num_classes": 23,
+    "input_dim": 88,
+    "hidden_dims": [
+      256,
+      128,
+      64
+    ],
+    "train_size": 107772,
+    "val_size": 26943,
+    "test_size": 33679,
+    "training_params": {
+      "epochs": 50,
+      "learning_rate": 0.002,
+      "use_class_weights": true,
+      "early_stop_patience": 20,
+      "min_delta": 0.001,
+      "eval_every": 5
+    }
+  },
+  "comparison": {
+    "accuracy_diff": 0.0069776418539742036,
+    "recall_diff": -0.02229774045617483,
+    "f1_diff": -0.010881025189267035,
+    "val_f1_diff": -0.002217119267122203,
+    "best_accuracy": "Standard_NN",
+    "best_f1": "VFL",
+    "best_recall": "VFL"
+  }
+}

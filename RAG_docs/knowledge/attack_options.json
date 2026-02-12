@@ -2,72 +2,72 @@
   "schema_version": "1.0",
   "attacks": {
     "BENIGN": [
-      "log only",
-      "monitor"
+      "log incident",
+      "monitor traffic"
     ],
     "DDOS": [
-      "rate limiting",
-      "traffic scrubbing",
-      "blackhole routing",
-      "ACL update",
-      "IP blocking",
-      "auto scale"
+      "limit rate",
+      "enable scrubbing",
+      "blackhole route",
+      "update ACL",
+      "block IP",
+      "scale service"
     ],
     "DOS": [
-      "SYN cookies",
-      "rate limiting",
-      "ACL update",
-      "IP blocking",
-      "connection limiting",
-      "traffic scrubbing"
+      "enable syncookies",
+      "limit rate",
+      "connection limit",
+      "update ACL",
+      "block IP",
+      "enable scrubbing"
     ],
     "SSHPATATOR": [
-      "account lockout",
-      "MFA enforce",
-      "credential throttle",
+      "lock account",
+      "enforce MFA",
+      "throttle credentials",
       "fail2ban block",
-      "IP blocking",
-      "ACL update"
+      "block IP",
+      "update ACL"
     ],
     "FTPPATATOR": [
-      "account lockout",
-      "MFA enforce",
-      "credential throttle",
+      "lock account",
+      "enforce MFA",
+      "throttle credentials",
       "fail2ban block",
-      "IP blocking",
-      "ACL update"
+      "block IP",
+      "update ACL"
     ],
     "PORTSCAN": [
-      "IP blocking",
-      "rate limiting",
-      "tarpitting",
-      "ACL update",
-      "port hardening",
+      "block IP",
+      "limit rate",
+      "tarpit scan",
+      "update ACL",
+      "harden ports",
       "scan threshold"
     ],
     "WEBATTACK": [
-      "WAF rules",
-      "virtual patching",
-      "IP blocking",
-      "rate limiting",
-      "ACL update",
+      "apply WAF",
+      "virtual patch",
+      "block IP",
+      "limit rate",
+      "update ACL",
       "isolate service"
     ],
     "BOT": [
-      "CAPTCHA challenge",
-      "rate limiting",
-      "WAF rules",
+      "captcha challenge",
+      "limit rate",
+      "apply WAF",
       "reputation filter",
-      "IP blocking",
-      "JS challenge"
+      "block IP",
+      "js challenge"
     ],
     "OTHERS": [
-      "rate limiting",
-      "ACL update",
-      "IP blocking",
-      "traffic scrubbing",
+      "limit rate",
+      "update ACL",
+      "block IP",
+      "enable scrubbing",
       "isolate service",
-      "log only"
+      "log incident"
     ]
   }
 }

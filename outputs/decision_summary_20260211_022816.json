@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-02-11T02:28:16.136353",
+  "total_samples": 100,
+  "predictions": {
+    "BENIGN": 100,
+    "BOT": 0,
+    "DDOS": 0,
+    "DOS": 0,
+    "FTPPATATOR": 0,
+    "OTHERS": 0,
+    "PORTSCAN": 0,
+    "SSHPATATOR": 0,
+    "WEBATTACK": 0
+  },
+  "dominant_agents": {
+    "RAN": 86,
+    "Edge": 11,
+    "Core": 3
+  },
+  "accuracy": 1.0,
+  "correct_predictions": 100
+}

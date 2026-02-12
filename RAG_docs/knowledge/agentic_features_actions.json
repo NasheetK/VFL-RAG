@@ -2,7 +2,7 @@
   "schema_version": "1.1",
   "agents": {
     "RAN": {
-      "description": "Radio Access Network agent for access-side telemetry and low-latency containment close to user equipment.",
+      "description": "Radio Access Network agent focused on rapid containment and boundary enforcement close to user equipment, supporting incident response and communications protection objectives with low-latency policy enforcement.",
       "logged_features": [
         "udps.srcdst_rst_packet_count",
         "udps.srcdst_tcp_packet_count",
@@ -29,13 +29,15 @@
         "dst2src_duration_ms"
       ],
       "action_capabilities": [
-        "rate limiting",
-        "ACL update",
-        "IP blocking"
+        "limit rate",
+        "update ACL",
+        "block IP",
+        "monitor traffic",
+        "log incident"
       ]
     },
     "Edge": {
-      "description": "Edge/perimeter agent (e.g., gateway/firewall/IDS/WAF tier) for detailed inspection, local containment, and service protection.",
+      "description": "Edge/perimeter agent for detailed inspection and adaptive enforcement, implementing containment and access restriction actions and coordinating service protection using telemetry-driven policy controls.",
       "logged_features": [
         "src2dst_max_piat_ms",
         "src2dst_bytes",
@@ -71,16 +73,32 @@
         "udps.udp_packet_count"
       ],
       "action_capabilities": [
-        "rate limiting",
-        "IP blocking",
-        "SYN cookies",
-        "WAF rules",
-        "account lockout",
-        "ACL update"
+        "limit rate",
+        "block IP",
+        "enable syncookies",
+        "apply WAF",
+        "lock account",
+        "update ACL",
+        "captcha challenge",
+        "js challenge",
+        "reputation filter",
+        "virtual patch",
+        "isolate service",
+        "fail2ban block",
+        "throttle credentials",
+        "enforce MFA",
+        "tarpit scan",
+        "scan threshold",
+        "harden ports",
+        "connection limit",
+        "enable scrubbing",
+        "scale service",
+        "monitor traffic",
+        "log incident"
       ]
     },
     "Core": {
-      "description": "Core/backbone agent for network-wide telemetry aggregation and high-impact controls to protect core capacity.",
+      "description": "Core/backbone agent for network-wide containment, resilience, and high-impact traffic controls, supporting coordinated incident response actions and centralized policy decision with distributed enforcement.",
       "logged_features": [
         "bidirectional_min_ps",
         "bidirectional_packets",
@@ -126,12 +144,17 @@
         "udps.bidirectional_packet_count"
       ],
       "action_capabilities": [
-        "traffic scrubbing",
-        "blackhole routing",
-        "ACL update",
-        "rate limiting",
-        "IP blocking",
-        "SYN cookies"
+        "enable scrubbing",
+        "blackhole route",
+        "update ACL",
+        "limit rate",
+        "block IP",
+        "enable syncookies",
+        "connection limit",
+        "scale service",
+        "isolate service",
+        "monitor traffic",
+        "log incident"
       ]
     }
   }
