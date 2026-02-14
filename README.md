@@ -23,6 +23,35 @@ This project implements a **next-generation 5G networking security system** powe
 - **Agentic Reasoning**: Intelligent LLM-powered action planning using RAG (Retrieval-Augmented Generation)
 - **High Performance**: >96% test accuracy on standardized intrusion detection datasets
 
+## 📁 Project Structure
+
+```
+AgenticAI/
+├── datasets/              # Dataset CSV files
+├── model/                 # Trained models (created after training)
+│   ├── vfl_model_best.pth
+│   ├── meta_model_best.pth
+│   ├── model_metadata.json
+│   └── scaler*.pkl
+├── utils/                 # Core modules
+│   ├── __init__.py
+│   ├── model.py          # Model definitions
+│   └── vfl_utils.py      # Utility functions
+├── RAG_docs/             # RAG knowledge base
+│   ├── agentic_features.json
+│   ├── attack_options.json
+│   ├── knowledge/        # PDF knowledge base
+│   └── vector_store/     # FAISS vector store
+├── outputs/              # Training outputs
+├── inputs/               # Input data for prediction
+├── Documents/            # Project documentation and guides
+├── VFL_SHAP_MultiClass.ipynb
+├── VFL_SHAP_Prediction.ipynb
+├── RAG_LLM_action_plan.ipynb
+├── scoring_evaluation.ipynb
+└── requirements.txt
+```
+
 ## 🚀 Quick Start
 
 ### System Requirements
@@ -63,16 +92,7 @@ python -c "import nltk; nltk.download('punkt')"
 
 ### Dataset Setup
 
-**UM-NIDS Dataset (Unified Multimodal Network Intrusion Detection Systems Dataset)**:
-- **Source**: [IEEE DataPort - UM-NIDS Dataset](https://ieee-dataport.org/documents/unified-multimodal-network-intrusion-detection-systems-dataset)
-- **Description**: Comprehensive, standardized dataset integrating network flow data from multiple well-established datasets including CIC-IDS 2017
-- **Dataset Used**: Undersampled version of CIC-IDS 2017 dataset
-- **File**: `undersampled_CIC2017_dataset.csv`
-- **Processing**: 88 features (from original 120, 32 removed for 5G observability)
-- **Size**: ~390,000 labeled flow records
-- **Classes**: 9 attack types (BENIGN, BOT, DDOS, DOS, FTPPATATOR, OTHERS, PORTSCAN, SSHPATATOR, WEBATTACK)
-
-**Setup**:
+**Quick Setup**:
 ```bash
 # Create datasets directory
 mkdir datasets
@@ -90,10 +110,7 @@ dir datasets\*.csv  # Windows
 ls datasets/*.csv   # Linux/macOS
 ```
 
-**Note**: 
-- IEEE DataPort subscription required for dataset access
-- The project uses the undersampled version for faster experimentation
-- For full evaluation, use the complete standardized CIC-IDS 2017 dataset from UM-NIDS
+**Note**: IEEE DataPort subscription required. See [Dataset section](#-dataset) below for detailed information and download instructions.
 
 ### Configuration
 
@@ -125,7 +142,7 @@ VFL_SHAP_MultiClass.ipynb  →  VFL_SHAP_Prediction.ipynb  →  RAG_LLM_action_p
 
 ### 1. VFL_SHAP_MultiClass.ipynb (Training)
 
-**Purpose**: Train VFL and centralized baseline models
+**Purpose**: Train VFL and standard neural network baseline models
 
 **Why**: Builds the core intrusion detection models with privacy-preserving federated learning
 
@@ -133,7 +150,7 @@ VFL_SHAP_MultiClass.ipynb  →  VFL_SHAP_Prediction.ipynb  →  RAG_LLM_action_p
 - Loads `undersampled_CIC2017_dataset.csv` from `datasets/` directory
 - Partitions features into RAN (23), Edge (32), Core (42) agents
 - Trains VFL model with vertical federated learning
-- Trains centralized baseline for comparison
+- Trains standard neural network baseline for comparison
 - Trains meta-model for efficient SHAP computation
 - Computes SHAP values for explainability
 - Generates agent-level attributions and mitigation recommendations
@@ -364,7 +381,7 @@ Iman Sharafaldin, Arash Habibi Lashkari, and Ali A. Ghorbani,
 | Model | Accuracy | Macro Recall | Macro F1 |
 |-------|----------|--------------|----------|
 | **VFL** | 0.9617 | 0.9864 | 0.8594 |
-| **Centralized** | 0.9643 | 0.9863 | 0.8734 |
+| **Standard NN** | 0.9643 | 0.9863 | 0.8734 |
 
 **Key Finding**: VFL achieves comparable performance (<0.3% difference) while maintaining data privacy.
 
@@ -373,34 +390,6 @@ Iman Sharafaldin, Arash Habibi Lashkari, and Ali A. Ghorbani,
 - **RAN**: 32.14% mean contribution
 - **Edge**: 39.25% mean contribution  
 - **Core**: 28.61% mean contribution
-
-## 📁 Project Structure
-
-```
-AgenticAI/
-├── datasets/              # Dataset CSV files
-├── model/                 # Trained models (created after training)
-│   ├── vfl_model_best.pth
-│   ├── meta_model_best.pth
-│   ├── model_metadata.json
-│   └── scaler*.pkl
-├── utils/                 # Core modules
-│   ├── __init__.py
-│   ├── model.py          # Model definitions
-│   └── vfl_utils.py      # Utility functions
-├── RAG_docs/             # RAG knowledge base
-│   ├── agentic_features.json
-│   ├── attack_options.json
-│   ├── knowledge/        # PDF knowledge base
-│   └── vector_store/     # FAISS vector store
-├── outputs/              # Training outputs
-├── inputs/               # Input data for prediction
-├── VFL_SHAP_MultiClass.ipynb
-├── VFL_SHAP_Prediction.ipynb
-├── RAG_LLM_action_plan.ipynb
-├── scoring_evaluation.ipynb
-└── requirements.txt
-```
 
 ## 🔧 Troubleshooting
 
