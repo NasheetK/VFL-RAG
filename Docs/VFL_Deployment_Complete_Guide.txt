@@ -698,8 +698,8 @@ RAG needs well-structured documents:
 - outputs/vfl_shap_mitigation_summary.txt (Attack-specific actions)
 - outputs/vfl_shap_global_summary.csv (Party contributions)
 - outputs/vfl_shap_agent_mitigation_summary.csv (Agent recommendations)
-- Docs/NIST_CSF_Mappings.md (Framework mappings)
-- Docs/OWASP_Mappings.md (OWASP controls)
+- documentations/NIST_CSF_Mappings.md (Framework mappings)
+- documentations/OWASP_Mappings.md (OWASP controls)
 - summary/vfl_shap_*_summary.csv (Per-class summaries)
 
 Coordinator generates and structures these documents
@@ -774,12 +774,12 @@ Coordinator provides all of this
    - Class-specific party contributions
    - Attack-type specific insights
 
-5. Docs/NIST_CSF_Mappings.md
+5. documentations/NIST_CSF_Mappings.md
    - NIST Cybersecurity Framework mappings
    - Function, category, and control mappings
    - Reference URLs
 
-6. Docs/OWASP_Mappings.md
+6. documentations/OWASP_Mappings.md
    - OWASP Top 10 mappings
    - Application security controls
    - Best practices
