@@ -1,0 +1,83 @@
+{
+  "experiment_info": {
+    "timestamp": "20260222_123606",
+    "dataset_info": {
+      "total_features": 97,
+      "num_classes": 9,
+      "train_size": 249854,
+      "val_size": 62464,
+      "test_size": 78080,
+      "class_names": [
+        "BENIGN",
+        "BOT",
+        "DDOS",
+        "DOS",
+        "FTPPATATOR",
+        "OTHERS",
+        "PORTSCAN",
+        "SSHPATATOR",
+        "WEBATTACK"
+      ]
+    }
+  },
+  "vfl_model": {
+    "model_type": "VFL",
+    "accuracy": 0.9627561475409836,
+    "macro_recall": 0.9860911926819309,
+    "macro_f1": 0.8633152700278157,
+    "best_val_f1": 0.8722196356618607,
+    "best_epoch": 95,
+    "best_val_loss": 0.047182872891426086,
+    "num_classes": 9,
+    "embed_dim": 64,
+    "hidden_dim": 128,
+    "num_agents": 3,
+    "train_size": 249854,
+    "val_size": 62464,
+    "test_size": 78080,
+    "training_params": {
+      "epochs": 100,
+      "learning_rate": 0.001,
+      "use_class_weights": true,
+      "early_stop_patience": 20,
+      "min_delta": 0.001,
+      "eval_every": 5
+    }
+  },
+  "standard_nn_model": {
+    "model_type": "Standard_NN",
+    "accuracy": 0.9614241803278688,
+    "macro_recall": 0.9829423281160933,
+    "macro_f1": 0.8616997282073933,
+    "best_val_f1": 0.8630029649914723,
+    "best_epoch": 99,
+    "best_val_loss": 0.044026929885149,
+    "num_classes": 9,
+    "input_dim": 97,
+    "hidden_dims": [
+      256,
+      128,
+      64
+    ],
+    "train_size": 249854,
+    "val_size": 62464,
+    "test_size": 78080,
+    "training_params": {
+      "epochs": 100,
+      "learning_rate": 0.001,
+      "use_class_weights": true,
+      "early_stop_patience": 20,
+      "min_delta": 0.001,
+      "eval_every": 5
+    }
+  },
+  "comparison": {
+    "accuracy_diff": -0.001331967213114793,
+    "recall_diff": -0.003148864565837628,
+    "f1_diff": -0.0016155418204224503,
+    "val_f1_diff": -0.009216670670388338,
+    "best_accuracy": "VFL",
+    "best_f1": "VFL",
+    "best_recall": "VFL"
+  }
+}

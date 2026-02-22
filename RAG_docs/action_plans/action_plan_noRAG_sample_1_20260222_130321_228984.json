@@ -1,0 +1,36 @@
+{
+  "sample_id": 1,
+  "prediction": {
+    "predicted_label": "DDOS",
+    "confidence": 0.9999866485595703
+  },
+  "rag_info": {
+    "documents_used": 0,
+    "search_method": "vector_similarity",
+    "search_queries": [
+      "\"DDOS mitigation strategies for RAN network tier focusing on high-impact features such as udps.rst_packet_count, udps.srcdst_rst_packet_count, and udps.syn_packet_count. Include best practices for handling high packet counts and traffic anomalies.\""
+    ],
+    "top_results": []
+  },
+  "llm_action_plan": {
+    "threat_level": "Critical",
+    "all_actions": [
+      "Rate Limiting",
+      "Traffic Filtering",
+      "Incident Response"
+    ],
+    "primary_actions": [
+      {
+        "action": "Traffic Filtering",
+        "network_tier": "Core",
+        "reasoning": "Traffic filtering is essential to mitigate the impact of a DDOS attack by blocking malicious traffic at the network core."
+      }
+    ],
+    "overall_reasoning": "Given the 100% confidence in the DDOS prediction, immediate and effective mitigation actions are necessary to prevent service disruption.",
+    "execution_priority": "Immediate",
+    "knowledge_sources_used": [
+      "publicly_available_online_sources"
+    ]
+  },
+  "processed_at": "2026-02-22T13:03:21.228913"
+}
