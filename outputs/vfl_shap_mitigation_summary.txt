@@ -5,7 +5,7 @@ AGENTIC MITIGATION RECOMMENDATIONS (Attack-Type Specific)
 
 BENIGN (Attack Type: BENIGN):
   Dominant Agent: Edge (Edge/perimeter agent for detailed inspection and adaptive enforcement, implementing containment and access restriction actions and coordinating service protection using telemetry-driven policy controls.)
-  Contribution: 39.12%
+  Contribution: 37.45%
 
 ================================================================================
 BENIGN Attack - Mitigation Recommendations
@@ -13,25 +13,25 @@ BENIGN Attack - Mitigation Recommendations
 
 PRIMARY MITIGATION (Detected by dominant agent):
 
-   Edge (39.12% contribution) - PRIMARY MITIGATION:
+   Edge (37.45% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • No action
      • log only
 
 SUPPORTING MONITORING (Other agents):
 
-   RAN (33.97% contribution):
+   RAN (35.06% contribution):
      Action: monitor volume/rate patterns and alert
      Status:  Monitoring mode - No active mitigation
 
-   Core (26.90% contribution):
+   Core (27.50% contribution):
      Action: monitor timing/direction patterns and alert
      Status:  Monitoring mode - No active mitigation
 
 
 BOT (Attack Type: BOT):
   Dominant Agent: Edge (Edge/perimeter agent for detailed inspection and adaptive enforcement, implementing containment and access restriction actions and coordinating service protection using telemetry-driven policy controls.)
-  Contribution: 62.33%
+  Contribution: 78.86%
 
 ================================================================================
 BOT Attack - Mitigation Recommendations
@@ -39,7 +39,7 @@ BOT Attack - Mitigation Recommendations
 
 PRIMARY MITIGATION (Detected by dominant agent):
 
-   Edge (62.33% contribution) - PRIMARY MITIGATION:
+   Edge (78.86% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • bot detection: block bot IPs
      • implement CAPTCHA
@@ -47,18 +47,18 @@ PRIMARY MITIGATION (Detected by dominant agent):
 
 SUPPORTING MONITORING (Other agents):
 
-   RAN (23.50% contribution):
+   RAN (21.14% contribution):
      Action: monitor volume/rate patterns and alert
      Status:  Monitoring mode - No active mitigation
 
-   Core (14.17% contribution):
+   Core (0.00% contribution):
      Action: monitor timing/direction patterns and alert
      Status:  Monitoring mode - No active mitigation
 
 
 DDOS (Attack Type: DDOS):
-  Dominant Agent: Core (Core/backbone agent for network-wide containment, resilience, and high-impact traffic controls, supporting coordinated incident response actions and centralized policy decision with distributed enforcement.)
-  Contribution: 37.88%
+  Dominant Agent: Edge (Edge/perimeter agent for detailed inspection and adaptive enforcement, implementing containment and access restriction actions and coordinating service protection using telemetry-driven policy controls.)
+  Contribution: 35.13%
 
 ================================================================================
 DDOS Attack - Mitigation Recommendations
@@ -66,7 +66,7 @@ DDOS Attack - Mitigation Recommendations
 
 PRIMARY MITIGATION (Detected by dominant agent):
 
-   Core (37.88% contribution) - PRIMARY MITIGATION:
+   Edge (35.13% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • Rate Limiting: Limit incoming request rate per IP/connection
      • SYN cookies
@@ -77,18 +77,18 @@ PRIMARY MITIGATION (Detected by dominant agent):
 
 SUPPORTING MONITORING (Other agents):
 
-   RAN (28.40% contribution):
+   RAN (31.37% contribution):
      Action: rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers
      Status:  Monitoring mode - No active mitigation
 
-   Edge (33.71% contribution):
+   Core (33.50% contribution):
      Action: monitor timing/direction patterns and alert
      Status:  Monitoring mode - No active mitigation
 
 
 DOS (Attack Type: DOS):
   Dominant Agent: Edge (Edge/perimeter agent for detailed inspection and adaptive enforcement, implementing containment and access restriction actions and coordinating service protection using telemetry-driven policy controls.)
-  Contribution: 39.63%
+  Contribution: 36.80%
 
 ================================================================================
 DOS Attack - Mitigation Recommendations
@@ -96,7 +96,7 @@ DOS Attack - Mitigation Recommendations
 
 PRIMARY MITIGATION (Detected by dominant agent):
 
-   Edge (39.63% contribution) - PRIMARY MITIGATION:
+   Edge (36.80% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • Rate Limiting: Limit incoming request rate per IP/connection
      • SYN cookies
@@ -107,18 +107,18 @@ PRIMARY MITIGATION (Detected by dominant agent):
 
 SUPPORTING MONITORING (Other agents):
 
-   RAN (34.16% contribution):
+   RAN (30.34% contribution):
      Action: rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers
      Status:  Monitoring mode - No active mitigation
 
-   Core (26.22% contribution):
+   Core (32.86% contribution):
      Action: monitor timing/direction patterns and alert
      Status:  Monitoring mode - No active mitigation
 
 
 FTPPATATOR (Attack Type: FTPPATATOR):
   Dominant Agent: RAN (Radio Access Network agent focused on rapid containment and boundary enforcement close to user equipment, supporting incident response and communications protection objectives with low-latency policy enforcement.)
-  Contribution: 52.26%
+  Contribution: 69.14%
 
 ================================================================================
 FTPPATATOR Attack - Mitigation Recommendations
@@ -126,7 +126,7 @@ FTPPATATOR Attack - Mitigation Recommendations
 
 PRIMARY MITIGATION (Detected by dominant agent):
 
-   RAN (52.26% contribution) - PRIMARY MITIGATION:
+   RAN (69.14% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • Fail2Ban: Automatically ban IPs after failed login attempts
      • Account Lockout: Lock accounts after multiple failed attempts
@@ -135,18 +135,18 @@ PRIMARY MITIGATION (Detected by dominant agent):
 
 SUPPORTING MONITORING (Other agents):
 
-   Edge (6.86% contribution):
+   Edge (6.34% contribution):
      Action: brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation
      Status:  Monitoring mode - No active mitigation
 
-   Core (40.87% contribution):
+   Core (24.53% contribution):
      Action: brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation
      Status:  Monitoring mode - No active mitigation
 
 
 PORTSCAN (Attack Type: PORTSCAN):
   Dominant Agent: Edge (Edge/perimeter agent for detailed inspection and adaptive enforcement, implementing containment and access restriction actions and coordinating service protection using telemetry-driven policy controls.)
-  Contribution: 38.76%
+  Contribution: 36.36%
 
 ================================================================================
 PORTSCAN Attack - Mitigation Recommendations
@@ -154,7 +154,7 @@ PORTSCAN Attack - Mitigation Recommendations
 
 PRIMARY MITIGATION (Detected by dominant agent):
 
-   Edge (38.76% contribution) - PRIMARY MITIGATION:
+   Edge (36.36% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • scan detection: block scanner IP
      • Tarpitting: Slow down scanner responses to waste attacker time
@@ -162,18 +162,18 @@ PRIMARY MITIGATION (Detected by dominant agent):
 
 SUPPORTING MONITORING (Other agents):
 
-   RAN (28.89% contribution):
+   RAN (32.63% contribution):
      Action: monitor volume/rate patterns and alert
      Status:  Monitoring mode - No active mitigation
 
-   Core (32.36% contribution):
+   Core (31.01% contribution):
      Action: scan detection: block scanner IP, tarpitting, tighten firewall rules
      Status:  Monitoring mode - No active mitigation
 
 
 SSHPATATOR (Attack Type: SSHPATATOR):
   Dominant Agent: RAN (Radio Access Network agent focused on rapid containment and boundary enforcement close to user equipment, supporting incident response and communications protection objectives with low-latency policy enforcement.)
-  Contribution: 60.16%
+  Contribution: 48.97%
 
 ================================================================================
 SSHPATATOR Attack - Mitigation Recommendations
@@ -181,7 +181,7 @@ SSHPATATOR Attack - Mitigation Recommendations
 
 PRIMARY MITIGATION (Detected by dominant agent):
 
-   RAN (60.16% contribution) - PRIMARY MITIGATION:
+   RAN (48.97% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • Fail2Ban: Automatically ban IPs after failed login attempts
      • Account Lockout: Lock accounts after multiple failed attempts
@@ -190,18 +190,18 @@ PRIMARY MITIGATION (Detected by dominant agent):
 
 SUPPORTING MONITORING (Other agents):
 
-   Edge (28.95% contribution):
+   Edge (25.54% contribution):
      Action: brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation
      Status:  Monitoring mode - No active mitigation
 
-   Core (10.89% contribution):
+   Core (25.49% contribution):
      Action: brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation
      Status:  Monitoring mode - No active mitigation
 
 
 WEBATTACK (Attack Type: WEBATTACK):
   Dominant Agent: RAN (Radio Access Network agent focused on rapid containment and boundary enforcement close to user equipment, supporting incident response and communications protection objectives with low-latency policy enforcement.)
-  Contribution: 72.85%
+  Contribution: 71.73%
 
 ================================================================================
 WEBATTACK Attack - Mitigation Recommendations
@@ -209,7 +209,7 @@ WEBATTACK Attack - Mitigation Recommendations
 
 PRIMARY MITIGATION (Detected by dominant agent):
 
-   RAN (72.85% contribution) - PRIMARY MITIGATION:
+   RAN (71.73% contribution) - PRIMARY MITIGATION:
      Recommended Actions:
      • WAF rules
      • Block Patterns: Block known attack patterns
@@ -218,10 +218,10 @@ PRIMARY MITIGATION (Detected by dominant agent):
 
 SUPPORTING MONITORING (Other agents):
 
-   Edge (13.61% contribution):
+   Edge (9.76% contribution):
      Action: monitor timing/direction patterns and alert
      Status:  Monitoring mode - No active mitigation
 
-   Core (13.54% contribution):
+   Core (18.51% contribution):
      Action: monitor timing/direction patterns and alert
      Status:  Monitoring mode - No active mitigation
