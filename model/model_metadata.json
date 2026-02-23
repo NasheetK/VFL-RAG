@@ -185,12 +185,12 @@
     "scaler3_path": "model\\scaler3.pkl"
   },
   "training_info": {
-    "best_epoch": 95,
-    "best_val_f1": 0.8722196356618607,
-    "best_val_loss": 0.047182872891426086,
-    "test_accuracy": 0.9627561475409836,
-    "test_recall": 0.9860911926819309,
-    "test_f1": 0.8633152700278157
+    "best_epoch": 99,
+    "best_val_f1": 0.8732299123333077,
+    "best_val_loss": 0.04092324152588844,
+    "test_accuracy": 0.9637423155737705,
+    "test_recall": 0.9865065707142501,
+    "test_f1": 0.8713203712421778
   },
-  "saved_timestamp": "2026-02-22T12:46:09.762344"
+  "saved_timestamp": "2026-02-22T16:19:35.029774"
 }
