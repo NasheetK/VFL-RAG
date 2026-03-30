@@ -1,34 +1,73 @@
-# Core ML/DL libraries
-pandas>=1.5.0
+# VFL-RAG: VFL/SHAP training & prediction, RAG vector store + LLM action plans, scoring notebooks
+# Install: pip install -r requirements.txt
+
+# -----------------------------------------------------------------------------
+# Core numerics & tables
+# -----------------------------------------------------------------------------
 numpy>=1.23.0
-torch>=2.0.0  # Required for StandardNeuralNetwork, VFLModel, and all model classes in utils.model
+pandas>=1.5.0
+joblib>=1.2.0
+
+# -----------------------------------------------------------------------------
+# Deep learning (VFL_SHAP_*.ipynb, utils.model_utils, RAG summarization GPU)
+# -----------------------------------------------------------------------------
+torch>=2.0.0
+
+# -----------------------------------------------------------------------------
+# ML, explainability, training (VFL_SHAP_MultiClass / VFL_SHAP_Prediction)
+# -----------------------------------------------------------------------------
 scikit-learn>=1.2.0
 shap>=0.42.0
 
-# RAG and LLM libraries (for RAG_LLM_action_plan.ipynb)
+# -----------------------------------------------------------------------------
+# Notebooks: progress bars & widgets (tqdm, Hugging Face downloads, SHAP)
+# -----------------------------------------------------------------------------
+tqdm>=4.65.0
+ipywidgets>=8.0.0
+
+# -----------------------------------------------------------------------------
+# Environment & LLM APIs (RAG Part 2, optional LLM titles in rag_index_build)
+# -----------------------------------------------------------------------------
 python-dotenv>=1.0.0
 openai>=1.0.0
 
-# LangChain packages (modular structure for langchain>=0.3.0)
+# -----------------------------------------------------------------------------
+# LangChain RAG (RAG_part1 / RAG_part2: FAISS, loaders, splitters, embeddings)
+# On Python 3.14+, LangChain still touches pydantic.v1 and triggers a UserWarning;
+# utils/rag_utils.py, utils/rag_index_build.py, and Part 1 notebook register a
+# narrow filter before importing LangChain. For a fully supported stack, use Python 3.12–3.13.
+# -----------------------------------------------------------------------------
 langchain>=0.3.0
 langchain-core>=0.1.0
 langchain-community>=0.0.1
 langchain-openai>=0.2.0
 langchain-text-splitters>=0.0.1
 
-# Vector store and embeddings
+# -----------------------------------------------------------------------------
+# Vector store & sentence embeddings (FAISS index, MiniLM, etc.)
+# -----------------------------------------------------------------------------
 faiss-cpu>=1.7.4
-# For GPU support (optional): faiss-gpu>=1.7.4
+# Optional GPU FAISS: pip install faiss-gpu>=1.7.4
 sentence-transformers>=2.2.0
 
-# Additional utilities
-PyPDF2>=3.0.0
-pypdf>=3.0.0
-langgraph>=0.2.0
+# -----------------------------------------------------------------------------
+# Hugging Face (local summarization titles: distilbart; pulled by sentence-transformers)
+# -----------------------------------------------------------------------------
+transformers>=4.36.0
+huggingface-hub>=0.20.0
+safetensors>=0.4.0
+protobuf>=3.20.0
 
-# Scoring and evaluation libraries (for scoring_evaluation.ipynb)
+# -----------------------------------------------------------------------------
+# PDF knowledge base (PyPDFLoader / rag_index_build section extract)
+# -----------------------------------------------------------------------------
+pypdf>=3.0.0
+
+# -----------------------------------------------------------------------------
+# Scoring_Evaluation.ipynb (BERTScore, BLEU/NLTK, ROUGE, SBERT cosine)
+# -----------------------------------------------------------------------------
 matplotlib>=3.7.0
 seaborn>=0.12.0
 bert-score>=0.3.13
 nltk>=3.8.0
-rouge>=1.0.1
+rouge-score>=0.1.2
