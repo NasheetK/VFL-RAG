@@ -3,7 +3,7 @@ Utils package for VFL SHAP Multi-Class Network Intrusion Detection.
 Contains model definitions and utility functions.
 """
 
-from .model import (
+from .model_utils import (
     LocalEncoder,
     ActiveClassifier,
     VFLModel,

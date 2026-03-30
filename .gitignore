@@ -12,6 +12,7 @@ ENV/
 env/
 
 # IDE
+.cursor/
 .vscode/
 .idea/
 *.swp
@@ -25,6 +26,7 @@ env/
 
 # Vector store
 vectorstore/
+RAG_docs/vector_store/
 *.index
 
 # Logs
