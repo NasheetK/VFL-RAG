@@ -51,6 +51,11 @@ faiss-cpu>=1.7.4
 sentence-transformers>=2.2.0
 
 # -----------------------------------------------------------------------------
+# Reranking (Part 2 retrieval pipeline) - REQUIRED
+# -----------------------------------------------------------------------------
+ragatouille
+
+# -----------------------------------------------------------------------------
 # Hugging Face (local summarization titles: distilbart; pulled by sentence-transformers)
 # -----------------------------------------------------------------------------
 transformers>=4.36.0
