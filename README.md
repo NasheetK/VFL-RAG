@@ -249,8 +249,15 @@ jupyter notebook RAG_part1_build_vector_store.ipynb
 
 **What it does**:
 - **Loads** the saved FAISS index and parent store from Part 1 only (does not re-read `RAG_docs/knowledge/`)
-- Builds an LLM-based search query per sample, runs similarity search, composes prompts
-- Calls OpenAI for with-RAG and without-RAG plans; writes JSON under `RAG_docs/action_plans/`
+- Generates retrieval queries per sample (deterministic template, deterministic rephrase, optional LLM variants; configurable)
+- Runs a **multi-stage retrieval/ranking pipeline** before calling the LLM:
+  - Fetch **20 child chunks per query**
+  - **Merge + dedupe** candidates (prefers `(parent_id, child_index)` chunk identity)
+  - **MMR** diversity selection to reduce redundancy
+  - **REQUIRED CrossEncoder + ColBERT** reranking (no fallback; errors clearly if reranker libs/models are missing)
+  - Expand top-ranked child chunks into **parent** contextual sections
+  - Pass the **top 5 unique full-text sections** into the LLM prompt as RAG context
+- Calls OpenAI once per sample and writes one action plan JSON under `RAG_docs/action_plans/`
 
 **Shared code**: `utils/rag_utils.py` (predictions/config loaders, FAISS save/load + manifest, party/tier helpers + action-plan JSON saves). KB file loading and index build are in Part 1; Part 2 only loads the vector store.
 
@@ -265,7 +272,7 @@ jupyter notebook RAG_part1_build_vector_store.ipynb
 - `RAG_docs/vector_store/` - FAISS index + `rag_parents.json` from Part 1
 
 **Outputs**:
-- `RAG_docs/action_plans/action_plan_*.json`, `action_plan_noRAG_*.json`, `comparison_*.json`
+- `RAG_docs/action_plans/action_plan_*.json`
 
 **Run**:
 ```bash
