@@ -44,9 +44,8 @@ Part 2 uses a multi-stage retrieval/ranking pipeline to produce **top-5 unique f
 - Selects a diverse subset to reduce redundancy and increase topical coverage.
 
 5) **Reranking (precision)**
-- **REQUIRED CrossEncoder** reranking.
-- **REQUIRED ColBERT** reranking.
-- No fallback: the pipeline raises a clear error if reranker libraries/models are missing.
+- **REQUIRED CrossEncoder** reranking (`sentence-transformers`).
+- No fallback: the pipeline raises a clear error if the reranker dependency or model is missing.
 
 6) **Child → parent expansion**
 - Expands only the top-ranked child chunks into their full parent text via `rag_parents.json`.

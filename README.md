@@ -254,7 +254,7 @@ jupyter notebook RAG_part1_build_vector_store.ipynb
   - Fetch **20 child chunks per query**
   - **Merge + dedupe** candidates (prefers `(parent_id, child_index)` chunk identity)
   - **MMR** diversity selection to reduce redundancy
-  - **REQUIRED CrossEncoder + ColBERT** reranking (no fallback; errors clearly if reranker libs/models are missing)
+  - **REQUIRED CrossEncoder** reranking via `sentence-transformers` (no fallback; errors clearly if missing)
   - Expand top-ranked child chunks into **parent** contextual sections
   - Pass the **top 5 unique full-text sections** into the LLM prompt as RAG context
 - Calls OpenAI once per sample and writes one action plan JSON under `RAG_docs/action_plans/`
