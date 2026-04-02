@@ -20,10 +20,12 @@ scikit-learn>=1.2.0
 shap>=0.42.0
 
 # -----------------------------------------------------------------------------
-# Notebooks: progress bars & widgets (tqdm, Hugging Face downloads, SHAP)
+# Notebooks (Jupyter Notebook UI + kernel for .venv)
 # -----------------------------------------------------------------------------
 tqdm>=4.65.0
 ipywidgets>=8.0.0
+ipykernel>=6.29.0
+notebook>=7.0.0
 
 # -----------------------------------------------------------------------------
 # Environment & LLM APIs (RAG Part 2, optional LLM titles in rag_index_build)
@@ -40,6 +42,7 @@ openai>=1.0.0
 langchain>=0.3.0
 langchain-core>=0.1.0
 langchain-community>=0.0.1
+langchain-classic>=1.0.0,<2.0.0
 langchain-openai>=0.2.0
 langchain-text-splitters>=0.0.1
 
@@ -52,6 +55,8 @@ sentence-transformers>=2.2.0
 
 # -----------------------------------------------------------------------------
 # Reranking (Part 2 retrieval pipeline) - REQUIRED
+# RAGatouille 0.0.9 still imports langchain.retrievers.* (removed in langchain 1.x). After
+# pip install, run once: python scripts/patch_ragatouille_langchain_classic.py
 # -----------------------------------------------------------------------------
 ragatouille
 

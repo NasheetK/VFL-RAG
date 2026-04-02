@@ -168,6 +168,72 @@ def read_manifest(vector_store_dir: Path) -> Dict[str, Any]:
     return json.loads(p.read_text(encoding="utf-8"))
 
 
+def _env_truthy(name: str) -> bool:
+    v = os.environ.get(name)
+    return v is not None and str(v).strip().lower() in ("1", "true", "yes")
+
+
+def _normalize_sentence_transformers_model_id(model: str) -> str:
+    """Use HF repo ids for short names (manifest uses ``all-MiniLM-L6-v2``); keep local dirs as-is."""
+    m = (model or "").strip() or DEFAULT_EMBED_MODEL
+    if os.path.isdir(m):
+        return m
+    p = Path(m)
+    try:
+        if p.is_dir():
+            return os.fspath(p.resolve())
+    except OSError:
+        pass
+    if "/" not in m:
+        return f"sentence-transformers/{m}"
+    return m
+
+
+def _sentence_transformer_embeddings_for_faiss_load(model: str) -> SentenceTransformerEmbeddings:
+    """
+    Load the same embedding model used when the FAISS index was built.
+
+    Tries ``local_files_only=True`` first so an already-cached model does not hit the Hub
+    (avoids DNS/offline failures and flaky httpx retry shutdown). If that fails and Hub
+    offline env vars are set, raises a clear error. Otherwise retries with downloads enabled.
+
+    Env:
+    - ``HF_HUB_OFFLINE`` / ``TRANSFORMERS_OFFLINE``: only use local cache (no fallback download).
+    - ``RAG_EMBED_ONLINE_FIRST``: skip local-only attempt (always allow Hub).
+    """
+    model_id = _normalize_sentence_transformers_model_id(model)
+    hub_offline = _env_truthy("HF_HUB_OFFLINE") or _env_truthy("TRANSFORMERS_OFFLINE")
+    online_first = _env_truthy("RAG_EMBED_ONLINE_FIRST")
+
+    def _with_local_only() -> SentenceTransformerEmbeddings:
+        return SentenceTransformerEmbeddings(
+            model_name=model_id,
+            model_kwargs={"local_files_only": True},
+        )
+
+    def _with_hub() -> SentenceTransformerEmbeddings:
+        return SentenceTransformerEmbeddings(model_name=model_id)
+
+    if online_first:
+        return _with_hub()
+    if hub_offline:
+        return _with_local_only()
+    try:
+        return _with_local_only()
+    except Exception as e_local:
+        try:
+            return _with_hub()
+        except Exception as e_hub:
+            raise RuntimeError(
+                f"Failed to load embedding model {model_id!r}: "
+                f"cache/local load failed ({e_local!r}); "
+                f"hub download failed ({e_hub!r}). "
+                "Use a working network once to populate the Hugging Face cache, or copy "
+                "the cache from another machine. For air-gapped runs with a filled cache, "
+                "set HF_HUB_OFFLINE=1."
+            ) from e_hub
+
+
 def load_parent_store(vector_store_dir: Path) -> Dict[str, Any]:
     """Load rag_parents.json written by Part 1 (parent-child indexing). Empty dict if missing."""
     from utils.rag_index_build import load_parent_store as _load
@@ -262,7 +328,7 @@ def load_vector_store(
         )
     manifest = read_manifest(vector_store_dir)
     model = embed_model or manifest.get("embed_model") or DEFAULT_EMBED_MODEL
-    embeddings = SentenceTransformerEmbeddings(model_name=model)
+    embeddings = _sentence_transformer_embeddings_for_faiss_load(model)
     return FAISS.load_local(
         str(vector_store_dir),
         embeddings,
