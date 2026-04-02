@@ -73,9 +73,8 @@ Part 2 uses a multi-stage pipeline to produce **top-5 unique full-text contextua
 - Maximal Marginal Relevance reduces redundancy and increases coverage.
 
 5) **Reranking (precision)**
-- **REQUIRED CrossEncoder** reranking
-- **REQUIRED ColBERT** reranking
-- No fallback: the pipeline raises a clear error if reranker libraries/models are missing.
+- **REQUIRED CrossEncoder** reranking (`sentence-transformers`)
+- No fallback: the pipeline raises a clear error if the reranker dependency or model is missing.
 
 6) **Child → parent expansion**
 - Expand only top-ranked child chunks into their parent text using `rag_parents.json`.
