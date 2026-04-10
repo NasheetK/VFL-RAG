@@ -1,5 +1,7 @@
 # Plan: Reduce Detection-Mitigation Mismatch
 
+This note is a **design / experiment plan** (reassignment vs. coordination). The **implemented** training and SHAP pipeline lives in **`Train.ipynb`** with action helpers in **`utils/vfl_utils.py`** (`get_agent_actions_for_attack`, evidence-type routing, etc.). Downstream **LLM + RAG** mitigation narratives are produced in **`Plan.ipynb`** from **`Predict.ipynb`** outputs.
+
 ## Problem Analysis
 
 ### Current Mismatches
@@ -152,21 +154,25 @@ DDOS (Attack Type: DDOS):
 
 ---
 
-## Implementation Files
+## Implementation files (this repository)
 
-1. **`sample_src/Reduce_Mismatch_Solution.py`** - Complete solution with functions
-2. **`sample_src/Improved_Action_Assignment.py`** - Alternative implementation
-3. **This document** - Explanation and plan
+1. **`utils/vfl_utils.py`** — Evidence-type logic, **`get_agent_actions_for_attack`** / **`get_party_actions_for_attack`**, partitioning helpers  
+2. **`Train.ipynb`** — Training, SHAP, mitigation summaries, CSV exports  
+3. **`Predict.ipynb`** — Prediction JSON consumed by **`Plan.ipynb`**  
+4. **`Plan.ipynb`** — RAG retrieval + LLM action plans  
+5. **This document** — Problem framing and optional algorithmic extensions  
+
+Legacy **`sample_src/*.py`** sketches are **not** shipped in this tree; treat pseudocode below as a spec if we port it into **`vfl_utils.py`** or the notebooks.
 
 ---
 
 ## Next Steps
 
-1. ✅ Review the solution files
-2. ✅ Choose approach (Reassignment vs. Coordination)
-3. ✅ Integrate into your notebook
-4. ✅ Test with your data
-5. ✅ Compare before/after results
+1. Review action assignment in **`utils/vfl_utils.py`** and summaries in **`Train.ipynb`**
+2. Choose approach (Reassignment vs. Coordination) for any **new** helper layer
+3. Integrate changes in **`Train.ipynb`** / **`Plan.ipynb`** prompts or post-processing as needed
+4. Re-run **`Predict.ipynb`** → **`Plan.ipynb`** → **`Score.ipynb`** on a fixed evaluation slice
+5. Compare before/after mismatch cases using exported CSVs / action JSON
 
 ---
 

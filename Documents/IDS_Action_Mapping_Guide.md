@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide documents the IDS-style action mapping and evidence-type based feature partitioning implemented in the VFL SHAP Multi-Class notebook. The improvements ensure that:
+This guide documents the IDS-style action mapping and evidence-type-based feature partitioning used with **`Train.ipynb`** (VFL + SHAP multi-class training) and supporting helpers in **`utils/vfl_utils.py`**. Runtime feature membership for each tier is defined in **`RAG_docs/agentic_features.json`** (schema version 1.1: `RAN`, `Edge`, `Core` agents with `logged_features` and `action_capabilities`). The improvements ensure that:
 
 1. **Each party has different actions** based on attack type (not all parties have the same action)
 2. **Features are partitioned by evidence type** (Volume/Rate, Packet Size, Timing/Direction) to promote different dominant parties
@@ -107,14 +107,11 @@ The `categorize_feature_by_evidence()` function uses priority-based matching:
 
 ### Action Generation
 
-The `get_party_actions_for_attack()` function:
-- Returns **primary action** if party is primary detector for attack type
-- Returns **secondary action** (monitoring) if party is secondary detector
-- Uses `party_action_mapping` dictionary for fast lookup
+The notebook uses **`get_agent_actions_for_attack()`** (and the legacy alias **`get_party_actions_for_attack()`** in `utils/vfl_utils.py`) to map **attack type + evidence type** to a primary mitigation string or a monitoring string for non-primary tiers. **`Train.ipynb`** also builds **`agent_action_mapping`** (per-agent, per-attack suggested strings) for summaries and exports.
 
 ### SHAP Integration
 
-In Cell 12 (Agent-Level Mitigation Summary):
+In **`Train.ipynb`**, search for the section **`# 12. Agent-Level Mitigation Summary`**:
 - Each party's action is **attack-type specific**
 - Dominant party shows primary action for that attack
 - Other parties show secondary actions (monitoring)
@@ -124,20 +121,22 @@ In Cell 12 (Agent-Level Mitigation Summary):
 
 ## Expected Results
 
-### Feature Distribution
+### Feature distribution
 
-After partitioning, you should see:
-- **Agent 1:** ~25-35 features (volume/rate)
-- **Agent 2:** ~20-30 features (packet size)
-- **Agent 3:** ~30-40 features (timing/direction/protocol)
+From **`RAG_docs/agentic_features.json`** (current project):
+- **RAN:** 23 logged features  
+- **Edge:** 32 logged features  
+- **Core:** 42 logged features  
 
-### SHAP Dominance Patterns
+Some flow columns appear in more than one agent list; the **union** across agents is **88** unique feature names, matching the 88-dimensional model input after preprocessing.
 
-Expected dominant parties per attack type:
-- **DDOS/DOS:** Agent 1 (Volume/Rate) should dominate
-- **PORTSCAN:** Agent 2 (Packet Size) or Agent 3 (Timing) should dominate
-- **WEBATTACK:** Agent 2 (Packet Size) should dominate
-- **SSHPATATOR/FTPPATATOR:** Agent 3 (Timing/Direction) should dominate
+### SHAP dominance patterns
+
+Expected dominant parties per attack type (Agent 1 = volume/rate tier, 2 = packet/size tier, 3 = timing/direction tier in the evidence-based story):
+- **DDOS/DOS:** Agent 1 should often dominate
+- **PORTSCAN:** Agent 2 or Agent 3 should dominate depending on flow pattern
+- **WEBATTACK:** Agent 2 should dominate
+- **SSHPATATOR/FTPPATATOR:** Agent 3 should dominate
 
 ### Action Diversity
 
@@ -183,17 +182,16 @@ SSHPATATOR detected:
 
 ---
 
-## Usage in Notebook
+## Usage in `Train.ipynb`
 
-### Cell 2: Feature Partitioning
-- Features are categorized by evidence type
-- Parties are assigned based on evidence type
-- Agent names/domains reflect evidence type
+### Early cells: load, partition, and mappings
+- Dataset load, stratified split, and agent feature lists from **`agentic_features.json`**
+- **`agent_action_mapping`** populated via **`get_agent_actions_for_attack`**
 
-### Cell 12: Mitigation Summary
-- Uses `party_action_mapping` for attack-specific actions
+### Mitigation summary (section ~12)
+- Uses **`agent_action_mapping`** for attack-specific suggested actions in summaries
 - Shows dominant party action + other party actions
-- CSV output includes attack-specific actions
+- CSV output includes attack-specific actions per party
 
 ### Output Files
 - `vfl_shap_agent_mitigation_summary.csv`: Contains attack-specific actions per party
@@ -206,16 +204,16 @@ SSHPATATOR detected:
 ### Issue: All parties still have same actions
 
 **Check:**
-- Verify `party_action_mapping` is created in Cell 2
-- Check that `get_party_actions_for_attack()` is called correctly
+- Verify **`agent_action_mapping`** is built after agent definitions are loaded
+- Check that **`get_agent_actions_for_attack()`** (or **`get_party_actions_for_attack()`**) is used consistently
 - Ensure attack type names match (uppercase)
 
 ### Issue: Wrong party dominates for attack type
 
 **Check:**
-- Verify feature categorization (run Cell 2 and check feature distribution)
+- Verify feature categorization (re-run the partitioning / evidence logic in **`Train.ipynb`** and inspect distributions)
 - Check if features are correctly assigned to evidence types
-- May need to refine `categorize_feature_by_evidence()` patterns
+- May need to refine `categorize_feature_by_evidence()` patterns in **`utils/vfl_utils.py`**
 
 ### Issue: Features not distributed evenly
 
