@@ -25,6 +25,10 @@ Create a **persistent FAISS vector store** and a **parent store** from the knowl
 - Embeds **child chunks** and builds FAISS
 - Saves the FAISS index + `rag_parents.json` so Part 2 can retrieve child chunks and expand to parent context
 
+### Summary of improvements
+
+Compared to a flat “split everything evenly and embed once” baseline, this pipeline improves **relevance** and **scalability**: PDFs are merged into **sections** (headings), then **semantic parents** are found using **paragraph embedding similarity** so boundaries follow topic shifts. Each parent gets a **retrieval title** (default local summarization or extractive/LLM modes); FAISS indexes **children** only, with each vector’s text **`retrieval_title` + child body** so queries match titled context. **Batched** semantic embedding and **batched** FAISS construction keep large knowledge bases within memory limits (tunable via env vars in the notebook helpers). **`rag_parents.json`** stores full parent text and titles so Part 2 can retrieve precise **child** hits and still **expand** to full parent sections for the LLM.
+
 ### When to rerun Part 1
 
 Rerun Part 1 whenever:

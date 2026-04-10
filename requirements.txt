@@ -54,11 +54,8 @@ faiss-cpu>=1.7.4
 sentence-transformers>=2.2.0
 
 # -----------------------------------------------------------------------------
-# Reranking (Part 2 retrieval pipeline) - REQUIRED
-# RAGatouille 0.0.9 still imports langchain.retrievers.* (removed in langchain 1.x). After
-# pip install, run once: python scripts/patch_ragatouille_langchain_classic.py
+# Reranking (Part 2): CrossEncoder via sentence-transformers (see above)
 # -----------------------------------------------------------------------------
-ragatouille
 
 # -----------------------------------------------------------------------------
 # Hugging Face (local summarization titles: distilbart; pulled by sentence-transformers)

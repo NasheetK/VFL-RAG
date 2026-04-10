@@ -369,6 +369,23 @@ def get_dominant_party_info(sample: Dict[str, Any]) -> Tuple[str, str, float]:
     return (dominant_agent, network_tier, float(dominant_pct) * 100.0)
 
 
+def _rag_result_score_fields(r: Dict[str, Any]) -> Dict[str, Any]:
+    """Split ranking (CrossEncoder logit, can be negative) vs vector similarity (typically [0, 1])."""
+    rank = float(r.get("score", 0.0) or 0.0)
+    vs = r.get("vector_similarity")
+    out: Dict[str, Any] = {"ranking_score": rank}
+    if vs is not None:
+        fv = float(vs)
+        out["vector_similarity"] = fv
+        out["similarity_score"] = fv
+    else:
+        out["similarity_score"] = rank
+    ce = r.get("crossencoder_score")
+    if ce is not None:
+        out["crossencoder_score"] = float(ce)
+    return out
+
+
 def convert_to_json_serializable(obj: Any) -> Any:
     if isinstance(obj, (np.integer, np.int64, np.int32)):
         return int(obj)
@@ -410,8 +427,8 @@ def save_comparison_file(
             "documents_used": len(rag_results),
             "top_documents": [
                 {
+                    **_rag_result_score_fields(r),
                     "title": r["title"],
-                    "similarity_score": float(r["score"]),
                     "text_preview": (
                         r["text"][:200] + "..." if len(r["text"]) > 200 else r["text"]
                     ),
@@ -570,6 +587,10 @@ def save_action_plan(
     rag_results: List[Dict[str, Any]],
     llm_response: Optional[Dict[str, Any]],
     results_action_dir: Path,
+    *,
+    variant: Optional[str] = None,
+    timestamp: Optional[str] = None,
+    prompt_uses_rag: Optional[bool] = None,
 ) -> Path:
     result = {
         "sample_id": sample.get("sample_id"),
@@ -583,9 +604,9 @@ def save_action_plan(
             "search_queries": [query] if query else [],
             "top_results": [
                 {
+                    **_rag_result_score_fields(r),
                     "title": r["title"],
                     "text": r["text"],
-                    "similarity_score": float(r["score"]),
                 }
                 for r in rag_results[:5]
             ],
@@ -593,11 +614,15 @@ def save_action_plan(
         "llm_action_plan": llm_response,
         "processed_at": datetime.now().isoformat(),
     }
+    if prompt_uses_rag is not None:
+        result["prompt_uses_rag"] = prompt_uses_rag
     result = convert_to_json_serializable(result)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-    output_file = (
-        results_action_dir / f"action_plan_sample_{sample.get('sample_id')}_{timestamp}.json"
-    )
+    ts = timestamp or datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+    sid = sample.get("sample_id")
+    if variant:
+        output_file = results_action_dir / f"action_plan_sample_{sid}_{variant}_{ts}.json"
+    else:
+        output_file = results_action_dir / f"action_plan_sample_{sid}_{ts}.json"
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2, ensure_ascii=False)
     if not output_file.exists():
