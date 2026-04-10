@@ -46,11 +46,11 @@ AgenticAI/
 ├── outputs/              # Training outputs
 ├── inputs/               # Input data for prediction
 ├── Documents/            # Project documentation and guides
-├── VFL_SHAP_MultiClass.ipynb
-├── VFL_SHAP_Prediction.ipynb
-├── RAG_part1_build_vector_store.ipynb
-├── RAG_part2_agent_actions.ipynb
-├── scoring_evaluation.ipynb
+├── Train.ipynb
+├── Predict.ipynb
+├── Index.ipynb
+├── Plan.ipynb
+├── Score.ipynb
 └── requirements.txt
 ```
 
@@ -139,10 +139,10 @@ python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA: {
 Execute notebooks in this order:
 
 ```
-VFL_SHAP_MultiClass.ipynb  →  VFL_SHAP_Prediction.ipynb  →  RAG_part1_build_vector_store.ipynb  →  RAG_part2_agent_actions.ipynb  →  scoring_evaluation.ipynb
+Train.ipynb  →  Predict.ipynb  →  Index.ipynb  →  Plan.ipynb  →  Score.ipynb
 ```
 
-### 1. VFL_SHAP_MultiClass.ipynb (Training)
+### 1. Train.ipynb (Training)
 
 **Purpose**: Train VFL and standard neural network baseline models
 
@@ -183,12 +183,12 @@ learning_rate = 0.001
 
 **Run**:
 ```bash
-jupyter notebook VFL_SHAP_MultiClass.ipynb
+jupyter notebook Train.ipynb
 ```
 
 ---
 
-### 2. VFL_SHAP_Prediction.ipynb (Inference)
+### 2. Predict.ipynb (Inference)
 
 **Purpose**: Generate predictions for new network flows
 
@@ -201,7 +201,7 @@ jupyter notebook VFL_SHAP_MultiClass.ipynb
 - Computes SHAP values for each prediction
 - Identifies dominant agent per prediction
 
-**Prerequisites**: Must run `VFL_SHAP_MultiClass.ipynb` first
+**Prerequisites**: Must run `Train.ipynb` first
 
 **Inputs**:
 - Trained models in `model/` directory
@@ -216,12 +216,12 @@ jupyter notebook VFL_SHAP_MultiClass.ipynb
 
 **Run**:
 ```bash
-jupyter notebook VFL_SHAP_Prediction.ipynb
+jupyter notebook Predict.ipynb
 ```
 
 ---
 
-### 3a. RAG_part1_build_vector_store.ipynb (RAG index)
+### 3a. Index.ipynb (RAG index)
 
 **Purpose**: Ingest the knowledge base and persist a FAISS vector store.
 
@@ -236,12 +236,12 @@ jupyter notebook VFL_SHAP_Prediction.ipynb
 
 **Run** (whenever knowledge files change):
 ```bash
-jupyter notebook RAG_part1_build_vector_store.ipynb
+jupyter notebook Index.ipynb
 ```
 
 ---
 
-### 3b. RAG_part2_agent_actions.ipynb (Action planning)
+### 3b. Plan.ipynb (Action planning)
 
 **Purpose**: Generate context-aware mitigation action plans from SHAP predictions.
 
@@ -263,7 +263,7 @@ jupyter notebook RAG_part1_build_vector_store.ipynb
 
 **Prerequisites**:
 - Part 1 completed (`RAG_docs/vector_store/` exists)
-- Predictions from `VFL_SHAP_Prediction.ipynb`
+- Predictions from `Predict.ipynb`
 - OpenAI API key in `.env`
 - `RAG_docs/attack_options.json`, `RAG_docs/agentic_features.json`
 
@@ -276,12 +276,12 @@ jupyter notebook RAG_part1_build_vector_store.ipynb
 
 **Run**:
 ```bash
-jupyter notebook RAG_part2_agent_actions.ipynb
+jupyter notebook Plan.ipynb
 ```
 
 ---
 
-### 4. scoring_evaluation.ipynb (Evaluation)
+### 4. Score.ipynb (Evaluation)
 
 **Purpose**: Evaluate action plan quality using NLP metrics
 
@@ -294,7 +294,7 @@ jupyter notebook RAG_part2_agent_actions.ipynb
 - Computes BERTScore F1 (reasoning depth) - contextual awareness
 - Generates evaluation reports and visualizations
 
-**Prerequisites**: Action plans from `RAG_part2_agent_actions.ipynb`
+**Prerequisites**: Action plans from `Plan.ipynb`
 
 **Inputs**:
 - `RAG_docs/action_plans/action_plan_*.json` - Generated action plans
@@ -315,7 +315,7 @@ jupyter notebook RAG_part2_agent_actions.ipynb
 
 **Run**:
 ```bash
-jupyter notebook scoring_evaluation.ipynb
+jupyter notebook Score.ipynb
 ```
 
 ## 🛠️ Technologies & Tools

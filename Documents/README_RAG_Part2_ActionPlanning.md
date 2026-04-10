@@ -1,4 +1,4 @@
-## RAG Part 2 — Action Planning (`RAG_part2_agent_actions.ipynb`)
+## RAG Part 2 — Action Planning (`Plan.ipynb`)
 
 ### Purpose
 
@@ -63,7 +63,7 @@ Part 2 uses a multi-stage retrieval/ranking pipeline to produce **top-5 unique f
 
 ### Configuration
 
-In the bottom cell of `RAG_part2_agent_actions.ipynb`:
+In the bottom cell of `Plan.ipynb`:
 
 - `QUERY_STRATEGY = "template"`
   - or: `QUERY_STRATEGY = ["template", "rephrase", "llm_concise"]`

@@ -2,7 +2,7 @@
 Build FAISS index with PDF sections, semantic parent splits, child chunks,
 retrieval titles (default: local Transformer summarization; optional extractive / OpenAI), and rag_parents.json.
 
-Used by RAG_part1_build_vector_store.ipynb.
+Used by Index.ipynb.
 """
 
 from __future__ import annotations
