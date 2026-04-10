@@ -1,6 +1,6 @@
 ## RAG Retrieval Pipeline (Part 2)
 
-This project’s action-planning notebook (`RAG_part2_agent_actions.ipynb`) uses a **multi-stage retrieval + ranking** pipeline to assemble better LLM context from the knowledge base.
+This project’s action-planning notebook (`Plan.ipynb`) uses a **multi-stage retrieval + ranking** pipeline to assemble better LLM context from the knowledge base.
 
 ### What runs before the LLM
 
@@ -45,7 +45,7 @@ For each sample, the notebook builds one or more retrieval queries (configurable
 
 ### Configuration
 
-In `RAG_part2_agent_actions.ipynb`:
+In `Plan.ipynb`:
 
 - **`QUERY_STRATEGY`**:
   - String: `"template" | "rephrase" | "llm_concise" | "llm_expanded"`

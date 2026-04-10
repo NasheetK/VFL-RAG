@@ -2,12 +2,12 @@
 
 This document combines the end-to-end RAG workflow:
 
-- **Part 1**: build the vector store and parent store (`RAG_part1_build_vector_store.ipynb`)
-- **Part 2**: retrieve + rank context and generate action plans (`RAG_part2_agent_actions.ipynb`)
+- **Part 1**: build the vector store and parent store (`Index.ipynb`)
+- **Part 2**: retrieve + rank context and generate action plans (`Plan.ipynb`)
 
 ---
 
-## Part 1 — Build Vector Store (`RAG_part1_build_vector_store.ipynb`)
+## Part 1 — Build Vector Store (`Index.ipynb`)
 
 ### Purpose
 
@@ -32,7 +32,7 @@ Rerun whenever you change:
 
 ---
 
-## Part 2 — Action Planning (`RAG_part2_agent_actions.ipynb`)
+## Part 2 — Action Planning (`Plan.ipynb`)
 
 ### Purpose
 
@@ -94,7 +94,7 @@ Part 2 uses a multi-stage pipeline to produce **top-5 unique full-text contextua
 
 ## Recommended run order
 
-1) Run Part 1: `RAG_part1_build_vector_store.ipynb`
+1) Run Part 1: `Index.ipynb`
 2) Ensure predictions exist: `RAG_docs/predictions/*.json`
-3) Run Part 2: `RAG_part2_agent_actions.ipynb`
+3) Run Part 2: `Plan.ipynb`
 

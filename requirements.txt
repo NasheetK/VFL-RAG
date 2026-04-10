@@ -9,12 +9,12 @@ pandas>=1.5.0
 joblib>=1.2.0
 
 # -----------------------------------------------------------------------------
-# Deep learning (VFL_SHAP_*.ipynb, utils.model_utils, RAG summarization GPU)
+# Deep learning (Train/Predict notebooks, utils.model_utils, RAG summarization GPU)
 # -----------------------------------------------------------------------------
 torch>=2.0.0
 
 # -----------------------------------------------------------------------------
-# ML, explainability, training (VFL_SHAP_MultiClass / VFL_SHAP_Prediction)
+# ML, explainability, training (Train / Predict notebooks)
 # -----------------------------------------------------------------------------
 scikit-learn>=1.2.0
 shap>=0.42.0
@@ -34,7 +34,7 @@ python-dotenv>=1.0.0
 openai>=1.0.0
 
 # -----------------------------------------------------------------------------
-# LangChain RAG (RAG_part1 / RAG_part2: FAISS, loaders, splitters, embeddings)
+# LangChain RAG (Index / Plan notebooks: FAISS, loaders, splitters, embeddings)
 # On Python 3.14+, LangChain still touches pydantic.v1 and triggers a UserWarning;
 # utils/rag_utils.py, utils/rag_index_build.py, and Part 1 notebook register a
 # narrow filter before importing LangChain. For a fully supported stack, use Python 3.12–3.13.
@@ -74,7 +74,7 @@ protobuf>=3.20.0
 pypdf>=3.0.0
 
 # -----------------------------------------------------------------------------
-# Scoring_Evaluation.ipynb (BERTScore, BLEU/NLTK, ROUGE, SBERT cosine)
+# Score.ipynb (BERTScore, BLEU/NLTK, ROUGE, SBERT cosine)
 # -----------------------------------------------------------------------------
 matplotlib>=3.7.0
 seaborn>=0.12.0

@@ -1,6 +1,6 @@
 """RAG pipeline helpers: predictions/config loaders, FAISS save/load, SHAP party/tier + JSON export.
 
-Used by RAG_part1_build_vector_store.ipynb and RAG_part2_agent_actions.ipynb.
+Used by Index.ipynb and Plan.ipynb.
 """
 
 from __future__ import annotations
@@ -95,7 +95,7 @@ def load_attack_and_agentic(
 # ---------------------------------------------------------------------------
 
 DEFAULT_EMBED_MODEL = "all-MiniLM-L6-v2"
-# Defaults align with RAG_part1_build_vector_store.ipynb (smaller chunks for retrieval precision)
+# Defaults align with Index.ipynb (smaller chunks for retrieval precision)
 DEFAULT_CHUNK_SIZE = 512
 DEFAULT_CHUNK_OVERLAP = 128
 MANIFEST_NAME = "rag_manifest.json"
@@ -324,7 +324,7 @@ def load_vector_store(
     if not vector_store_dir.is_dir() or not any(vector_store_dir.iterdir()):
         raise FileNotFoundError(
             f"Vector store directory missing or empty: {vector_store_dir}. "
-            "Run RAG_part1_build_vector_store.ipynb first."
+            "Run Index.ipynb first."
         )
     manifest = read_manifest(vector_store_dir)
     model = embed_model or manifest.get("embed_model") or DEFAULT_EMBED_MODEL

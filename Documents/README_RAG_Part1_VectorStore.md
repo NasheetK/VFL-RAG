@@ -1,4 +1,4 @@
-## RAG Part 1 — Build Vector Store (`RAG_part1_build_vector_store.ipynb`)
+## RAG Part 1 — Build Vector Store (`Index.ipynb`)
 
 ### Purpose
 
