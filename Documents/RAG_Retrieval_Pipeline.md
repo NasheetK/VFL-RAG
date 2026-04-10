@@ -21,8 +21,7 @@ For each sample, the notebook builds one or more retrieval queries (configurable
 
 4) **Reranking (precision)**
 - **REQUIRED CrossEncoder** reranking: stronger semantic matching than bi-encoder similarity.
-- **REQUIRED ColBERT** reranking: late-interaction scoring can improve fine-grained relevance.
-- No fallback: the pipeline raises a clear error if reranker libraries/models are missing.
+- No fallback: the pipeline raises a clear error if `sentence-transformers` / the cross-encoder model is missing.
 
 5) **Top ranked child chunks**
 - After reranking, only the best chunks are retained.
@@ -37,7 +36,7 @@ For each sample, the notebook builds one or more retrieval queries (configurable
 
 ### Why this improves the system
 
-- **Higher relevance**: rerankers (CrossEncoder/ColBERT) are better at precise matching than vector similarity alone.
+- **Higher relevance**: CrossEncoder reranking is better at precise matching than vector similarity alone.
 - **Lower redundancy**: merge/dedupe + MMR prevent the prompt from being filled with repeated or overlapping text.
 - **Better coverage**: diversified chunks + parent expansion yields broader, tier-aware context (RAN/Edge/Core) without overwhelming the LLM with unrelated pages.
 - **More stable outputs**: a consistent retrieval pipeline reduces run-to-run variability in action plans.
