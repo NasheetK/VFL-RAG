@@ -1,0 +1,76 @@
+{
+  "sample_id": 1,
+  "prediction": {
+    "predicted_label": "DDOS",
+    "confidence": 0.9999866485595703
+  },
+  "rag_info": {
+    "documents_used": 5,
+    "search_method": "vector_similarity",
+    "search_queries": [
+      "Find mitigation actions, detection steps, and response playbooks for a DDOS attack in a telecom network. Prioritize the RAN tier (dominant contribution ~68%). Use these top indicators as keywords: RAN: udps.rst_packet_count, udps.srcdst_rst_packet_count, udps.syn_packet_count. Edge: udps.srcdst_unique_ports_count, udps.syn_packet_count, udps.srcdst_packet_size_variation. Core: dst2src_max_ps, dst2src_stddev_ps, bidirectional_syn_packets. Focus on controls appropriate for confidence 100%."
+    ],
+    "top_results": [
+      {
+        "ranking_score": -0.5288487076759338,
+        "similarity_score": -0.5288487076759338,
+        "title": "ddos-synthetic-dataset: How can cloud providers implement automated DDoS attack detection and mitigation? — implement DDoS attack cloud mitigation providers automated detection Traffic legitimate Blackhole Analysis",
+        "text": "ddos-synthetic-dataset: How can cloud providers implement automated DDoS attack detection and mitigation? — implement DDoS attack cloud mitigation providers automated detection Traffic legitimate Blackhole Analysis\n\n2. **Rate Limiting**:\n   - Set thresholds for requests per user/IP and enforce limits. Adjust limits based on normal usage patterns to avoid disruption to legitimate users.\n\n3. **Behavioral Analysis**:\n   - Establish baseline behavior for applications and resources. If traffic deviates significantly from this baseline, trigger automatic defensive measures."
+      },
+      {
+        "ranking_score": -1.291184425354004,
+        "similarity_score": -1.291184425354004,
+        "title": "ddos-synthetic-dataset: How can cloud providers implement rate limiting and traffic shaping to mitigate DDoS attacks? — attacks DDoS providers limiting traffic shaping cloud rate implement mitigate Incident Response",
+        "text": "ddos-synthetic-dataset: How can cloud providers implement rate limiting and traffic shaping to mitigate DDoS attacks? — attacks DDoS providers limiting traffic shaping cloud rate implement mitigate Incident Response\n\n### 10. **Incident Response Plan**\n   - Develop and continuously update an incident response plan specifically for DDoS attacks. This should include predefined actions based on different types of attacks and levels of severity."
+      },
+      {
+        "ranking_score": -2.050149917602539,
+        "similarity_score": -2.050149917602539,
+        "title": "ddos-synthetic-dataset: What are the best practices for developing accurate predictive models for DDoS attack detection? — DDoS detection attack models predictive accurate developing practices best model Data traffic",
+        "text": "ddos-synthetic-dataset: What are the best practices for developing accurate predictive models for DDoS attack detection? — DDoS detection attack models predictive accurate developing practices best model Data traffic\n\n7. **Deployment**:\n   - **Real-time Detection**: Ensure models can operate in real-time and scale with network traffic. Streaming data processing frameworks (like Apache Kafka) can support this.\n   - **Anomaly Alerts**: Implement alerting mechanisms to notify administrators of potential DDoS events for immediate investigation."
+      },
+      {
+        "ranking_score": -2.0513315200805664,
+        "similarity_score": -2.0513315200805664,
+        "title": "ddos-synthetic-dataset: How can cloud providers use multi-tiered DDoS protection strategies to enhance security? — DDoS protection cloud multi-tiered strategies providers security enhance Traffic attacks Management detection",
+        "text": "ddos-synthetic-dataset: How can cloud providers use multi-tiered DDoS protection strategies to enhance security? — DDoS protection cloud multi-tiered strategies providers security enhance Traffic attacks Management detection\n\n5. **Incident Response Plans**:\n   - **DDoS Response Playbook**: Develop a clear incident response plan that includes identification, mitigation, recovery, and communication during an attack.\n   - **Regular Testing**: Conduct penetration testing and DDoS simulations to test the effectiveness of the protection measures in place and identify weaknesses."
+      },
+      {
+        "ranking_score": -2.8307390213012695,
+        "similarity_score": -2.8307390213012695,
+        "title": "ddos-synthetic-dataset: What are the best practices for developing accurate predictive models for DDoS attack detection? — predictive practices detection models attack DDoS developing accurate best Documentation architecture Maintenance",
+        "text": "ddos-synthetic-dataset: What are the best practices for developing accurate predictive models for DDoS attack detection? — predictive practices detection models attack DDoS developing accurate best Documentation architecture Maintenance\n\n10. **Documentation and Maintenance**:\n    - **Maintain Clear Documentation**: Document model architecture, data sources, training processes, and evaluation metrics for easier future audits or updates.\n\nBy following these practices, you can enhance the accuracy and efficacy of your predictive models for DDoS attack detection, ultimately helping to safeguard networks."
+      }
+    ]
+  },
+  "llm_action_plan": {
+    "threat_level": "Critical",
+    "all_actions": [
+      "limit rate",
+      "enable scrubbing"
+    ],
+    "primary_actions": [
+      {
+        "action": "limit rate",
+        "network_tier": "RAN",
+        "party_evidence_type": "dominant party evidence",
+        "reasoning": "The RAN tier has the highest contribution to the DDOS attack (68.5%), indicating that the attack is primarily originating from this tier. Limiting the rate of incoming requests will help mitigate the impact of the attack effectively."
+      }
+    ],
+    "supporting_actions": [
+      {
+        "action": "enable scrubbing",
+        "network_tier": "RAN",
+        "party_evidence_type": "dominant party evidence",
+        "reasoning": "Enabling scrubbing in the RAN tier will complement the rate limiting action by filtering out malicious traffic, ensuring that legitimate traffic can flow without disruption. This is crucial given the high confidence level of the attack."
+      }
+    ],
+    "overall_reasoning": "The RAN tier is prioritized for actions due to its dominant contribution to the DDOS attack. The primary action of limiting the rate is supported by enabling scrubbing, both targeting the RAN tier where the attack is most impactful. The high confidence level of 100% necessitates immediate action to mitigate the threat effectively.",
+    "execution_priority": "Immediate",
+    "knowledge_sources_used": [
+      "allowed_actions_context",
+      "attack_actions_context"
+    ]
+  },
+  "processed_at": "2026-04-10T20:01:25.921213"
+}
