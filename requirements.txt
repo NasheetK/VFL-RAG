@@ -38,6 +38,7 @@ openai>=1.0.0
 # On Python 3.14+, LangChain still touches pydantic.v1 and triggers a UserWarning;
 # utils/rag_utils.py, utils/rag_index_build.py, and Part 1 notebook register a
 # narrow filter before importing LangChain. For a fully supported stack, use Python 3.12–3.13.
+# On Windows, use Python 3.12 for ColBERT: ``voyager`` (RAGatouille) has no cp313 wheels.
 # -----------------------------------------------------------------------------
 langchain>=0.3.0
 langchain-core>=0.1.0
@@ -55,13 +56,18 @@ sentence-transformers>=2.2.0
 
 # -----------------------------------------------------------------------------
 # Reranking (Part 2): CrossEncoder via sentence-transformers (see above)
+# ColBERT via RAGatouille (Plan.ipynb); import ``utils.langchain_ragatouille_shim`` before ragatouille (see notebook).
+# Windows: first ColBERT load JIT-builds a torch extension; install "Desktop development with C++" (MSVC/cl) and keep ``ninja`` on PATH (venv ``Scripts``).
 # -----------------------------------------------------------------------------
+ragatouille>=0.0.9.post2,<0.0.10
 
 # -----------------------------------------------------------------------------
 # Hugging Face (local summarization titles: distilbart; pulled by sentence-transformers)
 # -----------------------------------------------------------------------------
-transformers>=4.36.0
-huggingface-hub>=0.20.0
+# ColBERT (RAGatouille / colbert-ai) breaks on transformers 5.x (missing all_tied_weights_keys on HF_ColBERT).
+transformers>=4.41.0,<5.0.0
+huggingface-hub>=0.23.0,<1.0.0
+ninja>=1.11.0
 safetensors>=0.4.0
 protobuf>=3.20.0
 
