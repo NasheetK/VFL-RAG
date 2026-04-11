@@ -23,6 +23,8 @@ if sys.version_info >= (3, 14):
 
 import numpy as np
 from langchain_community.embeddings import SentenceTransformerEmbeddings
+
+from utils.compute_device import sentence_transformer_model_kwargs
 from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
@@ -99,6 +101,8 @@ DEFAULT_EMBED_MODEL = "all-MiniLM-L6-v2"
 DEFAULT_CHUNK_SIZE = 512
 DEFAULT_CHUNK_OVERLAP = 128
 MANIFEST_NAME = "rag_manifest.json"
+# Cap how many retrieved sections are embedded in saved JSON (align with Plan.ipynb context size).
+DEFAULT_EXPORT_RAG_TOP_N = 10
 
 
 def _faiss_build_batch_size() -> int:
@@ -208,11 +212,14 @@ def _sentence_transformer_embeddings_for_faiss_load(model: str) -> SentenceTrans
     def _with_local_only() -> SentenceTransformerEmbeddings:
         return SentenceTransformerEmbeddings(
             model_name=model_id,
-            model_kwargs={"local_files_only": True},
+            model_kwargs=sentence_transformer_model_kwargs(local_files_only=True),
         )
 
     def _with_hub() -> SentenceTransformerEmbeddings:
-        return SentenceTransformerEmbeddings(model_name=model_id)
+        return SentenceTransformerEmbeddings(
+            model_name=model_id,
+            model_kwargs=sentence_transformer_model_kwargs(),
+        )
 
     if online_first:
         return _with_hub()
@@ -383,6 +390,9 @@ def _rag_result_score_fields(r: Dict[str, Any]) -> Dict[str, Any]:
     ce = r.get("crossencoder_score")
     if ce is not None:
         out["crossencoder_score"] = float(ce)
+    cb = r.get("colbert_score")
+    if cb is not None:
+        out["colbert_score"] = float(cb)
     return out
 
 
@@ -433,7 +443,7 @@ def save_comparison_file(
                         r["text"][:200] + "..." if len(r["text"]) > 200 else r["text"]
                     ),
                 }
-                for r in rag_results[:5]
+                for r in rag_results[:DEFAULT_EXPORT_RAG_TOP_N]
             ],
         },
         "action_plans": {
@@ -608,7 +618,7 @@ def save_action_plan(
                     "title": r["title"],
                     "text": r["text"],
                 }
-                for r in rag_results[:5]
+                for r in rag_results[:DEFAULT_EXPORT_RAG_TOP_N]
             ],
         },
         "llm_action_plan": llm_response,
@@ -628,3 +638,69 @@ def save_action_plan(
     if not output_file.exists():
         raise FileNotFoundError(f"File was not created: {output_file}")
     return output_file
+
+
+def save_rerank_comparison_report(
+    sample: Dict[str, Any],
+    query: str,
+    modes_payload: Dict[str, Dict[str, Any]],
+    results_action_dir: Path,
+) -> Path:
+    """
+    Save a single JSON comparing multiple rerank modes (each with RAG context + LLM output).
+
+    ``modes_payload`` maps mode key -> ``{"rag_results": [...], "llm_response": dict|None}``.
+    """
+    results_action_dir = Path(results_action_dir)
+    results_action_dir.mkdir(parents=True, exist_ok=True)
+
+    search_method_labels = {
+        "none": "vector_similarity_mmr_no_rerank",
+        "crossencoder": "crossencoder_rerank",
+        "colbert": "colbert_rerank",
+        "crossencoder_colbert": "crossencoder_plus_colbert",
+    }
+
+    modes_out: Dict[str, Any] = {}
+    for mode_key, payload in modes_payload.items():
+        rag_results = payload.get("rag_results") or []
+        llm_response = payload.get("llm_response")
+        sm = search_method_labels.get(
+            mode_key, str(payload.get("search_method") or mode_key)
+        )
+        modes_out[mode_key] = {
+            "label": payload.get("label") or mode_key,
+            "search_method": sm,
+            "rag_info": {
+                "documents_used": len(rag_results),
+                "search_queries": [query] if query else [],
+                "top_results": [
+                    {
+                        **_rag_result_score_fields(r),
+                        "title": r["title"],
+                        "text": r["text"],
+                    }
+                    for r in rag_results[:DEFAULT_EXPORT_RAG_TOP_N]
+                ],
+            },
+            "llm_action_plan": llm_response,
+        }
+
+    report = {
+        "report_type": "rerank_ablation_comparison",
+        "sample_id": sample.get("sample_id"),
+        "prediction": {
+            "predicted_label": sample.get("predicted_label"),
+            "confidence": float(sample.get("confidence", 0.0)),
+        },
+        "rag_query": query,
+        "modes": modes_out,
+        "processed_at": datetime.now().isoformat(),
+    }
+    report = convert_to_json_serializable(report)
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+    sid = sample.get("sample_id")
+    out_path = results_action_dir / f"rerank_comparison_sample_{sid}_{ts}.json"
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, indent=2, ensure_ascii=False)
+    return out_path

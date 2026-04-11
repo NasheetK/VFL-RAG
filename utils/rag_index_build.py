@@ -68,6 +68,8 @@ from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from sklearn.metrics.pairwise import cosine_similarity
 
+from utils.compute_device import transformers_pipeline_device_int
+
 # ---------------------------------------------------------------------------
 # PDF sections (outline when possible; else heading heuristics)
 # ---------------------------------------------------------------------------
@@ -399,12 +401,7 @@ _SUMMARIZER_MODEL: Optional[str] = None
 
 
 def _summarizer_device() -> int:
-    try:
-        import torch
-
-        return 0 if torch.cuda.is_available() else -1
-    except ImportError:
-        return -1
+    return transformers_pipeline_device_int()
 
 
 def generate_retrieval_title_transformer_summarize(
