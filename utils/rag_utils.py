@@ -343,6 +343,15 @@ def load_vector_store(
     )
 
 
+def embeddings_from_vector_store(vector_store: Any) -> Embeddings:
+    """Return the ``Embeddings`` instance backing a loaded LangChain FAISS store."""
+    for attr in ("embedding_function", "embeddings"):
+        e = getattr(vector_store, attr, None)
+        if e is not None and hasattr(e, "embed_query") and hasattr(e, "embed_documents"):
+            return e
+    raise ValueError("Vector store has no LangChain-compatible Embeddings instance")
+
+
 # ---------------------------------------------------------------------------
 # SHAP party/tier + action-plan JSON export (Part 2)
 # ---------------------------------------------------------------------------
@@ -396,6 +405,30 @@ def _rag_result_score_fields(r: Dict[str, Any]) -> Dict[str, Any]:
     return out
 
 
+def _rag_result_chunk_key_fields(r: Dict[str, Any]) -> Dict[str, Any]:
+    """Stable chunk / section identity for offline joins (parent expansion may omit child_index)."""
+    out: Dict[str, Any] = {}
+    pid = r.get("parent_id")
+    if pid is not None and str(pid).strip():
+        out["parent_id"] = str(pid)
+    cix = r.get("child_index")
+    if cix is not None:
+        try:
+            out["child_index"] = int(cix)
+        except (TypeError, ValueError):
+            out["child_index"] = cix
+    sf = r.get("source_file")
+    if sf is not None and str(sf).strip():
+        out["source_file"] = str(sf)
+    return out
+
+
+def _rag_result_export_fields(r: Dict[str, Any]) -> Dict[str, Any]:
+    """Scores plus chunk keys for JSON exports (action plans, rerank comparison reports)."""
+    merged = {**_rag_result_score_fields(r), **_rag_result_chunk_key_fields(r)}
+    return merged
+
+
 def convert_to_json_serializable(obj: Any) -> Any:
     if isinstance(obj, (np.integer, np.int64, np.int32)):
         return int(obj)
@@ -437,7 +470,7 @@ def save_comparison_file(
             "documents_used": len(rag_results),
             "top_documents": [
                 {
-                    **_rag_result_score_fields(r),
+                    **_rag_result_export_fields(r),
                     "title": r["title"],
                     "text_preview": (
                         r["text"][:200] + "..." if len(r["text"]) > 200 else r["text"]
@@ -614,7 +647,7 @@ def save_action_plan(
             "search_queries": [query] if query else [],
             "top_results": [
                 {
-                    **_rag_result_score_fields(r),
+                    **_rag_result_export_fields(r),
                     "title": r["title"],
                     "text": r["text"],
                 }
@@ -645,11 +678,19 @@ def save_rerank_comparison_report(
     query: str,
     modes_payload: Dict[str, Dict[str, Any]],
     results_action_dir: Path,
+    *,
+    retrieval_query_entries: Optional[List[Dict[str, str]]] = None,
+    index_embed_model: Optional[str] = None,
 ) -> Path:
     """
     Save a single JSON comparing multiple rerank modes (each with RAG context + LLM output).
 
     ``modes_payload`` maps mode key -> ``{"rag_results": [...], "llm_response": dict|None}``.
+
+    ``retrieval_query_entries`` — optional list of ``{"strategy_key": ..., "query_text": ...}``
+    (multi-query retrieval). When set, the first entry's ``query_text`` is the MMR/rerank anchor.
+
+    ``index_embed_model`` — embedding model id from the FAISS manifest (for analysis tooling).
     """
     results_action_dir = Path(results_action_dir)
     results_action_dir.mkdir(parents=True, exist_ok=True)
@@ -676,7 +717,7 @@ def save_rerank_comparison_report(
                 "search_queries": [query] if query else [],
                 "top_results": [
                     {
-                        **_rag_result_score_fields(r),
+                        **_rag_result_export_fields(r),
                         "title": r["title"],
                         "text": r["text"],
                     }
@@ -686,6 +727,15 @@ def save_rerank_comparison_report(
             "llm_action_plan": llm_response,
         }
 
+    entries = retrieval_query_entries
+    if not entries and (query or "").strip():
+        entries = [{"strategy_key": "combined", "query_text": str(query)}]
+    anchor_q = ""
+    if entries:
+        anchor_q = str(entries[0].get("query_text") or "")
+    elif query:
+        anchor_q = str(query)
+
     report = {
         "report_type": "rerank_ablation_comparison",
         "sample_id": sample.get("sample_id"),
@@ -694,6 +744,9 @@ def save_rerank_comparison_report(
             "confidence": float(sample.get("confidence", 0.0)),
         },
         "rag_query": query,
+        "retrieval_queries": entries or [],
+        "mmr_rerank_anchor_query": anchor_q,
+        "index_embed_model": index_embed_model,
         "modes": modes_out,
         "processed_at": datetime.now().isoformat(),
     }
