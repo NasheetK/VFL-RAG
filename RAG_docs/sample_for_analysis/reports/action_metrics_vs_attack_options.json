@@ -1,0 +1,3196 @@
+{
+  "schema_version": "1.0",
+  "attack_options_path": "D:/Projects/VFL-RAG/RAG_docs/attack_options.json",
+  "agentic_features_path": "D:/Projects/VFL-RAG/RAG_docs/agentic_features.json",
+  "sample_dir": "D:/Projects/VFL-RAG/RAG_docs/sample_for_analysis",
+  "metric_definitions": {
+    "mitigation_coverage_pct": "100 * (distinct allowed actions appearing in all_actions OR primary_actions[].action OR supporting_actions[].action) / len(allowed_actions for predicted_label)",
+    "actions_in_plan_count": "len(all_actions) + count(primary with action) + count(supporting with action)",
+    "unique_valid_action_types": "same as distinct_allowed_covered (distinct allowed hits from the union of the three sources)",
+    "all_known_mitigations_mentioned": "True iff every action string emitted by the LLM (all_actions + primary + supporting) is in the allowed list for that attack label (i.e., invalid_actions is empty)",
+    "action_scenario_pct": "100 * (#unique distinct action strings emitted) / (total action slots emitted); null if total is 0",
+    "multi_layer": "True if >=2 distinct agents have at least one primary/supporting row where normalized network_tier equals that agent and the action is in that agent's action_capabilities per agentic_features.json",
+    "agentic_layers_involved": "Agents with at least one strict tier+capability match on primary/supporting rows",
+    "multi_layer_row_audits": "Per action: LLM tier vs agentic action_capabilities; agentic_match true only when tier agent lists that action",
+    "agentic_tier_action_alignment_pct": "100 * (primary/supporting rows with agentic_match) / (primary/supporting rows with non-empty action); null if no such rows"
+  },
+  "documents": [
+    {
+      "file_name": "rerank_comparison_sample_0_20260411_053200_573085.json",
+      "sample_id": 0,
+      "predicted_label": "BENIGN",
+      "allowed_actions": [
+        "log incident",
+        "monitor traffic"
+      ],
+      "modes": {
+        "none": {
+          "mitigation_coverage_pct": 100.0,
+          "mitigation_coverage_display": "2/2",
+          "allowed_action_count": 2,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "log incident",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "monitor traffic",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "log incident",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "monitor traffic",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "2/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "log incident",
+            "monitor traffic"
+          ],
+          "missing_allowed_actions": [],
+          "all_actions": [
+            "log incident",
+            "monitor traffic"
+          ],
+          "primary_actions_list": [
+            "log incident"
+          ],
+          "supporting_actions_list": [
+            "monitor traffic"
+          ],
+          "rerank_mode": "none",
+          "rerank_label": "no rerank (vector + MMR only)"
+        },
+        "crossencoder": {
+          "mitigation_coverage_pct": 100.0,
+          "mitigation_coverage_display": "2/2",
+          "allowed_action_count": 2,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "log incident",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "monitor traffic",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "log incident",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "monitor traffic",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "2/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "log incident",
+            "monitor traffic"
+          ],
+          "missing_allowed_actions": [],
+          "all_actions": [
+            "log incident",
+            "monitor traffic"
+          ],
+          "primary_actions_list": [
+            "log incident"
+          ],
+          "supporting_actions_list": [
+            "monitor traffic"
+          ],
+          "rerank_mode": "crossencoder",
+          "rerank_label": "CrossEncoder rerank"
+        },
+        "colbert": {
+          "mitigation_coverage_pct": 100.0,
+          "mitigation_coverage_display": "2/2",
+          "allowed_action_count": 2,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "log incident",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "monitor traffic",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "log incident",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "monitor traffic",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "2/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "log incident",
+            "monitor traffic"
+          ],
+          "missing_allowed_actions": [],
+          "all_actions": [
+            "log incident",
+            "monitor traffic"
+          ],
+          "primary_actions_list": [
+            "log incident"
+          ],
+          "supporting_actions_list": [
+            "monitor traffic"
+          ],
+          "rerank_mode": "colbert",
+          "rerank_label": "ColBERT rerank"
+        }
+      }
+    },
+    {
+      "file_name": "rerank_comparison_sample_1_20260411_053250_993527.json",
+      "sample_id": 1,
+      "predicted_label": "BOT",
+      "allowed_actions": [
+        "captcha challenge",
+        "limit rate",
+        "apply WAF",
+        "reputation filter",
+        "block IP",
+        "js challenge"
+      ],
+      "modes": {
+        "none": {
+          "mitigation_coverage_pct": 33.33,
+          "mitigation_coverage_display": "2/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "Edge"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "captcha challenge",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "limit rate",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "captcha challenge",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "2/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "Edge"
+          ],
+          "matched_actions": [
+            "captcha challenge",
+            "limit rate"
+          ],
+          "missing_allowed_actions": [
+            "apply WAF",
+            "reputation filter",
+            "block IP",
+            "js challenge"
+          ],
+          "all_actions": [
+            "captcha challenge",
+            "limit rate"
+          ],
+          "primary_actions_list": [
+            "captcha challenge"
+          ],
+          "supporting_actions_list": [
+            "limit rate"
+          ],
+          "rerank_mode": "none",
+          "rerank_label": "no rerank (vector + MMR only)"
+        },
+        "crossencoder": {
+          "mitigation_coverage_pct": 50.0,
+          "mitigation_coverage_display": "3/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 3,
+          "actions_in_plan_count": 6,
+          "unique_valid_action_types": 3,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "Edge"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "captcha challenge",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "limit rate",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "apply WAF",
+              "network_tier_raw": "Core",
+              "network_tier_normalized": "Core",
+              "agentic_match": false,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "captcha challenge",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "apply WAF",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 3,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 66.67,
+          "agentic_tier_action_alignment_display": "2/3",
+          "action_scenario_unique": 3,
+          "action_scenario_total": 6,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "Core",
+            "Edge"
+          ],
+          "matched_actions": [
+            "captcha challenge",
+            "limit rate",
+            "apply WAF"
+          ],
+          "missing_allowed_actions": [
+            "reputation filter",
+            "block IP",
+            "js challenge"
+          ],
+          "all_actions": [
+            "captcha challenge",
+            "limit rate",
+            "apply WAF"
+          ],
+          "primary_actions_list": [
+            "captcha challenge"
+          ],
+          "supporting_actions_list": [
+            "limit rate",
+            "apply WAF"
+          ],
+          "rerank_mode": "crossencoder",
+          "rerank_label": "CrossEncoder rerank"
+        },
+        "colbert": {
+          "mitigation_coverage_pct": 33.33,
+          "mitigation_coverage_display": "2/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "Edge"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "captcha challenge",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "limit rate",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "captcha challenge",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "2/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "Edge"
+          ],
+          "matched_actions": [
+            "captcha challenge",
+            "limit rate"
+          ],
+          "missing_allowed_actions": [
+            "apply WAF",
+            "reputation filter",
+            "block IP",
+            "js challenge"
+          ],
+          "all_actions": [
+            "captcha challenge",
+            "limit rate"
+          ],
+          "primary_actions_list": [
+            "captcha challenge"
+          ],
+          "supporting_actions_list": [
+            "limit rate"
+          ],
+          "rerank_mode": "colbert",
+          "rerank_label": "ColBERT rerank"
+        }
+      }
+    },
+    {
+      "file_name": "rerank_comparison_sample_2_20260411_053336_937148.json",
+      "sample_id": 2,
+      "predicted_label": "DDOS",
+      "allowed_actions": [
+        "limit rate",
+        "enable scrubbing",
+        "blackhole route",
+        "update ACL",
+        "block IP",
+        "scale service"
+      ],
+      "modes": {
+        "none": {
+          "mitigation_coverage_pct": 33.33,
+          "mitigation_coverage_display": "2/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "limit rate",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "enable scrubbing",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": false,
+              "action_capabilities_agents": [
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "enable scrubbing",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 1,
+          "agentic_tier_action_alignment_pct": 50.0,
+          "agentic_tier_action_alignment_display": "1/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "limit rate",
+            "enable scrubbing"
+          ],
+          "missing_allowed_actions": [
+            "blackhole route",
+            "update ACL",
+            "block IP",
+            "scale service"
+          ],
+          "all_actions": [
+            "limit rate",
+            "enable scrubbing"
+          ],
+          "primary_actions_list": [
+            "limit rate"
+          ],
+          "supporting_actions_list": [
+            "enable scrubbing"
+          ],
+          "rerank_mode": "none",
+          "rerank_label": "no rerank (vector + MMR only)"
+        },
+        "crossencoder": {
+          "mitigation_coverage_pct": 33.33,
+          "mitigation_coverage_display": "2/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "limit rate",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "enable scrubbing",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": false,
+              "action_capabilities_agents": [
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "enable scrubbing",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 1,
+          "agentic_tier_action_alignment_pct": 50.0,
+          "agentic_tier_action_alignment_display": "1/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "limit rate",
+            "enable scrubbing"
+          ],
+          "missing_allowed_actions": [
+            "blackhole route",
+            "update ACL",
+            "block IP",
+            "scale service"
+          ],
+          "all_actions": [
+            "limit rate",
+            "enable scrubbing"
+          ],
+          "primary_actions_list": [
+            "limit rate"
+          ],
+          "supporting_actions_list": [
+            "enable scrubbing"
+          ],
+          "rerank_mode": "crossencoder",
+          "rerank_label": "CrossEncoder rerank"
+        },
+        "colbert": {
+          "mitigation_coverage_pct": 33.33,
+          "mitigation_coverage_display": "2/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "limit rate",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "enable scrubbing",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": false,
+              "action_capabilities_agents": [
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "enable scrubbing",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 1,
+          "agentic_tier_action_alignment_pct": 50.0,
+          "agentic_tier_action_alignment_display": "1/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "limit rate",
+            "enable scrubbing"
+          ],
+          "missing_allowed_actions": [
+            "blackhole route",
+            "update ACL",
+            "block IP",
+            "scale service"
+          ],
+          "all_actions": [
+            "limit rate",
+            "enable scrubbing"
+          ],
+          "primary_actions_list": [
+            "limit rate"
+          ],
+          "supporting_actions_list": [
+            "enable scrubbing"
+          ],
+          "rerank_mode": "colbert",
+          "rerank_label": "ColBERT rerank"
+        }
+      }
+    },
+    {
+      "file_name": "rerank_comparison_sample_3_20260411_053426_734082.json",
+      "sample_id": 3,
+      "predicted_label": "DOS",
+      "allowed_actions": [
+        "enable syncookies",
+        "limit rate",
+        "connection limit",
+        "update ACL",
+        "block IP",
+        "enable scrubbing"
+      ],
+      "modes": {
+        "none": {
+          "mitigation_coverage_pct": 50.0,
+          "mitigation_coverage_display": "3/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 3,
+          "actions_in_plan_count": 6,
+          "unique_valid_action_types": 3,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "enable syncookies",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": false,
+              "action_capabilities_agents": [
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "primary_actions",
+              "action": "block IP",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "limit rate",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "enable syncookies",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "block IP",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 3,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 66.67,
+          "agentic_tier_action_alignment_display": "2/3",
+          "action_scenario_unique": 3,
+          "action_scenario_total": 6,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "enable syncookies",
+            "limit rate",
+            "block IP"
+          ],
+          "missing_allowed_actions": [
+            "connection limit",
+            "update ACL",
+            "enable scrubbing"
+          ],
+          "all_actions": [
+            "enable syncookies",
+            "limit rate",
+            "block IP"
+          ],
+          "primary_actions_list": [
+            "enable syncookies",
+            "block IP"
+          ],
+          "supporting_actions_list": [
+            "limit rate"
+          ],
+          "rerank_mode": "none",
+          "rerank_label": "no rerank (vector + MMR only)"
+        },
+        "crossencoder": {
+          "mitigation_coverage_pct": 50.0,
+          "mitigation_coverage_display": "3/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 3,
+          "actions_in_plan_count": 6,
+          "unique_valid_action_types": 3,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "enable syncookies",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": false,
+              "action_capabilities_agents": [
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "primary_actions",
+              "action": "limit rate",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "block IP",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "enable syncookies",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "block IP",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 3,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 66.67,
+          "agentic_tier_action_alignment_display": "2/3",
+          "action_scenario_unique": 3,
+          "action_scenario_total": 6,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "enable syncookies",
+            "limit rate",
+            "block IP"
+          ],
+          "missing_allowed_actions": [
+            "connection limit",
+            "update ACL",
+            "enable scrubbing"
+          ],
+          "all_actions": [
+            "enable syncookies",
+            "limit rate",
+            "block IP"
+          ],
+          "primary_actions_list": [
+            "enable syncookies",
+            "limit rate"
+          ],
+          "supporting_actions_list": [
+            "block IP"
+          ],
+          "rerank_mode": "crossencoder",
+          "rerank_label": "CrossEncoder rerank"
+        },
+        "colbert": {
+          "mitigation_coverage_pct": 50.0,
+          "mitigation_coverage_display": "3/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 3,
+          "actions_in_plan_count": 6,
+          "unique_valid_action_types": 3,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "enable syncookies",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": false,
+              "action_capabilities_agents": [
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "primary_actions",
+              "action": "limit rate",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "block IP",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "enable syncookies",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "block IP",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 3,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 66.67,
+          "agentic_tier_action_alignment_display": "2/3",
+          "action_scenario_unique": 3,
+          "action_scenario_total": 6,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "enable syncookies",
+            "limit rate",
+            "block IP"
+          ],
+          "missing_allowed_actions": [
+            "connection limit",
+            "update ACL",
+            "enable scrubbing"
+          ],
+          "all_actions": [
+            "enable syncookies",
+            "limit rate",
+            "block IP"
+          ],
+          "primary_actions_list": [
+            "enable syncookies",
+            "limit rate"
+          ],
+          "supporting_actions_list": [
+            "block IP"
+          ],
+          "rerank_mode": "colbert",
+          "rerank_label": "ColBERT rerank"
+        }
+      }
+    },
+    {
+      "file_name": "rerank_comparison_sample_4_20260411_053517_026234.json",
+      "sample_id": 4,
+      "predicted_label": "FTPPATATOR",
+      "allowed_actions": [
+        "lock account",
+        "enforce MFA",
+        "throttle credentials",
+        "fail2ban block",
+        "block IP",
+        "update ACL"
+      ],
+      "modes": {
+        "none": {
+          "mitigation_coverage_pct": 100.0,
+          "mitigation_coverage_display": "6/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 6,
+          "actions_in_plan_count": 12,
+          "unique_valid_action_types": 6,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "Edge"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "lock account",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "primary_actions",
+              "action": "enforce MFA",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "throttle credentials",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "fail2ban block",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "block IP",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "update ACL",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "lock account",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "enforce MFA",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "throttle credentials",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "fail2ban block",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "block IP",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "update ACL",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 6,
+          "agentic_ps_rows_matched": 6,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "6/6",
+          "action_scenario_unique": 6,
+          "action_scenario_total": 12,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "Edge"
+          ],
+          "matched_actions": [
+            "lock account",
+            "enforce MFA",
+            "throttle credentials",
+            "fail2ban block",
+            "block IP",
+            "update ACL"
+          ],
+          "missing_allowed_actions": [],
+          "all_actions": [
+            "lock account",
+            "enforce MFA",
+            "throttle credentials",
+            "fail2ban block",
+            "block IP",
+            "update ACL"
+          ],
+          "primary_actions_list": [
+            "lock account",
+            "enforce MFA"
+          ],
+          "supporting_actions_list": [
+            "throttle credentials",
+            "fail2ban block",
+            "block IP",
+            "update ACL"
+          ],
+          "rerank_mode": "none",
+          "rerank_label": "no rerank (vector + MMR only)"
+        },
+        "crossencoder": {
+          "mitigation_coverage_pct": 50.0,
+          "mitigation_coverage_display": "3/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 3,
+          "actions_in_plan_count": 6,
+          "unique_valid_action_types": 3,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "Edge"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "lock account",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "enforce MFA",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "throttle credentials",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "lock account",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "enforce MFA",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "throttle credentials",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 3,
+          "agentic_ps_rows_matched": 3,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "3/3",
+          "action_scenario_unique": 3,
+          "action_scenario_total": 6,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "Edge"
+          ],
+          "matched_actions": [
+            "lock account",
+            "enforce MFA",
+            "throttle credentials"
+          ],
+          "missing_allowed_actions": [
+            "fail2ban block",
+            "block IP",
+            "update ACL"
+          ],
+          "all_actions": [
+            "lock account",
+            "enforce MFA",
+            "throttle credentials"
+          ],
+          "primary_actions_list": [
+            "lock account"
+          ],
+          "supporting_actions_list": [
+            "enforce MFA",
+            "throttle credentials"
+          ],
+          "rerank_mode": "crossencoder",
+          "rerank_label": "CrossEncoder rerank"
+        },
+        "colbert": {
+          "mitigation_coverage_pct": 50.0,
+          "mitigation_coverage_display": "3/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 3,
+          "actions_in_plan_count": 6,
+          "unique_valid_action_types": 3,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "Edge"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "lock account",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "enforce MFA",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "throttle credentials",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "lock account",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "enforce MFA",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "throttle credentials",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 3,
+          "agentic_ps_rows_matched": 3,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "3/3",
+          "action_scenario_unique": 3,
+          "action_scenario_total": 6,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "Edge"
+          ],
+          "matched_actions": [
+            "lock account",
+            "enforce MFA",
+            "throttle credentials"
+          ],
+          "missing_allowed_actions": [
+            "fail2ban block",
+            "block IP",
+            "update ACL"
+          ],
+          "all_actions": [
+            "lock account",
+            "enforce MFA",
+            "throttle credentials"
+          ],
+          "primary_actions_list": [
+            "lock account"
+          ],
+          "supporting_actions_list": [
+            "enforce MFA",
+            "throttle credentials"
+          ],
+          "rerank_mode": "colbert",
+          "rerank_label": "ColBERT rerank"
+        }
+      }
+    },
+    {
+      "file_name": "rerank_comparison_sample_5_20260411_053626_191568.json",
+      "sample_id": 5,
+      "predicted_label": "OTHERS",
+      "allowed_actions": [
+        "limit rate",
+        "update ACL",
+        "block IP",
+        "enable scrubbing",
+        "isolate service",
+        "log incident"
+      ],
+      "modes": {
+        "none": {
+          "mitigation_coverage_pct": 50.0,
+          "mitigation_coverage_display": "3/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 3,
+          "actions_in_plan_count": 6,
+          "unique_valid_action_types": 3,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "limit rate",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "update ACL",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "block IP",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "update ACL",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "block IP",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 3,
+          "agentic_ps_rows_matched": 3,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "3/3",
+          "action_scenario_unique": 3,
+          "action_scenario_total": 6,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "limit rate",
+            "update ACL",
+            "block IP"
+          ],
+          "missing_allowed_actions": [
+            "enable scrubbing",
+            "isolate service",
+            "log incident"
+          ],
+          "all_actions": [
+            "limit rate",
+            "update ACL",
+            "block IP"
+          ],
+          "primary_actions_list": [
+            "limit rate"
+          ],
+          "supporting_actions_list": [
+            "update ACL",
+            "block IP"
+          ],
+          "rerank_mode": "none",
+          "rerank_label": "no rerank (vector + MMR only)"
+        },
+        "crossencoder": {
+          "mitigation_coverage_pct": 33.33,
+          "mitigation_coverage_display": "2/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "limit rate",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "update ACL",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "update ACL",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "2/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "limit rate",
+            "update ACL"
+          ],
+          "missing_allowed_actions": [
+            "block IP",
+            "enable scrubbing",
+            "isolate service",
+            "log incident"
+          ],
+          "all_actions": [
+            "limit rate",
+            "update ACL"
+          ],
+          "primary_actions_list": [
+            "limit rate"
+          ],
+          "supporting_actions_list": [
+            "update ACL"
+          ],
+          "rerank_mode": "crossencoder",
+          "rerank_label": "CrossEncoder rerank"
+        },
+        "colbert": {
+          "mitigation_coverage_pct": 33.33,
+          "mitigation_coverage_display": "2/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "limit rate",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "update ACL",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "update ACL",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "2/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "limit rate",
+            "update ACL"
+          ],
+          "missing_allowed_actions": [
+            "block IP",
+            "enable scrubbing",
+            "isolate service",
+            "log incident"
+          ],
+          "all_actions": [
+            "limit rate",
+            "update ACL"
+          ],
+          "primary_actions_list": [
+            "limit rate"
+          ],
+          "supporting_actions_list": [
+            "update ACL"
+          ],
+          "rerank_mode": "colbert",
+          "rerank_label": "ColBERT rerank"
+        }
+      }
+    },
+    {
+      "file_name": "rerank_comparison_sample_6_20260411_053716_338633.json",
+      "sample_id": 6,
+      "predicted_label": "PORTSCAN",
+      "allowed_actions": [
+        "block IP",
+        "limit rate",
+        "tarpit scan",
+        "update ACL",
+        "harden ports",
+        "scan threshold"
+      ],
+      "modes": {
+        "none": {
+          "mitigation_coverage_pct": 33.33,
+          "mitigation_coverage_display": "2/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "block IP",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "limit rate",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "block IP",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "2/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "block IP",
+            "limit rate"
+          ],
+          "missing_allowed_actions": [
+            "tarpit scan",
+            "update ACL",
+            "harden ports",
+            "scan threshold"
+          ],
+          "all_actions": [
+            "block IP",
+            "limit rate"
+          ],
+          "primary_actions_list": [
+            "block IP"
+          ],
+          "supporting_actions_list": [
+            "limit rate"
+          ],
+          "rerank_mode": "none",
+          "rerank_label": "no rerank (vector + MMR only)"
+        },
+        "crossencoder": {
+          "mitigation_coverage_pct": 33.33,
+          "mitigation_coverage_display": "2/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "block IP",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "limit rate",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "block IP",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "2/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "block IP",
+            "limit rate"
+          ],
+          "missing_allowed_actions": [
+            "tarpit scan",
+            "update ACL",
+            "harden ports",
+            "scan threshold"
+          ],
+          "all_actions": [
+            "block IP",
+            "limit rate"
+          ],
+          "primary_actions_list": [
+            "block IP"
+          ],
+          "supporting_actions_list": [
+            "limit rate"
+          ],
+          "rerank_mode": "crossencoder",
+          "rerank_label": "CrossEncoder rerank"
+        },
+        "colbert": {
+          "mitigation_coverage_pct": 33.33,
+          "mitigation_coverage_display": "2/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "RAN"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "block IP",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "limit rate",
+              "network_tier_raw": "RAN",
+              "network_tier_normalized": "RAN",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "block IP",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "2/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "RAN"
+          ],
+          "matched_actions": [
+            "block IP",
+            "limit rate"
+          ],
+          "missing_allowed_actions": [
+            "tarpit scan",
+            "update ACL",
+            "harden ports",
+            "scan threshold"
+          ],
+          "all_actions": [
+            "block IP",
+            "limit rate"
+          ],
+          "primary_actions_list": [
+            "block IP"
+          ],
+          "supporting_actions_list": [
+            "limit rate"
+          ],
+          "rerank_mode": "colbert",
+          "rerank_label": "ColBERT rerank"
+        }
+      }
+    },
+    {
+      "file_name": "rerank_comparison_sample_7_20260411_053839_148503.json",
+      "sample_id": 7,
+      "predicted_label": "SSHPATATOR",
+      "allowed_actions": [
+        "lock account",
+        "enforce MFA",
+        "throttle credentials",
+        "fail2ban block",
+        "block IP",
+        "update ACL"
+      ],
+      "modes": {
+        "none": {
+          "mitigation_coverage_pct": 83.33,
+          "mitigation_coverage_display": "5/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 5,
+          "actions_in_plan_count": 10,
+          "unique_valid_action_types": 5,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "Edge"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "lock account",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "primary_actions",
+              "action": "enforce MFA",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "throttle credentials",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "fail2ban block",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "block IP",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "lock account",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "enforce MFA",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "throttle credentials",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "fail2ban block",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "block IP",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 5,
+          "agentic_ps_rows_matched": 5,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "5/5",
+          "action_scenario_unique": 5,
+          "action_scenario_total": 10,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "Edge"
+          ],
+          "matched_actions": [
+            "lock account",
+            "enforce MFA",
+            "throttle credentials",
+            "fail2ban block",
+            "block IP"
+          ],
+          "missing_allowed_actions": [
+            "update ACL"
+          ],
+          "all_actions": [
+            "lock account",
+            "enforce MFA",
+            "throttle credentials",
+            "fail2ban block",
+            "block IP"
+          ],
+          "primary_actions_list": [
+            "lock account",
+            "enforce MFA"
+          ],
+          "supporting_actions_list": [
+            "throttle credentials",
+            "fail2ban block",
+            "block IP"
+          ],
+          "rerank_mode": "none",
+          "rerank_label": "no rerank (vector + MMR only)"
+        },
+        "crossencoder": {
+          "mitigation_coverage_pct": 50.0,
+          "mitigation_coverage_display": "3/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 3,
+          "actions_in_plan_count": 6,
+          "unique_valid_action_types": 3,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "Edge"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "lock account",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "enforce MFA",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "throttle credentials",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "lock account",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "enforce MFA",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "throttle credentials",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 3,
+          "agentic_ps_rows_matched": 3,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "3/3",
+          "action_scenario_unique": 3,
+          "action_scenario_total": 6,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "Edge"
+          ],
+          "matched_actions": [
+            "lock account",
+            "enforce MFA",
+            "throttle credentials"
+          ],
+          "missing_allowed_actions": [
+            "fail2ban block",
+            "block IP",
+            "update ACL"
+          ],
+          "all_actions": [
+            "lock account",
+            "enforce MFA",
+            "throttle credentials"
+          ],
+          "primary_actions_list": [
+            "lock account"
+          ],
+          "supporting_actions_list": [
+            "enforce MFA",
+            "throttle credentials"
+          ],
+          "rerank_mode": "crossencoder",
+          "rerank_label": "CrossEncoder rerank"
+        },
+        "colbert": {
+          "mitigation_coverage_pct": 83.33,
+          "mitigation_coverage_display": "5/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 5,
+          "actions_in_plan_count": 10,
+          "unique_valid_action_types": 5,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "Edge"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "lock account",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "primary_actions",
+              "action": "enforce MFA",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "throttle credentials",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "fail2ban block",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "block IP",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "lock account",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "enforce MFA",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "throttle credentials",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "fail2ban block",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "block IP",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 5,
+          "agentic_ps_rows_matched": 5,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "5/5",
+          "action_scenario_unique": 5,
+          "action_scenario_total": 10,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "Edge"
+          ],
+          "matched_actions": [
+            "lock account",
+            "enforce MFA",
+            "throttle credentials",
+            "fail2ban block",
+            "block IP"
+          ],
+          "missing_allowed_actions": [
+            "update ACL"
+          ],
+          "all_actions": [
+            "lock account",
+            "enforce MFA",
+            "throttle credentials",
+            "fail2ban block",
+            "block IP"
+          ],
+          "primary_actions_list": [
+            "lock account",
+            "enforce MFA"
+          ],
+          "supporting_actions_list": [
+            "throttle credentials",
+            "fail2ban block",
+            "block IP"
+          ],
+          "rerank_mode": "colbert",
+          "rerank_label": "ColBERT rerank"
+        }
+      }
+    },
+    {
+      "file_name": "rerank_comparison_sample_8_20260411_053928_711793.json",
+      "sample_id": 8,
+      "predicted_label": "WEBATTACK",
+      "allowed_actions": [
+        "apply WAF",
+        "virtual patch",
+        "block IP",
+        "limit rate",
+        "update ACL",
+        "isolate service"
+      ],
+      "modes": {
+        "none": {
+          "mitigation_coverage_pct": 50.0,
+          "mitigation_coverage_display": "3/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 3,
+          "actions_in_plan_count": 6,
+          "unique_valid_action_types": 3,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "Edge"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "apply WAF",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "primary_actions",
+              "action": "block IP",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "limit rate",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "apply WAF",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "block IP",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "limit rate",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 3,
+          "agentic_ps_rows_matched": 3,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "3/3",
+          "action_scenario_unique": 3,
+          "action_scenario_total": 6,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "Edge"
+          ],
+          "matched_actions": [
+            "apply WAF",
+            "block IP",
+            "limit rate"
+          ],
+          "missing_allowed_actions": [
+            "virtual patch",
+            "update ACL",
+            "isolate service"
+          ],
+          "all_actions": [
+            "apply WAF",
+            "block IP",
+            "limit rate"
+          ],
+          "primary_actions_list": [
+            "apply WAF",
+            "block IP"
+          ],
+          "supporting_actions_list": [
+            "limit rate"
+          ],
+          "rerank_mode": "none",
+          "rerank_label": "no rerank (vector + MMR only)"
+        },
+        "crossencoder": {
+          "mitigation_coverage_pct": 33.33,
+          "mitigation_coverage_display": "2/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "Edge"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "apply WAF",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "block IP",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "apply WAF",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "block IP",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "2/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "Edge"
+          ],
+          "matched_actions": [
+            "apply WAF",
+            "block IP"
+          ],
+          "missing_allowed_actions": [
+            "virtual patch",
+            "limit rate",
+            "update ACL",
+            "isolate service"
+          ],
+          "all_actions": [
+            "apply WAF",
+            "block IP"
+          ],
+          "primary_actions_list": [
+            "apply WAF"
+          ],
+          "supporting_actions_list": [
+            "block IP"
+          ],
+          "rerank_mode": "crossencoder",
+          "rerank_label": "CrossEncoder rerank"
+        },
+        "colbert": {
+          "mitigation_coverage_pct": 33.33,
+          "mitigation_coverage_display": "2/6",
+          "allowed_action_count": 6,
+          "distinct_allowed_covered": 2,
+          "actions_in_plan_count": 4,
+          "unique_valid_action_types": 2,
+          "invalid_actions": [],
+          "all_known_mitigations_mentioned": true,
+          "multi_layer": false,
+          "agentic_layers_involved": [
+            "Edge"
+          ],
+          "multi_layer_row_audits": [
+            {
+              "source": "primary_actions",
+              "action": "apply WAF",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "Edge"
+              ]
+            },
+            {
+              "source": "supporting_actions",
+              "action": "block IP",
+              "network_tier_raw": "Edge",
+              "network_tier_normalized": "Edge",
+              "agentic_match": true,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ]
+            },
+            {
+              "source": "all_actions",
+              "action": "apply WAF",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "Edge"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            },
+            {
+              "source": "all_actions",
+              "action": "block IP",
+              "network_tier_raw": null,
+              "network_tier_normalized": null,
+              "agentic_match": null,
+              "action_capabilities_agents": [
+                "RAN",
+                "Edge",
+                "Core"
+              ],
+              "note": "no network_tier; excluded from multi_layer agent count"
+            }
+          ],
+          "agentic_ps_row_count": 2,
+          "agentic_ps_rows_matched": 2,
+          "agentic_tier_action_alignment_pct": 100.0,
+          "agentic_tier_action_alignment_display": "2/2",
+          "action_scenario_unique": 2,
+          "action_scenario_total": 4,
+          "action_scenario_pct": 50.0,
+          "plan_network_tier_raw": [
+            "Edge"
+          ],
+          "matched_actions": [
+            "apply WAF",
+            "block IP"
+          ],
+          "missing_allowed_actions": [
+            "virtual patch",
+            "limit rate",
+            "update ACL",
+            "isolate service"
+          ],
+          "all_actions": [
+            "apply WAF",
+            "block IP"
+          ],
+          "primary_actions_list": [
+            "apply WAF"
+          ],
+          "supporting_actions_list": [
+            "block IP"
+          ],
+          "rerank_mode": "colbert",
+          "rerank_label": "ColBERT rerank"
+        }
+      }
+    }
+  ],
+  "aggregate_by_mode": {
+    "none": {
+      "n_documents": 9,
+      "mean_mitigation_coverage_pct": 59.26,
+      "mean_actions_in_plan_count": 6.22,
+      "mean_unique_valid_action_types": 3.11,
+      "multi_layer_pct": 0.0,
+      "mean_agentic_tier_action_alignment_pct": 90.74
+    },
+    "crossencoder": {
+      "n_documents": 9,
+      "mean_mitigation_coverage_pct": 48.15,
+      "mean_actions_in_plan_count": 4.89,
+      "mean_unique_valid_action_types": 2.44,
+      "multi_layer_pct": 0.0,
+      "mean_agentic_tier_action_alignment_pct": 87.04
+    },
+    "colbert": {
+      "n_documents": 9,
+      "mean_mitigation_coverage_pct": 50.0,
+      "mean_actions_in_plan_count": 5.11,
+      "mean_unique_valid_action_types": 2.56,
+      "multi_layer_pct": 0.0,
+      "mean_agentic_tier_action_alignment_pct": 90.74
+    }
+  }
+}
