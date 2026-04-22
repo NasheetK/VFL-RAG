@@ -402,6 +402,9 @@ def _rag_result_score_fields(r: Dict[str, Any]) -> Dict[str, Any]:
     cb = r.get("colbert_score")
     if cb is not None:
         out["colbert_score"] = float(cb)
+    bm = r.get("bm25_score")
+    if bm is not None:
+        out["bm25_score"] = float(bm)
     return out
 
 
@@ -685,7 +688,15 @@ def save_rerank_comparison_report(
     """
     Save a single JSON comparing multiple rerank modes (each with RAG context + LLM output).
 
-    ``modes_payload`` maps mode key -> ``{"rag_results": [...], "llm_response": dict|None}``.
+    ``modes_payload`` maps mode key -> payload dict with:
+      - ``rag_results`` — LLM-visible top-K sections (typically 10), serialized under
+        ``modes.<mode>.rag_info.top_results``.
+      - ``candidate_pool`` (optional) — wider reranked pool (typically ~30 sections) used by
+        ``Score.ipynb`` as the denominator for Recall@k / nDCG@k. Persisted under
+        ``modes.<mode>.rag_info.candidate_pool``. Falls back to ``rag_results`` when omitted,
+        so older callers remain compatible.
+      - ``llm_response`` — the parsed LLM action-plan dict (or ``None``).
+      - ``label`` / ``search_method`` — optional display strings.
 
     ``retrieval_query_entries`` — optional list of ``{"strategy_key": ..., "query_text": ...}``
     (multi-query retrieval). When set, the first entry's ``query_text`` is the MMR/rerank anchor.
@@ -697,6 +708,7 @@ def save_rerank_comparison_report(
 
     search_method_labels = {
         "none": "vector_similarity_mmr_no_rerank",
+        "bm25": "bm25_rerank",
         "crossencoder": "crossencoder_rerank",
         "colbert": "colbert_rerank",
         "crossencoder_colbert": "crossencoder_plus_colbert",
@@ -705,6 +717,9 @@ def save_rerank_comparison_report(
     modes_out: Dict[str, Any] = {}
     for mode_key, payload in modes_payload.items():
         rag_results = payload.get("rag_results") or []
+        # Optional wider pre-slice pool for retrieval-quality metrics (Recall@k, nDCG@k).
+        # If not provided, falls back to ``rag_results`` so callers stay backward-compatible.
+        candidate_pool = payload.get("candidate_pool") or rag_results
         llm_response = payload.get("llm_response")
         sm = search_method_labels.get(
             mode_key, str(payload.get("search_method") or mode_key)
@@ -714,6 +729,7 @@ def save_rerank_comparison_report(
             "search_method": sm,
             "rag_info": {
                 "documents_used": len(rag_results),
+                "candidates_considered": len(candidate_pool),
                 "search_queries": [query] if query else [],
                 "top_results": [
                     {
@@ -722,6 +738,14 @@ def save_rerank_comparison_report(
                         "text": r["text"],
                     }
                     for r in rag_results[:DEFAULT_EXPORT_RAG_TOP_N]
+                ],
+                "candidate_pool": [
+                    {
+                        **_rag_result_export_fields(r),
+                        "title": r["title"],
+                        "text": r["text"],
+                    }
+                    for r in candidate_pool
                 ],
             },
             "llm_action_plan": llm_response,
