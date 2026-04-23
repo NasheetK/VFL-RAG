@@ -1,4 +1,4 @@
-# Line-by-Line Explanation of VFL_SHAP.ipynb
+# Line-by-Line Explanation of Train.ipynb (VFL + SHAP training notebook)
 
 This notebook implements **Vertical Federated Learning (VFL) with SHAP explanations** for DDoS attack detection using network flow data. The code demonstrates how to explain which party (data owner) contributes most to attack detection decisions.
 
