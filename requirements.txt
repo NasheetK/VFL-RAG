@@ -55,13 +55,20 @@ faiss-cpu>=1.7.4
 sentence-transformers>=2.2.0
 
 # -----------------------------------------------------------------------------
-# Reranking (Part 2): CrossEncoder via sentence-transformers (see above)
-# ColBERT via RAGatouille (Plan.ipynb); import ``utils.langchain_ragatouille_shim`` before ragatouille (see notebook).
+# Retrieval / reranking (Part 2) — six-mode topology used by Plan.ipynb:
+#   none               - FAISS dense top-100 + MMR                (sentence-transformers)
+#   bm25               - BM25 over full corpus (single-stage)     (rank-bm25)
+#   doct5query         - BM25 over T5-expanded corpus             (rank-bm25 + transformers + sentencepiece)
+#   crossencoder       - FAISS top-100 -> CrossEncoder            (sentence-transformers)
+#   bm25_crossencoder  - BM25 top-100 -> CrossEncoder             (rank-bm25 + sentence-transformers)
+#   colbert            - FAISS top-100 -> ColBERT MaxSim          (ragatouille)
 # Windows: first ColBERT load JIT-builds a torch extension; install "Desktop development with C++" (MSVC/cl) and keep ``ninja`` on PATH (venv ``Scripts``).
-# BM25 lexical reranker (Plan.ipynb): pure-Python Okapi BM25 over MMR candidates.
 # -----------------------------------------------------------------------------
 ragatouille>=0.0.9.post2,<0.0.10
 rank-bm25>=0.2.2
+# SentencePiece tokenizer is required by the doc2query T5 model
+# (``castorini/doc2query-t5-base-msmarco``) used by the ``doct5query`` mode.
+sentencepiece>=0.1.99
 
 # -----------------------------------------------------------------------------
 # Hugging Face (local summarization titles: distilbart; pulled by sentence-transformers)

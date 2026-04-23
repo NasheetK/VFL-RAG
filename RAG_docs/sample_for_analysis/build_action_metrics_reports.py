@@ -17,7 +17,14 @@ ATTACK_OPTIONS = RAG_DOCS / "attack_options.json"
 AGENTIC_FEATURES = RAG_DOCS / "agentic_features.json"
 SAMPLE_DIR = Path(__file__).resolve().parent
 REPORTS_DIR = SAMPLE_DIR / "reports"
-MODES = ["none", "crossencoder", "colbert"]
+MODES = [
+    "none",
+    "bm25",
+    "doct5query",
+    "crossencoder",
+    "bm25_crossencoder",
+    "colbert",
+]
 AGENT_ORDER = ["RAN", "Edge", "Core"]
 
 
@@ -293,8 +300,11 @@ def build_per_sample_markdown(documents: list[dict]) -> str:
         label = doc["predicted_label"]
         fn = doc["file_name"]
         lines.append(f"## Sample {sid} — **{label}** — `{fn}`\n")
-        lines.append("| Metric | MMR | CrossEncoder | ColBERT |")
-        lines.append("| --- | --- | --- | --- |")
+        lines.append(
+            "| Metric | Dense MMR | BM25 | docT5 | Dense -> CE "
+            "| BM25 -> CE | Dense -> ColBERT |"
+        )
+        lines.append("| --- | --- | --- | --- | --- | --- | --- |")
         modes = doc["modes"]
         row_cov = "| Mitigation coverage |"
         row_matched = "| Matched actions |"
@@ -333,7 +343,14 @@ def build_explanations_markdown(documents: list[dict]) -> str:
         "- **Multi-layer**: requires ≥2 distinct agents with at least one primary/supporting row where "
         "`agentic_match == true`.\n"
     )
-    mode_title = {"none": "MMR", "crossencoder": "CrossEncoder", "colbert": "ColBERT"}
+    mode_title = {
+        "none": "Dense MMR",
+        "bm25": "BM25",
+        "doct5query": "docT5",
+        "crossencoder": "Dense -> CE",
+        "bm25_crossencoder": "BM25 -> CE",
+        "colbert": "Dense -> ColBERT",
+    }
 
     def fmt_match(audit: dict) -> str:
         m = audit.get("agentic_match")

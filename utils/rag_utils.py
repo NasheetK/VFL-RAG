@@ -691,15 +691,28 @@ def save_rerank_comparison_report(
     ``modes_payload`` maps mode key -> payload dict with:
       - ``rag_results`` — LLM-visible top-K sections (typically 10), serialized under
         ``modes.<mode>.rag_info.top_results``.
-      - ``candidate_pool`` (optional) — wider reranked pool (typically ~30 sections) used by
+      - ``candidate_pool`` (optional) — wider candidate pool (100 sections) used by
         ``Score.ipynb`` as the denominator for Recall@k / nDCG@k. Persisted under
         ``modes.<mode>.rag_info.candidate_pool``. Falls back to ``rag_results`` when omitted,
-        so older callers remain compatible.
+        so older callers remain compatible. Pool semantics per mode:
+
+          * ``none``                — dense FAISS top-100 after MMR diversification.
+          * ``bm25``                — BM25 top-100 over the full child-chunk corpus
+                                       (single-stage; superset of the 10 shown to the LLM).
+          * ``doct5query``          — BM25 top-100 over the T5-expanded corpus
+                                       (single-stage; superset of the 10 shown to the LLM).
+          * ``crossencoder``        — raw FAISS top-100 fed to the CrossEncoder
+                                       (stage-1 shortlist, pre-rerank ordering).
+          * ``bm25_crossencoder``   — BM25 top-100 fed to the CrossEncoder
+                                       (stage-1 shortlist, pre-rerank ordering).
+          * ``colbert``             — raw FAISS top-100 fed to the ColBERT reranker
+                                       (stage-1 shortlist, pre-rerank ordering).
+
       - ``llm_response`` — the parsed LLM action-plan dict (or ``None``).
       - ``label`` / ``search_method`` — optional display strings.
 
     ``retrieval_query_entries`` — optional list of ``{"strategy_key": ..., "query_text": ...}``
-    (multi-query retrieval). When set, the first entry's ``query_text`` is the MMR/rerank anchor.
+    (multi-query retrieval). When set, the first entry's ``query_text`` is the rerank anchor.
 
     ``index_embed_model`` — embedding model id from the FAISS manifest (for analysis tooling).
     """
@@ -707,10 +720,12 @@ def save_rerank_comparison_report(
     results_action_dir.mkdir(parents=True, exist_ok=True)
 
     search_method_labels = {
-        "none": "vector_similarity_mmr_no_rerank",
-        "bm25": "bm25_rerank",
-        "crossencoder": "crossencoder_rerank",
-        "colbert": "colbert_rerank",
+        "none": "dense_faiss_mmr_single_stage",
+        "bm25": "bm25_full_corpus_single_stage",
+        "doct5query": "bm25_doct5query_expanded_corpus_single_stage",
+        "crossencoder": "dense_faiss_top100_then_crossencoder",
+        "bm25_crossencoder": "bm25_top100_then_crossencoder",
+        "colbert": "dense_faiss_top100_then_colbert",
         "crossencoder_colbert": "crossencoder_plus_colbert",
     }
 

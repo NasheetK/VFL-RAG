@@ -245,21 +245,27 @@ jupyter notebook Index.ipynb
 
 **Purpose**: Generate context-aware mitigation action plans from SHAP predictions.
 
-**Why**: Converts SHAP attributions into actionable security recommendations using RAG + OpenAI.
+**Why**: Converts SHAP attributions into actionable security recommendations using RAG + OpenAI, and runs a **six-mode retrieval / reranking ablation** so `Score.ipynb` can compare Stage-1 retrievers and Stage-2 rerankers head-to-head.
 
 **What it does**:
 - **Loads** the saved FAISS index and parent store from Part 1 only (does not re-read `RAG_docs/knowledge/`)
 - Generates retrieval queries per sample (deterministic template, deterministic rephrase, optional LLM variants; configurable)
-- Runs a **multi-stage retrieval/ranking pipeline** before calling the LLM:
-  - Fetch **20 child chunks per query**
-  - **Merge + dedupe** candidates (prefers `(parent_id, child_index)` chunk identity)
-  - **MMR** diversity selection to reduce redundancy
-  - **REQUIRED CrossEncoder** reranking via `sentence-transformers` (no fallback; errors clearly if missing)
-  - Expand top-ranked child chunks into **parent** contextual sections
-  - Pass the **top 5 unique full-text sections** into the LLM prompt as RAG context
-- Calls OpenAI once per sample and writes one action plan JSON under `RAG_docs/action_plans/`
+- For every sample, assembles context under **six retrieval / reranking modes** — all two-stage modes use a **100-chunk Stage-1 shortlist** and select the **top 10** for the LLM:
 
-**Shared code**: `utils/rag_utils.py` (predictions/config loaders, FAISS save/load + manifest, party/tier helpers + action-plan JSON saves). KB file loading and index build are in Part 1; Part 2 only loads the vector store.
+  | Mode | Stage 1 (100) | Stage 2 (10) |
+  |---|---|---|
+  | `none` (Dense MMR) | Dense FAISS multi-query | MMR |
+  | `bm25` | BM25 over full child corpus | truncate |
+  | `doct5query` | BM25 over doc2query-expanded corpus (`castorini/doc2query-t5-base-msmarco`, 20 synthetic queries / chunk) | truncate |
+  | `crossencoder` (Dense → CE) | Raw dense FAISS top-100 (no MMR) | CrossEncoder |
+  | `bm25_crossencoder` (BM25 → CE) | BM25 top-100 | CrossEncoder |
+  | `colbert` (Dense → ColBERT) | Raw dense FAISS top-100 (no MMR) | ColBERT v2 late-interaction |
+
+- Expands the top-10 child chunks to full parent sections via `rag_parents.json` and calls OpenAI once per mode per sample
+- Persists each sample's full comparison (top-10 + 100-chunk candidate pool + LLM output for every mode) via `utils.rag_utils.save_rerank_comparison_report`
+- Caches the doc2query-expanded corpus to `RAG_docs/rag_parents_doc2query.json` so subsequent runs skip the T5 generation step
+
+**Shared code**: `utils/rag_utils.py` (predictions/config loaders, FAISS save/load + manifest, party/tier helpers, rerank-comparison report writer). KB file loading and index build are in Part 1; Part 2 only loads the vector store.
 
 **Prerequisites**:
 - Part 1 completed (`RAG_docs/vector_store/` exists)
@@ -272,7 +278,8 @@ jupyter notebook Index.ipynb
 - `RAG_docs/vector_store/` - FAISS index + `rag_parents.json` from Part 1
 
 **Outputs**:
-- `RAG_docs/action_plans/action_plan_*.json`
+- `RAG_docs/action_plans/rerank_comparison_sample_<id>_<ts>.json` — one per sample, containing all six modes' top-10, 100-chunk candidate pool, and LLM action plan
+- `RAG_docs/rag_parents_doc2query.json` — cached doc2query-expanded corpus
 
 **Run**:
 ```bash
@@ -283,35 +290,39 @@ jupyter notebook Plan.ipynb
 
 ### 4. Score.ipynb (Evaluation)
 
-**Purpose**: Evaluate action plan quality using NLP metrics
+**Purpose**: Evaluate the six retrieval / reranking modes from `Plan.ipynb` using BEIR / CRAG-aligned metrics and produce per-attack-class tables + grouped bar charts.
 
-**Why**: Validates that generated recommendations are accurate and contextually appropriate
+**Why**: Validates which Stage-1 retriever × Stage-2 reranker combination delivers the best retrieval quality, context faithfulness, and downstream LLM reasoning.
 
 **What it does**:
-- Loads generated action plans
-- Computes ROUGE-1 (lexical precision) - word-for-word overlap
-- Computes SBERT Cosine similarity (semantic alignment) - intent matching
-- Computes BERTScore F1 (reasoning depth) - contextual awareness
-- Generates evaluation reports and visualizations
+- Loads every `rerank_comparison_sample_*.json` produced by `Plan.ipynb` (each file contains all six modes' top-10 + 100-chunk candidate pool + LLM output for one sample)
+- Builds a deterministic **label-derived reference string** per sample from `attack_options.json` (actions per attack label) and `agentic_features.json` (which agents execute which actions)
+- Derives **adaptive thresholds** per batch (median / 25th-percentile of the observed score distribution, clamped to relaxed floors) for Recall@k relevance and the CRAG proxy
+- Computes seven metrics per sample per mode and aggregates them by rerank mode and by attack class
+- Exports a scoring summary (`RAG_docs/scoring/scoring_results.json`) and grouped bar charts (six bars per metric group)
 
-**Prerequisites**: Action plans from `Plan.ipynb`
+**Prerequisites**: Rerank comparison reports from `Plan.ipynb`
 
 **Inputs**:
-- `RAG_docs/action_plans/action_plan_*.json` - Generated action plans
+- `RAG_docs/action_plans/rerank_comparison_sample_*.json` - Per-sample comparison reports (all six modes)
 - `RAG_docs/attack_options.json` - Reference actions
 - `RAG_docs/agentic_features.json` - Agent definitions
 
-**Outputs**: 
-- `RAG_docs/scoring/scoring_results.json` - Evaluation results
-- Console output with metric scores
-- Visualizations (if matplotlib configured)
+**Outputs**:
+- `RAG_docs/scoring/scoring_results.json` - Evaluation results with metric notes
+- Per-rerank-mode and per-attack-class tables (one six-row table per attack class)
+- Grouped bar charts (six bars per metric group, one group per metric)
 
-**Execution Time**: 2-10 minutes (depending on number of action plans)
+**Execution Time**: 2-10 minutes (depending on number of samples)
 
-**Metrics**:
-1. **ROUGE-1**: Lexical precision (word overlap) - ensures compliance with allowed actions
-2. **SBERT Cosine**: Semantic similarity (0-1 scale) - measures strategic alignment
-3. **BERTScore F1**: Contextual reasoning (0-1 scale) - validates evidence mapping
+**Metrics** (seven per sample × six modes):
+1. **Recall@10** — graded-relevance recall of the top-10 vs. the 100-chunk candidate pool, using `0.5·ROUGE-1 + 0.5·SBERT` with an adaptive relevance threshold.
+2. **nDCG@10** — standard nDCG using the same graded relevances over the top-10.
+3. **RI_SBert** — SBERT cosine between retrieved top-10 context and the reference text (context grounding).
+4. **CRAG** — 3-valued CRAG-style truthfulness proxy rescaled to `[0, 1]` (`1` accurate / `0.5` missing or partial / `0` incorrect) between retrieved context and reference text.
+5. **Util_SBert / Util_CRAG** — same pair of metrics, but between retrieved context and the LLM's `overall_reasoning` (how much of the retrieved evidence the LLM actually grounded its answer in).
+6. **LLM_SBert / LLM_CRAG** — same pair, but between the LLM's `overall_reasoning` and the reference text.
+7. **BertscoreF1** — BERTScore F1 between the ground-truth reference statement and the LLM's `overall_reasoning`.
 
 **Run**:
 ```bash
@@ -330,15 +341,19 @@ jupyter notebook Score.ipynb
 - **SHAP** (≥0.42.0) - SHapley Additive exPlanations for model interpretability
 
 ### LLM & RAG
-- **OpenAI API** - GPT-4/GPT-3.5 for action plan generation
+- **OpenAI API** - GPT-4 / GPT-3.5 for action plan generation
 - **LangChain** (≥0.3.0) - LLM application framework
-- **FAISS** - Vector similarity search for RAG
-- **Sentence Transformers** (≥2.2.0) - Semantic embeddings
+- **FAISS** - Dense vector similarity search (Stage-1 retrieval for dense modes)
+- **Sentence Transformers** (≥2.2.0) - Bi-encoder embeddings + CrossEncoder reranker
+- **rank-bm25** - Lexical Stage-1 retriever (`bm25` and `bm25_crossencoder` modes)
+- **Hugging Face Transformers** + **SentencePiece** - T5 (`castorini/doc2query-t5-base-msmarco`) for `doct5query` corpus expansion
+- **RAGatouille** - ColBERT v2 late-interaction reranker (with a patched CPU MaxSim kernel for Windows)
 
 ### Evaluation
-- **BERTScore** (≥0.3.13) - Contextual similarity evaluation
-- **ROUGE** (≥1.0.1) - Lexical overlap metrics
+- **BERTScore** (≥0.3.13) - Contextual similarity between LLM reasoning and reference text
+- **ROUGE** (≥1.0.1) - Lexical overlap used inside the graded-relevance score
 - **NLTK** (≥3.8.0) - Natural language processing
+- **CRAG-style proxy** - 3-valued truthfulness rescaled to `[0, 1]` (1 accurate / 0.5 missing or partial / 0 incorrect), with adaptive per-batch thresholds
 
 ### Data Processing
 - **PyPDF2** / **pypdf** - PDF document processing for knowledge base
