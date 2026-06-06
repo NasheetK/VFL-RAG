@@ -1,4 +1,4 @@
-# Agentic AI: Next-Gen 5G Networking with Privacy-Aware Intrusion Detection
+# Agentic AI: Privacy-Aware NIDS with VFL-RAG Orchestration
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-orange.svg)](https://pytorch.org/)
@@ -8,15 +8,15 @@
 [![SHAP](https://img.shields.io/badge/SHAP-Explainability-purple.svg)](https://github.com/slundberg/shap)
 [![LangChain](https://img.shields.io/badge/LangChain-RAG-blue.svg)](https://www.langchain.com/)
 
-A comprehensive implementation of **Agentic AI for next-generation 5G networking**, featuring Vertical Federated Learning (VFL) for privacy-aware network intrusion detection, SHAP-based explainability, and intelligent agentic reasoning for automated mitigation recommendations.
+A comprehensive implementation of **Agentic AI for enterprise NIDS**, featuring Vertical Federated Learning (VFL) for privacy-aware network intrusion detection, SHAP-based explainability, and intelligent agentic reasoning for automated mitigation recommendations.
 
 ## 📋 Overview
 
-This project implements a **next-generation 5G networking security system** powered by **Agentic AI** and Vertical Federated Learning (VFL). The system enables privacy-preserving collaborative learning across distributed network tiers (RAN, Edge, Core) while maintaining data locality. By partitioning network flow features across three logical agents representing different network domains, the system simulates realistic 5G network observability constraints while enabling intelligent, explainable intrusion detection and automated response orchestration.
+This project implements an **enterprise NIDS security stack** powered by **Agentic AI** and Vertical Federated Learning (VFL). The system enables privacy-preserving collaborative learning across three observation points (**FlowProbe**, **Firewall**, **CoreRouter**) while maintaining data locality. By partitioning CICIDS flow features across devices defined in `RAG_docs/agentic_features.json`, the system simulates realistic vertical observability constraints while enabling explainable intrusion detection and automated response orchestration.
 
 | Theme | What it delivers |
 |-------|------------------|
-| **Next-gen 5G networking** | Agentic AI aligned with distributed 5G architectures (RAN, Edge, Core). |
+| **NIDS device model** | Three-party VFL aligned with FlowProbe (access), Firewall (perimeter), CoreRouter (backbone). |
 | **Vertical feature partitioning** | Flow features split across three agents by realistic observability boundaries. |
 | **Privacy-preserving VFL** | Joint training without exchanging raw data between tiers or parties. |
 | **SHAP explainability** | Per-agent attributions to support mitigation and audit reasoning. |
@@ -42,9 +42,13 @@ AgenticAI/
 │   ├── agentic_features.json
 │   ├── attack_options.json
 │   ├── knowledge/        # PDF knowledge base
-│   └── vector_store/     # FAISS vector store
+│   ├── vector_store/     # FAISS index (all-MiniLM-L6-v2)
+│   └── vector_store_securebert/  # Parallel FAISS (SecureBERT 2.0 bi-encoder)
 ├── outputs/              # Training outputs
-├── inputs/               # Input data for prediction
+├── input/                # Per-class inference CSVs (Predict.ipynb)
+│   ├── BENIGN/samples.csv
+│   ├── DDOS/samples.csv
+│   └── ...               # DOS, PORTSCAN, FTPPATATOR (50 rows each)
 ├── Documents/            # Project documentation and guides
 ├── Train.ipynb
 ├── Predict.ipynb
@@ -150,7 +154,8 @@ Train.ipynb  →  Predict.ipynb  →  Index.ipynb  →  Plan.ipynb  →  Score.i
 
 **What it does**:
 - Loads `undersampled_CIC2017_dataset.csv` from `datasets/` directory
-- Partitions features into RAN (23), Edge (32), Core (42) agents
+- Trains on **5 classes** (BENIGN, DDOS, DOS, PORTSCAN, FTPPATATOR) from CIC2017 only; see `utils/label_config.py` and `RAG_docs/five_class_training_notes.md`
+- Partitions features into FlowProbe (23), Firewall (32), CoreRouter (42) devices per `agentic_features.json`
 - Trains VFL model with vertical federated learning
 - Trains standard neural network baseline for comparison
 - Trains meta-model for efficient SHAP computation
@@ -205,11 +210,12 @@ jupyter notebook Train.ipynb
 
 **Inputs**:
 - Trained models in `model/` directory
-- Input CSV file with network flow features (place in `inputs/` directory)
-- Must have 88 features matching training data
+- Per-class CSVs under `input/<CLASS>/samples.csv` (50 rows per class from training data)
+- Build or refresh: `python scripts/build_input_class_csvs.py`
+- Must have 88 features matching training data (250 rows total when all five classes are present)
 
 **Outputs**: 
-- `RAG_docs/predictions/predictions_*.json` - Predictions with SHAP values
+- `output/inference/<CLASS>/predictions_*.json` - Predictions with SHAP values (per attack class)
 - Console output with prediction details
 
 **Execution Time**: 1-5 minutes (depending on sample size)
@@ -243,23 +249,26 @@ jupyter notebook Index.ipynb
 
 ### 3b. Plan.ipynb (Action planning)
 
-**Purpose**: Generate context-aware mitigation action plans from SHAP predictions.
+**Purpose**: Generate per-device (FlowProbe / Firewall / CoreRouter) mitigation guidance from SHAP predictions and RAG context.
 
-**Why**: Converts SHAP attributions into actionable security recommendations using RAG + OpenAI, and runs a **six-mode retrieval / reranking ablation** so `Score.ipynb` can compare Stage-1 retrievers and Stage-2 rerankers head-to-head.
+**Why**: Converts SHAP attributions into actionable security recommendations using RAG + OpenAI, and runs an **eight-mode retrieval / reranking ablation** (six MiniLM FAISS modes + two SecureBERT FAISS modes) so `Score.ipynb` can compare Stage-1 retrievers and Stage-2 rerankers head-to-head.
 
 **What it does**:
 - **Loads** the saved FAISS index and parent store from Part 1 only (does not re-read `RAG_docs/knowledge/`)
 - Generates retrieval queries per sample (deterministic template, deterministic rephrase, optional LLM variants; configurable)
-- For every sample, assembles context under **six retrieval / reranking modes** — all two-stage modes use a **100-chunk Stage-1 shortlist** and select the **top 10** for the LLM:
+- Loads **two** FAISS indexes: `vector_store` (MiniLM) and `vector_store_securebert` (SecureBERT 2.0 bi-encoder)
+- For every sample, assembles context under **eight retrieval / reranking modes** — all two-stage modes use a **100-chunk Stage-1 shortlist** and select the **top 10** for the LLM:
 
   | Mode | Stage 1 (100) | Stage 2 (10) |
   |---|---|---|
-  | `none` (Dense MMR) | Dense FAISS multi-query | MMR |
+  | `none` (Dense MMR) | MiniLM FAISS multi-query | MMR |
   | `bm25` | BM25 over full child corpus | truncate |
   | `doct5query` | BM25 over doc2query-expanded corpus (`castorini/doc2query-t5-base-msmarco`, 20 synthetic queries / chunk) | truncate |
-  | `crossencoder` (Dense → CE) | Raw dense FAISS top-100 (no MMR) | CrossEncoder |
+  | `crossencoder` (Dense → CE) | MiniLM FAISS top-100 (no MMR) | CrossEncoder (`ms-marco-MiniLM-L-6-v2`) |
   | `bm25_crossencoder` (BM25 → CE) | BM25 top-100 | CrossEncoder |
-  | `colbert` (Dense → ColBERT) | Raw dense FAISS top-100 (no MMR) | ColBERT v2 late-interaction |
+  | `colbert` (Dense → ColBERT) | MiniLM FAISS top-100 (no MMR) | ColBERT v2 late-interaction |
+  | `none_securebert` | SecureBERT FAISS multi-query | MMR |
+  | `crossencoder_securebert` | SecureBERT FAISS top-100 | CrossEncoder (same CE as above) |
 
 - Expands the top-10 child chunks to full parent sections via `rag_parents.json` and calls OpenAI once per mode per sample
 - Persists each sample's full comparison (top-10 + 100-chunk candidate pool + LLM output for every mode) via `utils.rag_utils.save_rerank_comparison_report`
@@ -274,11 +283,11 @@ jupyter notebook Index.ipynb
 - `RAG_docs/attack_options.json`, `RAG_docs/agentic_features.json`
 
 **Inputs**:
-- `RAG_docs/predictions/*.json` - Predictions with SHAP
+- `output/inference/<CLASS>/*.json` - Predictions with SHAP (Plan loads from the five class folders only; root `predictions_all_*.json` is ignored)
 - `RAG_docs/vector_store/` - FAISS index + `rag_parents.json` from Part 1
 
 **Outputs**:
-- `RAG_docs/action_plans/rerank_comparison_sample_<id>_<ts>.json` — one per sample, containing all six modes' top-10, 100-chunk candidate pool, and LLM action plan
+- `output/plans/<CLASS>/rerank_comparison_sample_<id>_<ts>.json` — one per sample, all six modes' top-10, candidate pool, and `llm_action_plan.agent_guidance` (three paragraphs)
 - `RAG_docs/rag_parents_doc2query.json` — cached doc2query-expanded corpus
 
 **Run**:
@@ -290,39 +299,40 @@ jupyter notebook Plan.ipynb
 
 ### 4. Score.ipynb (Evaluation)
 
-**Purpose**: Evaluate the six retrieval / reranking modes from `Plan.ipynb` using BEIR / CRAG-aligned metrics and produce per-attack-class tables + grouped bar charts.
+**Purpose**: Evaluate retrieval / reranking modes from `Plan.ipynb` using BEIR / CRAG-aligned metrics at **three layers** (retrieval, retrieval→LLM, LLM alone), with parallel **cyber BERT encoder** cosines (CySecBERT, CTI-BERT, SecureBERT 2.0).
 
-**Why**: Validates which Stage-1 retriever × Stage-2 reranker combination delivers the best retrieval quality, context faithfulness, and downstream LLM reasoning.
+**Why**: Validates which Stage-1 retriever × Stage-2 reranker combination delivers the best retrieval quality, context faithfulness, and downstream LLM reasoning — including MiniLM vs SecureBERT dense indexes.
 
 **What it does**:
-- Loads every `rerank_comparison_sample_*.json` produced by `Plan.ipynb` (each file contains all six modes' top-10 + 100-chunk candidate pool + LLM output for one sample)
-- Builds a deterministic **label-derived reference string** per sample from `attack_options.json` (actions per attack label) and `agentic_features.json` (which agents execute which actions)
+- Recursively loads `rerank_comparison_sample_*.json` from `output/plans/<CLASS>/` (keeps the **newest** file per `sample_id` when Plan was re-run)
+- Each report holds all eight modes' top-10 + 100-chunk candidate pool + LLM `agent_guidance` for one sample (five classes × 50 samples = 250 reports when the full pipeline is run)
+- Builds a deterministic **label-derived reference string** per sample from `agentic_features.json` (FlowProbe / Firewall / CoreRouter device descriptions; no fixed action lists)
 - Derives **adaptive thresholds** per batch (median / 25th-percentile of the observed score distribution, clamped to relaxed floors) for Recall@k relevance and the CRAG proxy
 - Computes seven metrics per sample per mode and aggregates them by rerank mode and by attack class
-- Exports a scoring summary (`RAG_docs/scoring/scoring_results.json`) and grouped bar charts (six bars per metric group)
+- Exports per-class scoring under `output/scores/<CLASS>/` plus a combined summary at `output/scores/scoring_results_combined.json`
 
 **Prerequisites**: Rerank comparison reports from `Plan.ipynb`
 
 **Inputs**:
-- `RAG_docs/action_plans/rerank_comparison_sample_*.json` - Per-sample comparison reports (all six modes)
-- `RAG_docs/attack_options.json` - Reference actions
-- `RAG_docs/agentic_features.json` - Agent definitions
+- `output/plans/<CLASS>/rerank_comparison_sample_*.json` - Per-sample comparison reports (all six modes)
+- `RAG_docs/agentic_features.json` - NIDS device roles and descriptions (reference text)
 
 **Outputs**:
-- `RAG_docs/scoring/scoring_results.json` - Evaluation results with metric notes
+- `output/scores/<CLASS>/scoring_results.json` - Per-class evaluation results with metric notes
 - Per-rerank-mode and per-attack-class tables (one six-row table per attack class)
 - Grouped bar charts (six bars per metric group, one group per metric)
 
 **Execution Time**: 2-10 minutes (depending on number of samples)
 
-**Metrics** (seven per sample × six modes):
-1. **Recall@10** — graded-relevance recall of the top-10 vs. the 100-chunk candidate pool, using `0.5·ROUGE-1 + 0.5·SBERT` with an adaptive relevance threshold.
-2. **nDCG@10** — standard nDCG using the same graded relevances over the top-10.
-3. **RI_SBert** — SBERT cosine between retrieved top-10 context and the reference text (context grounding).
-4. **CRAG** — 3-valued CRAG-style truthfulness proxy rescaled to `[0, 1]` (`1` accurate / `0.5` missing or partial / `0` incorrect) between retrieved context and reference text.
-5. **Util_SBert / Util_CRAG** — same pair of metrics, but between retrieved context and the LLM's `overall_reasoning` (how much of the retrieved evidence the LLM actually grounded its answer in).
-6. **LLM_SBert / LLM_CRAG** — same pair, but between the LLM's `overall_reasoning` and the reference text.
-7. **BertscoreF1** — BERTScore F1 between the ground-truth reference statement and the LLM's `overall_reasoning`.
+**Metrics** (baseline MiniLM/SBERT columns plus `_*_cysecbert`, `_*_ctibert`, `_*_securebert` suffixes where noted):
+
+**Layer 1 — Retrieval:** Recall@10 and nDCG@10 per encoder grading (`0.5·ROUGE-1 + 0.5·encoder cosine` for MiniLM, CySecBERT, CTI-BERT, SecureBERT).
+
+**Layer 2 — Retrieval → LLM:** Context cosine + CRAG proxy (reference vs retrieved top-10); utilization cosine + CRAG (retrieved context vs `agent_guidance`) — for SBERT and each cyber encoder.
+
+**Layer 3 — LLM alone:** Reasoning cosine + CRAG (`agent_guidance` vs reference); **BERTScore F1** (token-level, separate from encoder cosines).
+
+Shared helpers: `utils/cyber_encoders.py`, `utils/rag_retrieval_scores.py`. Exports `rerank_method_averages_cyber.csv` per class for encoder-averaged columns.
 
 **Run**:
 ```bash
@@ -419,9 +429,9 @@ Iman Sharafaldin, Arash Habibi Lashkari, and Ali A. Ghorbani,
 
 ### Agent Contributions (SHAP Analysis)
 
-- **RAN**: 32.14% mean contribution
-- **Edge**: 39.25% mean contribution  
-- **Core**: 28.61% mean contribution
+- **FlowProbe**: access-path flow telemetry
+- **Firewall**: perimeter inspection features
+- **CoreRouter**: backbone bidirectional aggregates
 
 ## 🔧 Troubleshooting
 

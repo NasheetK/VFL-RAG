@@ -69,11 +69,11 @@ def simplify_label(label_str):
 # FIXED PARTY NAMES
 # ============================================================================
 
-# Fixed static party names (used consistently across all functions)
+# NIDS device ids (index 1..3); align with agentic_features.json agent_order
 FIXED_PARTY_NAMES = {
-    1: "evidence_volume_rate_agent1",
-    2: "evidence_packet_size_agent2",
-    3: "evidence_timing_direction_agent3"
+    1: "FlowProbe",
+    2: "Firewall",
+    3: "CoreRouter",
 }
 
 # Fixed agent names as a list (for easy indexing: agent_names[0], agent_names[1], agent_names[2])
@@ -98,15 +98,12 @@ def get_agent_names():
 # ============================================================================
 
 ATTACK_ACTIONS = {
-    'BENIGN': " No action, log only",
-    'DDOS': "rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers",
-    'DOS': "rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers",
-    'SSHPATATOR': "brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation",
-    'FTPPATATOR': "brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation",
-    'PORTSCAN': "scan detection: block scanner IP, tarpitting, tighten firewall rules",
-    'WEBATTACK': "WAF rules, block patterns, patching, isolate vulnerable service",
-    'BOT': "bot detection: block bot IPs, implement CAPTCHA, rate limiting",
-    'OTHERS': "safe response: alert + collect evidence + temporary throttling (not hard block)"
+    "BENIGN": " No action, log only",
+    "DDOS": "rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers",
+    "DOS": "rate-limit, SYN cookies, WAF rules, drop bursts, auto-scale, block top talkers",
+    "PORTSCAN": "scan detection: block scanner IP, tarpitting, tighten firewall rules",
+    "FTPPATATOR": "brute-force controls: fail2ban-style blocking, lockout, MFA, geo/IP reputation",
+    "OTHERS": "safe response: alert + collect evidence + temporary throttling (not hard block)",
 }
 
 
@@ -124,25 +121,21 @@ def _normalize_feature_name(name):
 
 def load_agent_definitions(json_path):
     """
-    Load agent definitions from agentic_features.json (schema_version 1.0).
-    Expects: {"agents": {"RAN": {"description", "logged_features", "action_capabilities"}, ...}}.
+    Load agent definitions from agentic_features.json (schema v1 or v2).
+    Expects agents keyed by device id with description, logged_features, action_capabilities.
 
     Returns:
-        dict: {
-            "agent_names": ["RAN", "Edge", "Core"],
-            "agent_features": [list, list, list],  # 3 lists of feature names (logged_features)
-            "agent_domains": list of description strings,
-            "agent_actions": [list, list, list],   # action_capabilities per agent
-            "feature_categories": dict              # for compatibility
-        }
+        dict: agent_names, agent_features, agent_domains, agent_actions, feature_categories
     """
+    from utils.action_config import get_agent_order
+
     path = Path(json_path)
     if not path.exists():
         raise FileNotFoundError(f"Agent definitions file not found: {path}")
     raw = json.loads(path.read_text(encoding="utf-8"))
 
     agents = raw.get("agents") or {}
-    agent_order = ["RAN", "Edge", "Core"]
+    agent_order = get_agent_order(raw)
     agent_names = [n for n in agent_order if n in agents]
     agent_features = []
     agent_domains = []
@@ -169,16 +162,12 @@ def load_agent_definitions(json_path):
 
 def load_attack_options(json_path):
     """
-    Load attack options from attack_options.json (schema_version 1.0).
-    Expects: {"attacks": {"BENIGN": ["log only", ...], "DDOS": [...], ...}}.
-    Not used for splitting, training, or inference; for reference/display only.
-
-    Returns:
-        dict: {"schema_version": ..., "attacks": {attack_type: [action_strings]}}
+    Load attack_options.json (schema v1 flat lists or v2 per-device maps).
+    Prefer utils.action_config for Plan/Score allowed-action formatting.
     """
     path = Path(json_path)
     if not path.exists():
-        return {"schema_version": "1.0", "attacks": {}}
+        return {"schema_version": "2.0", "attacks": {}}
     return json.loads(path.read_text(encoding="utf-8"))
 
 
@@ -482,8 +471,8 @@ def generate_action(features, party_num):
     # Map evidence type to which attacks it detects best (primary focus)
     evidence_to_primary_attacks = {
         'evidence_volume_rate': ['DDOS', 'DOS'],
-        'evidence_packet_size': ['PORTSCAN', 'WEBATTACK'],
-        'evidence_timing_direction': ['SSHPATATOR', 'FTPPATATOR', 'PORTSCAN']
+        'evidence_packet_size': ['PORTSCAN', 'FTPPATATOR'],
+        'evidence_timing_direction': ['FTPPATATOR', 'PORTSCAN']
     }
     
     primary_attacks = evidence_to_primary_attacks.get(evidence_type, [])
@@ -528,8 +517,8 @@ def get_party_actions_for_attack(party_features, attack_type, evidence_type=None
     # Primary attacks per evidence type
     evidence_to_primary = {
         'evidence_volume_rate': ['DDOS', 'DOS'],
-        'evidence_packet_size': ['PORTSCAN', 'WEBATTACK'],
-        'evidence_timing_direction': ['SSHPATATOR', 'FTPPATATOR', 'PORTSCAN']
+        'evidence_packet_size': ['PORTSCAN', 'FTPPATATOR'],
+        'evidence_timing_direction': ['FTPPATATOR', 'PORTSCAN']
     }
     
     primary_attacks = evidence_to_primary.get(evidence_type, [])
@@ -686,8 +675,8 @@ def generate_action(features, agent_num):
     # Map evidence type to which attacks it detects best (primary focus)
     evidence_to_primary_attacks = {
         'evidence_volume_rate': ['DDOS', 'DOS'],  # Agent 1 detects DoS/DDoS
-        'evidence_packet_size': ['PORTSCAN', 'WEBATTACK'],  # Agent 2 detects scans/web
-        'evidence_timing_direction': ['SSHPATATOR', 'FTPPATATOR', 'PORTSCAN']  # Agent 3 detects brute force/scans
+        'evidence_packet_size': ['PORTSCAN', 'FTPPATATOR'],  # Agent 2 detects scans / brute-force size cues
+        'evidence_timing_direction': ['FTPPATATOR', 'PORTSCAN']  # Agent 3 detects brute force / scans
     }
     
     primary_attacks = evidence_to_primary_attacks.get(evidence_type, [])
@@ -961,8 +950,8 @@ def get_agent_actions_for_attack(agent_features, attack_type, evidence_type=None
     # Primary attacks per evidence type
     evidence_to_primary = {
         'evidence_volume_rate': ['DDOS', 'DOS'],
-        'evidence_packet_size': ['PORTSCAN', 'WEBATTACK'],
-        'evidence_timing_direction': ['SSHPATATOR', 'FTPPATATOR', 'PORTSCAN']
+        'evidence_packet_size': ['PORTSCAN', 'FTPPATATOR'],
+        'evidence_timing_direction': ['FTPPATATOR', 'PORTSCAN']
     }
     
     primary_attacks = evidence_to_primary.get(evidence_type, [])

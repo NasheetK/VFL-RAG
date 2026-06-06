@@ -77,11 +77,51 @@ def top_result_chunk_texts(
     return out
 
 
+def cyber_encoder_metrics_for_report(
+    report: Dict[str, Any],
+    *,
+    top_k: int = 10,
+) -> Dict[str, Any]:
+    """Mean query–chunk cosine per rerank mode for CySecBERT, CTI-BERT, SecureBERT."""
+    from utils.cyber_encoders import CYBER_ENCODER_KEYS, encode_texts
+
+    q = anchor_query_from_report(report)
+    modes = report.get("modes") or {}
+    per_mode: Dict[str, Any] = {}
+    for mode_key, block in modes.items():
+        if not isinstance(block, dict):
+            continue
+        texts = top_result_chunk_texts(block, top_k=top_k)
+        texts = [t for t in texts if (t or "").strip()]
+        if not q or not texts:
+            per_mode[str(mode_key)] = {
+                enc: 0.0 for enc in CYBER_ENCODER_KEYS
+            }
+            continue
+        q_embs: Dict[str, Any] = {}
+        mode_scores: Dict[str, float] = {}
+        for enc in CYBER_ENCODER_KEYS:
+            qv = encode_texts(enc, [q])[0]
+            q_embs[enc] = qv
+            mat = encode_texts(enc, texts)
+            sims = [
+                _cosine_vec(list(qv), list(row)) for row in mat
+            ]
+            mode_scores[enc] = float(sum(sims) / len(sims)) if sims else 0.0
+        per_mode[str(mode_key)] = mode_scores
+    return {
+        "anchor_query_preview": q[:240] + ("..." if len(q) > 240 else ""),
+        "top_k": int(top_k),
+        "per_mode": per_mode,
+    }
+
+
 def embedding_metrics_for_report(
     report: Dict[str, Any],
     embeddings: Embeddings,
     *,
     top_k: int = 10,
+    include_cyber_encoders: bool = True,
 ) -> Dict[str, Any]:
     q = anchor_query_from_report(report)
     modes = report.get("modes") or {}
@@ -90,35 +130,27 @@ def embedding_metrics_for_report(
         if not isinstance(block, dict):
             continue
         texts = top_result_chunk_texts(block, top_k=top_k)
-        per_mode[str(mode_key)] = {
+        entry: Dict[str, Any] = {
             "mean_top_k_cosine_query_chunk": mean_topk_cosine_query_chunks(
                 embeddings, q, texts, top_k=len(texts)
             ),
             "n_chunks_scored": len(texts),
         }
-    return {
+        per_mode[str(mode_key)] = entry
+    out: Dict[str, Any] = {
         "anchor_query_preview": q[:240] + ("..." if len(q) > 240 else ""),
         "top_k": int(top_k),
         "per_mode": per_mode,
     }
+    if include_cyber_encoders:
+        out["cyber_encoders"] = cyber_encoder_metrics_for_report(report, top_k=top_k)
+    return out
 
 
 def _plan_signature(plan: Optional[Dict[str, Any]]) -> Dict[str, Any]:
-    if not plan or not isinstance(plan, dict):
-        return {"missing": True}
-    prim = plan.get("primary_actions") or []
-    actions: List[str] = []
-    if isinstance(prim, list):
-        for x in prim:
-            if isinstance(x, dict):
-                actions.append(str(x.get("action", "")).strip().lower())
-    return {
-        "missing": False,
-        "threat_level": plan.get("threat_level"),
-        "execution_priority": plan.get("execution_priority"),
-        "primary_actions": tuple(actions),
-        "knowledge_sources_used": tuple(sorted(plan.get("knowledge_sources_used") or [])),
-    }
+    from utils.plan_prompts import guidance_signature
+
+    return guidance_signature(plan)
 
 
 def _jaccard_tuple(a: Tuple[str, ...], b: Tuple[str, ...]) -> float:
@@ -135,7 +167,7 @@ def downstream_comparison_for_report(report: Dict[str, Any]) -> Dict[str, Any]:
     """
     Pairwise comparison of ``llm_action_plan`` fields across rerank modes in one report.
 
-    Useful for fixed-sample ablations: see where threat level, priorities, or primary actions diverge.
+    Useful for fixed-sample ablations: see where per-device guidance text diverges across modes.
     """
     modes = report.get("modes") or {}
     keys = [str(k) for k in modes.keys()]
@@ -158,24 +190,18 @@ def downstream_comparison_for_report(report: Dict[str, Any]) -> Dict[str, Any]:
                     }
                 )
                 continue
-            ta = sa.get("threat_level")
-            tb = sb.get("threat_level")
-            pa = sa.get("execution_priority")
-            pb = sb.get("execution_priority")
-            aa = sa.get("primary_actions") or ()
-            ab = sb.get("primary_actions") or ()
+            wa = set(sa.get("word_set") or ())
+            wb = set(sb.get("word_set") or ())
             pairs.append(
                 {
                     "mode_a": a,
                     "mode_b": b,
-                    "threat_level_match": ta == tb,
-                    "execution_priority_match": pa == pb,
-                    "knowledge_sources_match": sa.get("knowledge_sources_used")
-                    == sb.get("knowledge_sources_used"),
-                    "primary_actions_jaccard": _jaccard_tuple(
-                        tuple(str(x) for x in aa),
-                        tuple(str(x) for x in ab),
+                    "guidance_word_jaccard": _jaccard_tuple(
+                        tuple(sorted(wa)),
+                        tuple(sorted(wb)),
                     ),
+                    "char_len_a": sa.get("char_len"),
+                    "char_len_b": sb.get("char_len"),
                 }
             )
 

@@ -40,12 +40,37 @@ def preferred_torch_device():
     return torch.device(preferred_torch_device_string())
 
 
-def sentence_transformer_model_kwargs(**extra: Any) -> Dict[str, Any]:
-    """Arguments for ``SentenceTransformer`` via LangChain ``model_kwargs``."""
+def sentence_transformer_device() -> str:
+    """``SentenceTransformer(..., device=...)`` and ``model.encode(..., device=...)``."""
+    return preferred_torch_device_string()
+
+
+def bert_score_device() -> str:
+    """``bert_score.score(..., device=...)``."""
+    return preferred_torch_device_string()
+
+
+def hf_encoder_batch_size() -> int:
+    """Default batch size for HuggingFace BERT encoders in ``utils.cyber_encoders``."""
+    if os.environ.get("HF_ENCODER_BATCH_SIZE", "").strip().isdigit():
+        return int(os.environ["HF_ENCODER_BATCH_SIZE"].strip())
+    return 32 if cuda_is_available() else 8
+
+
+def sentence_transformer_client_kwargs(**extra: Any) -> Dict[str, Any]:
+    """Keyword args forwarded to ``SentenceTransformer(...)`` (includes ``device``).
+
+    LangChain ``SentenceTransformerEmbeddings(model_kwargs=...)`` passes these
+    through to the underlying client constructor.
+    """
     out: Dict[str, Any] = dict(extra)
-    if cuda_is_available():
-        out.setdefault("device", "cuda")
+    out.setdefault("device", sentence_transformer_device())
     return out
+
+
+def sentence_transformer_model_kwargs(**extra: Any) -> Dict[str, Any]:
+    """Backward-compatible alias for ``sentence_transformer_client_kwargs``."""
+    return sentence_transformer_client_kwargs(**extra)
 
 
 def transformers_pipeline_device_int() -> int:
@@ -56,3 +81,21 @@ def transformers_pipeline_device_int() -> int:
 def cross_encoder_device_string() -> str:
     """``sentence_transformers.CrossEncoder(..., device=...)``."""
     return preferred_torch_device_string()
+
+
+def report_compute_device_status() -> str:
+    """Human-readable summary for notebook startup logs."""
+    lines = [
+        f"Preferred PyTorch device: {preferred_torch_device_string()}",
+        f"CUDA available: {cuda_is_available()}",
+    ]
+    if _force_cpu():
+        lines.append("VFL_FORCE_CPU=1 (GPU use disabled)")
+    if cuda_is_available():
+        try:
+            import torch
+
+            lines.append(f"CUDA device: {torch.cuda.get_device_name(0)}")
+        except Exception:
+            pass
+    return "\n".join(lines)
