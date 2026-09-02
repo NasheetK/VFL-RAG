@@ -1,7 +1,7 @@
-"""Score action-plan ``overall_reasoning`` (rerank comparison JSON) vs label-derived reference text.
+"""Score action-plan text (``agent_guidance`` paragraphs) vs description-based reference.
 
-Aligns with ``Score.ipynb``: same reference builder (attack_options + agent tiers) and BLEU / ROUGE-1 /
-SBERT cosine / BERTScore.
+Aligns with ``Score.ipynb``: reference from ``agentic_features.json`` device roles;
+LLM text from ``utils.plan_prompts.agent_guidance_to_scoring_text``.
 """
 
 from __future__ import annotations
@@ -46,167 +46,126 @@ def _norm_action(s: str) -> str:
 def load_scoring_kb(
     repo_root: Optional[Path] = None,
 ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+    """Load attack entries and agent capabilities for reference building."""
+    from utils.action_config import load_agentic_features, load_attack_options
+
     root = repo_root or Path(__file__).resolve().parents[1]
-    attack_path = root / "RAG_docs/attack_options.json"
-    agents_path = root / "RAG_docs/agentic_features.json"
-    with open(attack_path, "r", encoding="utf-8") as f:
-        attack_options_kb = json.load(f)["attacks"]
-    with open(agents_path, "r", encoding="utf-8") as f:
-        agents_kb = json.load(f)["agents"]
-    return attack_options_kb, agents_kb
+    attack_opts = load_attack_options(root / "RAG_docs" / "attack_options.json")
+    agentic = load_agentic_features(root / "RAG_docs" / "agentic_features.json")
+    return attack_opts.get("attacks") or {}, agentic.get("agents") or {}
 
 
 def build_reference_text_for_label(
     label: str,
     attack_options_kb: Dict[str, Any],
     agents_kb: Dict[str, Any],
+    agent_order: Optional[List[str]] = None,
 ) -> str:
-    label_u = label.strip().upper()
-    actions = attack_options_kb.get(label_u) or attack_options_kb.get("OTHERS", [])
-    actions_norm = [_norm_action(a) for a in actions]
+    """Build per-device reference from agent descriptions (attack_options ignored)."""
+    from utils.plan_prompts import build_reference_text_for_label as _build_ref
 
-    action_to_agents: Dict[str, List[str]] = defaultdict(list)
-    for agent_name, agent_info in agents_kb.items():
-        for a in agent_info.get("action_capabilities", []):
-            action_to_agents[_norm_action(a)].append(agent_name)
-
-    agent_to_actions: Dict[str, List[str]] = defaultdict(list)
-    unassigned: List[str] = []
-    for a_raw, a in zip(actions, actions_norm):
-        capable_agents = action_to_agents.get(a, [])
-        if not capable_agents:
-            unassigned.append(a_raw)
-            continue
-        expanded = [a_raw] + ACTION_SYNONYMS.get(a, [])
-        for ag in capable_agents:
-            agent_to_actions[ag].extend(expanded)
-
-    def uniq(seq: List[str]) -> List[str]:
-        seen: set = set()
-        out: List[str] = []
-        for x in seq:
-            k = _norm_action(x)
-            if k not in seen:
-                seen.add(k)
-                out.append(x)
-        return out
-
-    ran = ", ".join(uniq(agent_to_actions.get("RAN", []))) or "none"
-    edge = ", ".join(uniq(agent_to_actions.get("Edge", []))) or "none"
-    core = ", ".join(uniq(agent_to_actions.get("Core", []))) or "none"
-
-    ref = (
-        f"{label_u} response: "
-        f"RAN actions: {ran}. "
-        f"Edge actions: {edge}. "
-        f"Core actions: {core}."
+    return _build_ref(
+        label,
+        agents_kb,
+        agent_order=agent_order,
+        attack_options_kb=attack_options_kb,
     )
-    if unassigned:
-        ref += f" Unassigned actions: {', '.join(unassigned)}."
-    return ref
 
 
 def extract_overall_reasoning(action_plan: Optional[Dict[str, Any]]) -> str:
-    if not action_plan or not isinstance(action_plan, dict):
-        return ""
-    s = (action_plan.get("overall_reasoning") or action_plan.get("reasoning") or "").strip()
-    return s
+    """Scoring text: concatenated agent_guidance paragraphs (legacy overall_reasoning fallback)."""
+    from utils.plan_prompts import agent_guidance_to_scoring_text
+
+    return agent_guidance_to_scoring_text(action_plan)
 
 
 def load_rerank_comparison_files(
     directory: Path,
     *,
     glob_pattern: str = "rerank_comparison_sample_*.json",
+    recursive: bool = True,
+    dedupe_latest: bool = True,
+    require_report_type: bool = True,
+    target_classes: Optional[Tuple[str, ...]] = None,
+    verbose: bool = True,
 ) -> List[Dict[str, Any]]:
+    """Load Plan rerank reports from ``output/plans/`` (optionally per-class subdirs).
+
+    When ``dedupe_latest`` is True, keeps the newest file per ``sample_id`` so
+    re-runs of Plan.ipynb do not double-count rows.
+    """
+    import re
+
+    from utils.label_config import TARGET_CLASSES
+
     directory = Path(directory)
-    files = sorted(directory.glob(glob_pattern))
+    allowed = tuple(target_classes or TARGET_CLASSES)
+    pattern = glob_pattern.lstrip("/")
+
+    if recursive:
+        all_paths = list(directory.rglob(pattern))
+    else:
+        all_paths = list(directory.glob(pattern))
+
+    if dedupe_latest:
+        best: Dict[int, Tuple[float, Path]] = {}
+        sid_pat = re.compile(r"rerank_comparison_sample_(\d+)_")
+        for fp in all_paths:
+            m = sid_pat.search(fp.name)
+            if not m:
+                continue
+            sid = int(m.group(1))
+            mt = fp.stat().st_mtime
+            prev = best.get(sid)
+            if prev is None or mt > prev[0]:
+                best[sid] = (mt, fp)
+        file_paths = [p for _, p in sorted(best.values(), key=lambda x: x[0])]
+    else:
+        file_paths = sorted(all_paths)
+
     out: List[Dict[str, Any]] = []
-    for file_path in files:
-        with open(file_path, "r", encoding="utf-8") as f:
+    by_class: Dict[str, int] = defaultdict(int)
+    skipped_type = 0
+    skipped_label = 0
+
+    from utils.notebook_progress import progress
+
+    for fp in progress(file_paths, desc="Load rerank reports", unit="file"):
+        with open(fp, "r", encoding="utf-8") as f:
             data = json.load(f)
-        if data.get("report_type") != "rerank_ablation_comparison":
+        if not isinstance(data, dict):
             continue
-        data["file_path"] = str(file_path)
-        data["file_name"] = file_path.name
+        if require_report_type and data.get("report_type") != "rerank_ablation_comparison":
+            skipped_type += 1
+            continue
+        lbl = str((data.get("prediction") or {}).get("predicted_label", "")).strip().upper()
+        if lbl not in allowed:
+            skipped_label += 1
+            continue
+        data["file_path"] = str(fp)
+        data["file_name"] = fp.name
+        data["_source_file"] = fp.name
+        data["_plans_class_dir"] = fp.parent.name
         out.append(data)
-    return out
+        by_class[lbl] += 1
 
-
-def compute_lexical_similarity_scores(
-    reference: str,
-    candidate: str,
-    sbert_model: Any,
-) -> Dict[str, float]:
-    from bert_score import score as bert_score_fn
-    from nltk.translate.bleu_score import SmoothingFunction, sentence_bleu
-    from rouge_score import rouge_scorer
-    from sklearn.metrics.pairwise import cosine_similarity
-
-    ref_tokens = reference.lower().split()
-    cand_tokens = candidate.lower().split()
-    smoothing = SmoothingFunction().method1
-    bleu = float(
-        sentence_bleu([ref_tokens], cand_tokens, smoothing_function=smoothing)
+    out.sort(
+        key=lambda d: (
+            str((d.get("prediction") or {}).get("predicted_label", "")),
+            int(d.get("sample_id") if d.get("sample_id") is not None else -1),
+        )
     )
 
-    scorer = rouge_scorer.RougeScorer(["rouge1"], use_stemmer=True)
-    rouge1 = float(scorer.score(reference, candidate)["rouge1"].fmeasure)
-
-    ref_embedding = sbert_model.encode([reference])
-    cand_embedding = sbert_model.encode([candidate])
-    sbert_cosine = float(cosine_similarity(ref_embedding, cand_embedding)[0][0])
-
-    p, r, f1 = bert_score_fn([candidate], [reference], lang="en", verbose=False)
-    return {
-        "bleu": bleu,
-        "rouge1": rouge1,
-        "sbert_cosine": sbert_cosine,
-        "bertscore_precision": float(p.mean().item()),
-        "bertscore_recall": float(r.mean().item()),
-        "bertscore_f1": float(f1.mean().item()),
-    }
-
-
-def score_rerank_directory(
-    input_dir: Path,
-    sbert_model: Any,
-    attack_options_kb: Dict[str, Any],
-    agents_kb: Dict[str, Any],
-    *,
-    glob_pattern: str = "rerank_comparison_sample_*.json",
-) -> List[Dict[str, Any]]:
-    rows: List[Dict[str, Any]] = []
-    for rep in load_rerank_comparison_files(input_dir, glob_pattern=glob_pattern):
-        file_name = rep["file_name"]
-        sample_id = rep.get("sample_id", "unknown")
-        pred = rep.get("prediction") or {}
-        label = str(pred.get("predicted_label") or "OTHERS")
-        reference_text = build_reference_text_for_label(
-            label, attack_options_kb, agents_kb
-        )
-        modes = rep.get("modes") or {}
-        if not isinstance(modes, dict):
-            continue
-        for mode_key, block in modes.items():
-            if not isinstance(block, dict):
-                continue
-            plan = block.get("llm_action_plan")
-            text = extract_overall_reasoning(plan if isinstance(plan, dict) else None)
-            if not text:
-                continue
-            scores = compute_lexical_similarity_scores(
-                reference_text, text, sbert_model
-            )
-            rows.append(
-                {
-                    "file_name": file_name,
-                    "sample_id": sample_id,
-                    "predicted_label": label,
-                    "rerank_mode": str(mode_key),
-                    "rerank_label": block.get("label") or mode_key,
-                    "reference_text": reference_text,
-                    "text": text,
-                    **scores,
-                }
-            )
-    return rows
+    if verbose:
+        print(f"Found {len(all_paths)} rerank comparison file(s) on disk under {directory}")
+        if dedupe_latest:
+            print(f"  -> {len(file_paths)} after keeping newest per sample_id")
+        print(f"  -> {len(out)} report(s) in TARGET_CLASSES {list(allowed)}")
+        if skipped_type:
+            print(f"  (skipped {skipped_type} non-ablation JSON)")
+        if skipped_label:
+            print(f"  (skipped {skipped_label} outside TARGET_CLASSES)")
+        for cls in allowed:
+            if by_class.get(cls):
+                print(f"     [{cls}] {by_class[cls]} sample(s)")
+    return out

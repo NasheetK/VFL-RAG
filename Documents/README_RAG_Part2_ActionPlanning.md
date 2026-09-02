@@ -2,9 +2,11 @@
 
 ### Purpose
 
-Generate **LLM action plans** for non-benign samples by combining:
-- prediction signals (label + confidence + condensed SHAP: all agents, top-3 features each), and
+Generate **LLM per-device guidance** for non-benign samples by combining:
+- prediction signals (label + confidence + condensed SHAP: top-3 features per NIDS device), and
 - **retrieved knowledge context** from the vector store built in Part 1, assembled under six different retrieval / reranking configurations so the downstream scoring notebook can ablate them.
+
+The LLM returns three concise paragraphs in JSON (`agent_guidance`: FlowProbe, Firewall, CoreRouter). It is **not** constrained to a fixed action vocabulary from `attack_options.json`.
 
 ### Prerequisites
 
@@ -46,7 +48,7 @@ All two-stage modes use a **100-chunk Stage-1 shortlist** and select the **top 1
 2. **Stage-1 candidate pool (100 chunks)** — dense modes run FAISS over the multi-query bundle and dedupe by `(parent_id, child_index)`; lexical modes run BM25 over the appropriate corpus.
 3. **Stage-2 top-10** — MMR, CrossEncoder, ColBERT, or lexical truncation depending on the mode.
 4. **Child → parent expansion** — top-10 child chunks are expanded into full parent sections via `rag_parents.json`.
-5. **LLM call** — the 10 parent sections are injected into the prompt; OpenAI is called once per mode per sample.
+5. **LLM call** — the 10 parent sections plus condensed inference and NIDS device roles are injected into the prompt; OpenAI returns `agent_guidance` (three paragraphs). One call per mode per sample.
 6. **Report persistence** — each sample's full comparison (top-10 + 100-chunk candidate pool + LLM output for every mode) is written via `utils.rag_utils.save_rerank_comparison_report`.
 
 ### Why it improves the system

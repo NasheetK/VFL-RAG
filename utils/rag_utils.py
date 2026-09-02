@@ -34,11 +34,27 @@ from langchain_core.embeddings import Embeddings
 # ---------------------------------------------------------------------------
 
 
-def load_predictions(predictions_dir: Path, verbose: bool = True) -> List[Dict[str, Any]]:
-    """Load all *.json prediction files; each sample gets _source_file."""
-    prediction_files = list(predictions_dir.glob("*.json"))
+def load_predictions(
+    predictions_dir: Path,
+    verbose: bool = True,
+    *,
+    recursive: bool = False,
+) -> List[Dict[str, Any]]:
+    """Load prediction JSON files; each sample gets _source_file.
+
+    Set ``recursive=True`` to read ``output/inference/<CLASS>/*.json`` layout.
+    """
+    predictions_dir = Path(predictions_dir)
+    if recursive:
+        prediction_files = sorted(
+            p
+            for p in predictions_dir.rglob("*.json")
+            if p.name != "manifest.json" and not p.name.startswith("manifest_")
+        )
+    else:
+        prediction_files = sorted(predictions_dir.glob("*.json"))
     if not prediction_files:
-        raise FileNotFoundError(f"No JSON files found in {predictions_dir}")
+        raise FileNotFoundError(f"No JSON prediction files found under {predictions_dir}")
     if verbose:
         print(f"Found {len(prediction_files)} prediction file(s) in {predictions_dir}")
 
@@ -65,6 +81,74 @@ def load_predictions(predictions_dir: Path, verbose: bool = True) -> List[Dict[s
     return predictions_data
 
 
+def load_predictions_from_class_folders(
+    inference_root: Path,
+    *,
+    verbose: bool = True,
+) -> List[Dict[str, Any]]:
+    """Load prediction JSON from ``output/inference/<CLASS>/`` only (not root combined files).
+
+    For each target class, uses the newest ``predictions_*.json`` in that class folder
+    when multiple runs exist.
+    """
+    from utils.label_config import TARGET_CLASSES
+    from utils.pipeline_paths import inference_dir_for
+
+    inference_root = Path(inference_root)
+    predictions_data: List[Dict[str, Any]] = []
+
+    if verbose:
+        print(f"Loading predictions from class folders under {inference_root}")
+
+    for cls in TARGET_CLASSES:
+        cls_dir = inference_dir_for(cls)
+        if not cls_dir.is_dir():
+            if verbose:
+                print(f"  [{cls}] skip — missing folder {cls_dir}")
+            continue
+
+        json_files = sorted(
+            p
+            for p in cls_dir.glob("*.json")
+            if not p.name.startswith("manifest")
+        )
+        if not json_files:
+            if verbose:
+                print(f"  [{cls}] skip — no prediction JSON in {cls_dir}")
+            continue
+
+        pred_file = max(json_files, key=lambda p: p.stat().st_mtime)
+        if verbose:
+            print(f"  [{cls}] {pred_file.name}")
+
+        with open(pred_file, "r", encoding="utf-8") as f:
+            file_data = json.load(f)
+        if isinstance(file_data, dict):
+            file_data = [file_data]
+        elif not isinstance(file_data, list):
+            if verbose:
+                print(f"    Skipping unexpected type in {pred_file.name}")
+            continue
+
+        for sample in file_data:
+            if isinstance(sample, dict):
+                sample["_source_file"] = pred_file.name
+                sample["_source_class"] = cls
+        predictions_data.extend(file_data)
+        if verbose:
+            print(f"    Loaded {len(file_data)} prediction(s)")
+
+    if not predictions_data:
+        raise FileNotFoundError(
+            f"No prediction JSON found under {inference_root}/<CLASS>/ "
+            f"for classes {list(TARGET_CLASSES)}. Run Predict.ipynb first."
+        )
+
+    if verbose:
+        print(f"Total: {len(predictions_data)} prediction(s) from {len(TARGET_CLASSES)} class folders")
+    return predictions_data
+
+
 def load_attack_and_agentic(
     attack_path: Path = Path("RAG_docs/attack_options.json"),
     agentic_path: Path = Path("RAG_docs/agentic_features.json"),
@@ -83,7 +167,9 @@ def load_attack_and_agentic(
     agentic_features_data: Optional[Dict[str, Any]] = None
     if agentic_path.exists():
         with open(agentic_path, "r", encoding="utf-8") as f:
-            agentic_features_data = json.load(f)
+            raw_agentic = json.load(f)
+        agents = raw_agentic.get("agents") if isinstance(raw_agentic, dict) else None
+        agentic_features_data = agents if isinstance(agents, dict) else raw_agentic
         if verbose:
             print(f"Loaded agentic features from {agentic_path.name}")
     elif verbose:
@@ -322,6 +408,16 @@ def balance_vector_hits_by_source_file(
     return picked[:top_k]
 
 
+def load_vector_store_for_backbone(backbone: str = "minilm") -> FAISS:
+    """Load FAISS index for ``minilm`` (default) or ``securebert`` bi-encoder store."""
+    from utils.pipeline_paths import SECUREBERT_VECTOR_STORE_DIR, VECTOR_STORE_DIR
+
+    key = (backbone or "minilm").strip().lower()
+    if key in ("securebert", "sb", "securebert2"):
+        return load_vector_store(SECUREBERT_VECTOR_STORE_DIR)
+    return load_vector_store(VECTOR_STORE_DIR)
+
+
 def load_vector_store(
     vector_store_dir: Path,
     embed_model: Optional[str] = None,
@@ -358,17 +454,25 @@ def embeddings_from_vector_store(vector_store: Any) -> Embeddings:
 
 
 def get_party_to_tier_mapping(sample: Dict[str, Any]) -> Dict[str, str]:
+    """Map SHAP party keys to NIDS device ids (legacy RAN/Edge/Core still recognized)."""
+    from utils.action_config import LEGACY_DEVICE_MAP, normalize_device_name
+
     shap_expl = sample.get("shap_explanation", {}) or {}
     party_contributions = shap_expl.get("party_contributions", {}) or {}
     party_to_tier: Dict[str, str] = {}
     for party_name in party_contributions.keys():
+        if party_name in LEGACY_DEVICE_MAP:
+            party_to_tier[party_name] = LEGACY_DEVICE_MAP[party_name]
+            continue
         party_lower = party_name.lower()
-        if party_lower.startswith("ran"):
-            party_to_tier[party_name] = "RAN"
-        elif party_lower.startswith("edge"):
-            party_to_tier[party_name] = "Edge"
-        elif party_lower.startswith("core"):
-            party_to_tier[party_name] = "Core"
+        if party_lower.startswith("flowprobe") or party_lower.startswith("ran"):
+            party_to_tier[party_name] = "FlowProbe"
+        elif party_lower.startswith("firewall") or party_lower.startswith("edge"):
+            party_to_tier[party_name] = "Firewall"
+        elif party_lower.startswith("corerouter") or party_lower.startswith("core"):
+            party_to_tier[party_name] = "CoreRouter"
+        else:
+            party_to_tier[party_name] = normalize_device_name(party_name)
     return party_to_tier
 
 
@@ -446,6 +550,52 @@ def convert_to_json_serializable(obj: Any) -> Any:
     return obj
 
 
+def _export_guidance_plan_fields(plan: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    from utils.plan_prompts import agent_guidance_to_scoring_text
+
+    if not plan or not isinstance(plan, dict):
+        return {
+            "guidance_text": "",
+            "scoring_text": "",
+        }
+    scoring = agent_guidance_to_scoring_text(plan)
+    return {
+        "guidance_text": plan.get("guidance_text") or scoring,
+        "format": plan.get("format", "plain_text"),
+        "scoring_text": scoring,
+        "parse_error": plan.get("parse_error"),
+        # Legacy JSON field preserved when present
+        "agent_guidance": plan.get("agent_guidance") if isinstance(plan.get("agent_guidance"), dict) else {},
+    }
+
+
+def _guidance_plan_differences(
+    with_rag: Optional[Dict[str, Any]],
+    without_rag: Optional[Dict[str, Any]],
+) -> Dict[str, Any]:
+    from utils.plan_prompts import agent_guidance_to_scoring_text, guidance_signature
+
+    sw = guidance_signature(with_rag)
+    sn = guidance_signature(without_rag)
+    tw = agent_guidance_to_scoring_text(with_rag)
+    tn = agent_guidance_to_scoring_text(without_rag)
+
+    def _word_jaccard(a: Dict[str, Any], b: Dict[str, Any]) -> float:
+        wa = set(a.get("word_set") or ())
+        wb = set(b.get("word_set") or ())
+        if not wa and not wb:
+            return 1.0
+        u = wa | wb
+        return len(wa & wb) / len(u) if u else 1.0
+
+    return {
+        "scoring_text_different": tw != tn,
+        "guidance_word_jaccard": _word_jaccard(sw, sn) if not (sw.get("missing") or sn.get("missing")) else None,
+        "with_rag_char_len": sw.get("char_len"),
+        "without_rag_char_len": sn.get("char_len"),
+    }
+
+
 def save_comparison_file(
     sample: Dict[str, Any],
     query: str,
@@ -483,139 +633,12 @@ def save_comparison_file(
             ],
         },
         "action_plans": {
-            "with_rag": {
-                "threat_level": (
-                    llm_response_with_rag.get("threat_level")
-                    if llm_response_with_rag
-                    else None
-                ),
-                "execution_priority": (
-                    llm_response_with_rag.get("execution_priority")
-                    if llm_response_with_rag
-                    else None
-                ),
-                "primary_actions": (
-                    llm_response_with_rag.get("primary_actions", [])
-                    if llm_response_with_rag
-                    else []
-                ),
-                "supporting_actions": (
-                    llm_response_with_rag.get("supporting_actions", [])
-                    if llm_response_with_rag
-                    else []
-                ),
-                "overall_reasoning": (
-                    (
-                        llm_response_with_rag.get("overall_reasoning")
-                        or llm_response_with_rag.get("reasoning", "")
-                    )
-                    if llm_response_with_rag
-                    else ""
-                ),
-                "knowledge_sources_used": (
-                    llm_response_with_rag.get("knowledge_sources_used", [])
-                    if llm_response_with_rag
-                    else []
-                ),
-            },
-            "without_rag": {
-                "threat_level": (
-                    llm_response_without_rag.get("threat_level")
-                    if llm_response_without_rag
-                    else None
-                ),
-                "execution_priority": (
-                    llm_response_without_rag.get("execution_priority")
-                    if llm_response_without_rag
-                    else None
-                ),
-                "primary_actions": (
-                    llm_response_without_rag.get("primary_actions", [])
-                    if llm_response_without_rag
-                    else []
-                ),
-                "supporting_actions": (
-                    llm_response_without_rag.get("supporting_actions", [])
-                    if llm_response_without_rag
-                    else []
-                ),
-                "overall_reasoning": (
-                    (
-                        llm_response_without_rag.get("overall_reasoning")
-                        or llm_response_without_rag.get("reasoning", "")
-                    )
-                    if llm_response_without_rag
-                    else ""
-                ),
-                "knowledge_sources_used": (
-                    llm_response_without_rag.get("knowledge_sources_used", [])
-                    if llm_response_without_rag
-                    else []
-                ),
-            },
+            "with_rag": _export_guidance_plan_fields(llm_response_with_rag),
+            "without_rag": _export_guidance_plan_fields(llm_response_without_rag),
         },
-        "differences": {
-            "threat_level_different": (
-                (llm_response_with_rag.get("threat_level") if llm_response_with_rag else None)
-                != (
-                    llm_response_without_rag.get("threat_level")
-                    if llm_response_without_rag
-                    else None
-                )
-            ),
-            "priority_different": (
-                (
-                    llm_response_with_rag.get("execution_priority")
-                    if llm_response_with_rag
-                    else None
-                )
-                != (
-                    llm_response_without_rag.get("execution_priority")
-                    if llm_response_without_rag
-                    else None
-                )
-            ),
-            "primary_actions_different": (
-                (
-                    llm_response_with_rag.get("primary_actions", [])
-                    if llm_response_with_rag
-                    else []
-                )
-                != (
-                    llm_response_without_rag.get("primary_actions", [])
-                    if llm_response_without_rag
-                    else []
-                )
-            ),
-            "num_primary_actions_with_rag": (
-                len(llm_response_with_rag.get("primary_actions", []))
-                if llm_response_with_rag
-                else 0
-            ),
-            "num_primary_actions_without_rag": (
-                len(llm_response_without_rag.get("primary_actions", []))
-                if llm_response_without_rag
-                else 0
-            ),
-            "overall_reasoning_different": (
-                (
-                    (
-                        llm_response_with_rag.get("overall_reasoning", "")
-                        or llm_response_with_rag.get("reasoning", "")
-                    )
-                    if llm_response_with_rag
-                    else ""
-                )
-                != (
-                    (
-                        llm_response_without_rag.get("overall_reasoning", "")
-                        or llm_response_without_rag.get("reasoning", "")
-                    )
-                    if llm_response_without_rag
-                    else ""
-                )
-            ),
-        },
+        "differences": _guidance_plan_differences(
+            llm_response_with_rag, llm_response_without_rag
+        ),
     }
     comparison = convert_to_json_serializable(comparison)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -727,6 +750,8 @@ def save_rerank_comparison_report(
         "bm25_crossencoder": "bm25_top100_then_crossencoder",
         "colbert": "dense_faiss_top100_then_colbert",
         "crossencoder_colbert": "crossencoder_plus_colbert",
+        "none_securebert": "securebert_faiss_mmr_single_stage",
+        "crossencoder_securebert": "securebert_faiss_top100_then_crossencoder",
     }
 
     modes_out: Dict[str, Any] = {}
@@ -739,30 +764,37 @@ def save_rerank_comparison_report(
         sm = search_method_labels.get(
             mode_key, str(payload.get("search_method") or mode_key)
         )
+        mode_embed = payload.get("index_embed_model") or index_embed_model
+        mode_backbone = payload.get("embedding_backbone")
+        rag_info: Dict[str, Any] = {
+            "documents_used": len(rag_results),
+            "candidates_considered": len(candidate_pool),
+            "search_queries": [query] if query else [],
+            "top_results": [
+                {
+                    **_rag_result_export_fields(r),
+                    "title": r["title"],
+                    "text": r["text"],
+                }
+                for r in rag_results[:DEFAULT_EXPORT_RAG_TOP_N]
+            ],
+            "candidate_pool": [
+                {
+                    **_rag_result_export_fields(r),
+                    "title": r["title"],
+                    "text": r["text"],
+                }
+                for r in candidate_pool
+            ],
+        }
+        if mode_embed:
+            rag_info["index_embed_model"] = mode_embed
+        if mode_backbone:
+            rag_info["embedding_backbone"] = mode_backbone
         modes_out[mode_key] = {
             "label": payload.get("label") or mode_key,
             "search_method": sm,
-            "rag_info": {
-                "documents_used": len(rag_results),
-                "candidates_considered": len(candidate_pool),
-                "search_queries": [query] if query else [],
-                "top_results": [
-                    {
-                        **_rag_result_export_fields(r),
-                        "title": r["title"],
-                        "text": r["text"],
-                    }
-                    for r in rag_results[:DEFAULT_EXPORT_RAG_TOP_N]
-                ],
-                "candidate_pool": [
-                    {
-                        **_rag_result_export_fields(r),
-                        "title": r["title"],
-                        "text": r["text"],
-                    }
-                    for r in candidate_pool
-                ],
-            },
+            "rag_info": rag_info,
             "llm_action_plan": llm_response,
         }
 
