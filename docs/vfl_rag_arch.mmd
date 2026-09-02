@@ -1,0 +1,27 @@
+flowchart LR
+  subgraph L1[Multi‑Hop Observations]
+    ISP[ISP / Upstream Provider]
+    RS[Router / Switch]
+    FW[Firewall / IDS]
+    EDR[EDR Platform]
+  end
+
+  VFL[Secure VFL + SHAP<br/>secure aggregation • train classifier • explain signals]
+
+  subgraph RAG[RAG Retrieval Layer (by category)]
+    direction LR
+    IN[Ingestion<br/>clean • chunk • metadata]
+    EM[Embedding/Index<br/>embed • store vectors]
+    SE[Search<br/>return N (N much larger than K)]
+    RK[Ranking<br/>ReRank → Top‑K]
+    IN --> EM --> SE --> RK
+  end
+
+  LLM[LLM Response<br/>prompt+policy+context → mitigation w/ citations]
+
+  ISP --> VFL
+  RS --> VFL
+  FW --> VFL
+  EDR --> VFL
+
+  VFL --> RAG --> LLM
