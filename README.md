@@ -33,9 +33,7 @@ Retrieval queries are built dynamically from detection outputs and attribution s
 | **SHAP explainability** | Per-party attributions that both explain detections and drive RAG queries. |
 | **Policy-grounded RAG** | LLM action plans constrained by retrieved controls from ATT&CK, NIST, CIS, and ISO/IEC 27001. |
 
-<p align="center">
-  <img src="CyberRank.png" alt="VFL cybersecurity network topology: serial attack path across observation points with secure VFL, SHAP, and RAG mitigation. Raw data never leaves each participant." width="900"/>
-</p>
+
 
 <p align="center"><em>Conceptual topology: serial attack path across observation points; embeddings only — raw data never leaves a participant. Detection, SHAP attribution, and RAG mitigation run in the coordination layer over a multi-framework knowledge base.</em></p>
 
